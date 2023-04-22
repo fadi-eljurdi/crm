@@ -29,10 +29,12 @@
             <div class="col-12 col-md-10"><input v-model="contact.openHours"  type="text" class="form-control"></div>
         </div>
         <div class="row justify-content-center my-3">
-            <button :disabled="spinner" class="col-12 col-md-2 btn btn-primary btn-sm" @click="setContact">
-                <span v-if="spinner" class="spinner-grow spinner-grow-sm"></span>
-                <span v-else>Save changes</span>
-            </button>
+            <div class="col-12 col-md-2">
+                <button :disabled="spinner" class="w-100 btn btn-primary btn-sm" @click="setContact">
+                    <span v-if="spinner" class="spinner-grow spinner-grow-sm"></span>
+                    <span v-else>Save changes</span>
+                </button>
+            </div>
         </div>
         
     </section>

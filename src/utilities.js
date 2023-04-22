@@ -96,4 +96,5 @@ async function hostImages(api, images) {
     return res
 }
 
+
 export default { optimizeImageQuality, file64, timo, focus, getCurrentDate, compile, parseHTML, hostImages, text64 }

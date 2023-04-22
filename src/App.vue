@@ -1,37 +1,30 @@
 <template>
 
-<section v-if="!isLogedIn" class="w-100 h-100 bg-light position-fixed top-0 start-0 z-3">
-    <div class="container my-5">
-        <div class="row justify-content-center p-3">
-        <section class="col-12 col-md-8 col-lg-5 shadow-sm px-3 py-4 bg-light rounded d-flex flex-column gap-2 align-items-center">
-            
-            <img src="./assets/logo.svg" alt="logo" width="70" height="70" class="img-fluid rounded-pill skeleton">
-            <h6 class="pop fs-4 text-secondary text-center"><strong>JURDI</strong></h6>
-            <div class="w-100 d-flex flex-column gap-2 pop mt-3">
-            <div class="form-floating">
-                <input v-model="username" type="text" class="form-control" id="username" @keyup.enter="focus('password')"
-                placeholder="username">
-                <label for="username">Username</label>
-            </div>
-            <div class="form-floating">
-                <input v-model="password" @keyup.enter="login" type="password" class="form-control" id="password"
-                placeholder="Password">
-                <label for="password">Password</label>
-            </div>
-            <button class="btn btn-primary ls-1 w-100" @click="login">
-                <span v-if="loginSpinner" class="spinner-grow text-light spinner-grow-sm"></span>
-                <span v-else>Login</span>
+<section v-if="!isLogedIn" class="w-100 h-100 bg-light z-3 position-fixed top-0 start-0 d-flex justify-content-center align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-5">
+        <section class="d-flex flex-column gap-2 shadow rounded px-4 py-4 align-items-center">
+          <img src="./assets/logo.svg" alt="logo" class="img-fluid rounded" width="50">
+          <h5 class="text-center pop fs-5 text-primary">JURDI CRM {{username}}</h5>
+          <div class="w-100 my-3 d-flex flex-column gap-2">
+            <input type="text" @keyup.enter="utilities.focus('password')" id="username" placeholder="Username" class="form-control loginInput" v-model="username">
+            <input type="password" @keyup.enter="Login" placeholder="Password" id="password" class="form-control loginInput" v-model="password">
+            <button @click="Login" class="w-100 btn btn-primary">
+              <span v-if="loginSpinner" class="spinner-grow spinner-grow-sm"></span>
+              <span v-else>Login</span>
             </button>
-            <small class="fs-xsmall text-secondary pop text-center mt-2">Access your account and start
-                exploring !</small>
-            </div>
+          </div>
+          <small class="fs-xsmall pop text-secondary text-center">Developed by <a href="https://libancode.com">Libancode</a> - version 1.1.0</small>
         </section>
-        </div>
+      </div>
     </div>
+  </div>
 </section>
-<header v-if="isLogedIn"  class="w-100 p-3 z-3 position-fixed top-0 start-0 d-flex justify-content-between align-items-center bg-light shadow-sm">
+
+<header v-if="isLogedIn" class="w-100 p-3 z-2 position-fixed top-0 start-0 d-flex justify-content-between align-items-center bg-light shadow-sm">
     <section>
-        <h3 class="pop m-0">JURDI CRM</h3>
+        <router-link to="/" class="link-underline link-underline-opacity-0"><h3 class="pop m-0">JURDI CRM</h3></router-link>
     </section>
     <nav class="pop d-none d-md-flex align-items-center gap-3">
         <router-link to="/contact" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Contact</router-link>
@@ -41,76 +34,63 @@
     </nav>
     <i class="bi bi-three-dots-vertical d-block d-md-none fs-3 text-secondary" type="button" data-bs-toggle="dropdown"></i>
     <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="/contact">Contact</a></li>
-        <li><a class="dropdown-item" href="/links">Links</a></li>
-        <li><a class="dropdown-item" href="/blogs">Blogs</a></li>
-        <li><a class="dropdown-item" href="/services">Services</a></li>
+        <li><router-link class="dropdown-item" to="/contact">Contact</router-link></li>
+        <li><router-link class="dropdown-item" to="/links">Links</router-link></li>
+        <li><router-link class="dropdown-item" to="/blogs">Blogs</router-link></li>
+        <li><router-link class="dropdown-item" to="/services">Services</router-link></li>
     </ul>
 </header>
-<main v-if="isLogedIn"  style="margin-top:100px;">
+<main v-if="isLogedIn" style="margin-top:100px;">
     <router-view></router-view>
 </main>
-<message></message>
 
 </template>
 <script>
 import utilities from './utilities.js'
 import {useProfile} from './stores/profile'
-import message from './components/message.vue'
 export default {
-  components: { message },
   setup(){
     const store = useProfile()
     return {store}
   },
   data(){
     return{
-        utilities,
-        idLogedIn:false,
-        loginSpinner:false,
-        showMessage:false,
-        alertMessage:'Meshe l7al',
+      utilities,
+      username:'',
+      password:'',
+      isLogedIn:false,
+      loginSpinner:false,
+
+      showMessage:false,
+      alertMessage:'Meshe l7al',
     }
   },    
   methods:{
-    
-    newMessage(title){
-        this.showMessage = true
-        this.alertMessage = title
-
-    },
-    login() {
-      this.loginSpinner = true;
-      var api = this.api
-      api += this.store.loginQuery()
-
-      fetch(api).then(res => res.json()).then(res => {
-        // console.log(res)
-        if (res == 'loged in') {
-          this.isLogedIn = true;
-          this.loginSpinner = false;
-          this.github = res
-          this.store.setProfile(res)
-
-        } else {
-
-          document.getElementById('username').classList.add('is-invalid')
-          document.getElementById('password').classList.add('is-invalid')
-          this.username = ''
-          this.password = ''
-          this.loginSpinner = false;
-        }
-      }).catch(e => {
-        console.log(e)
-        this.newMessage('Weak network')
-        this.loginSpinner = false;
-
-      })
-    },
-    async getProfile(){
+    async Login(){
+      
+      try{
+        this.loginSpinner = true
         var api = this.store.api
-        api += `?getProfile=1`
+        api += `?username=${this.username}&password=${this.password}`
+        var res = await fetch(api)
+        res = await res.json()
+        console.log(res)
+        if(res == '200'){
+          this.store.setCredentials(this.username,this.password)
+          this.store.getProfile()
+          this.isLogedIn = true
+          this.loginSpinner = false
+        }
 
+      }catch(err){
+        console.log(err);
+        
+        document.querySelectorAll('.loginInput').forEach(e=>{
+          console.log(e);
+          e.classList.add('is-invalid')
+        })
+        this.loginSpinner = false
+      }
     }
   }
 }
