@@ -17,13 +17,20 @@ export const useProfile = defineStore('profile',{
         loginQuery(){
             return `?username=${this.username}&password=${this.password}`
         },
-        async getProfile(){
-            
-            var api = this.api
-            api += `?getProfile=1`
-            var result = await fetch(api)
-            result = await result.json()
-            this.profile = result
+        getProfile(){
+            return new Promise(async (res,rej)=>{
+                try{
+                    var api = this.api
+                    api += `?getProfile=1`
+                    var result = await fetch(api)
+                    result = await result.json()
+                    this.profile = result
+                    res(result)
+                }catch(err){
+                    console.log(err)
+                    rej(err)
+                }
+            })
         }
 
     }

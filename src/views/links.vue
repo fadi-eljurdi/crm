@@ -2,7 +2,6 @@
     <section class="container">
         <div class="row">
             <h3 class="pop text-primary fs-3">Add your custom links</h3>
-            {{links}}
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
         <div class="row g-3">
@@ -24,7 +23,7 @@
             <div class="col-12 col-lg-10">
                 <select class="form-select form-select-sm" aria-label="Default select example" id="selectedLink">
                     <option selected>Select a link</option>
-                    <option v-for="link in links" :key="link" :value="link.text">{{link.text}}</option>
+                    <option v-for="link in profile.links" :key="link" :value="link.text">{{link.text}}</option>
                 </select>
             </div>
             <div class="col-12 col-lg-2 d-flex align-items-center">
@@ -55,7 +54,7 @@ export default {
             },
             spinner:false,
             spinner2:false,
-            links:[],
+            profile:'',
             
         }
     },
@@ -80,7 +79,7 @@ export default {
 
         res = await res.json()
         console.log(res)
-        this.links.push(data)
+        this.profile.links.push(data)
         this.spinner = false
        },
        async removeLink(){
@@ -94,16 +93,15 @@ export default {
         // console.log(res)
         if(res == '200'){
             //remove from client side
-            this.links = this.links.filter(l=>l.text != link )
+            this.profile.links = this.profile.links.filter(l=>l.text != link )
             this.spinner2 = false
 
         }
 
        }
     },
-    mounted(){
-        this.links = this.store.profile.links
-        
+    async mounted(){
+        this.profile = await this.store.getProfile()
     }
 }
 </script>

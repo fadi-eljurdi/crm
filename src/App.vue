@@ -6,7 +6,7 @@
       <div class="col-12 col-lg-5">
         <section class="d-flex flex-column gap-2 shadow rounded px-4 py-4 align-items-center">
           <img src="./assets/logo.svg" alt="logo" class="img-fluid rounded" width="50">
-          <h5 class="text-center pop fs-5 text-primary">JURDI CRM {{username}}</h5>
+          <h5 class="text-center pop fs-5 text-primary">JURDI CRM</h5>
           <div class="w-100 my-3 d-flex flex-column gap-2">
             <input type="text" @keyup.enter="utilities.focus('password')" id="username" placeholder="Username" class="form-control loginInput" v-model="username">
             <input type="password" @keyup.enter="Login" placeholder="Password" id="password" class="form-control loginInput" v-model="password">
@@ -31,6 +31,8 @@
         <router-link to="/links" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Links</router-link>
         <router-link to="/blogs" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Blogs</router-link>
         <router-link to="/services" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Services</router-link>
+        
+        <!-- <span class="material-symbols-outlined point" @click="refresh">cached</span> -->
     </nav>
     <i class="bi bi-three-dots-vertical d-block d-md-none fs-3 text-secondary" type="button" data-bs-toggle="dropdown"></i>
     <ul class="dropdown-menu">
@@ -60,14 +62,13 @@ export default {
       password:'',
       isLogedIn:false,
       loginSpinner:false,
-
+      profile:{},
       showMessage:false,
       alertMessage:'Meshe l7al',
     }
   },    
   methods:{
-    async Login(){
-      
+    async Login(){  
       try{
         this.loginSpinner = true
         var api = this.store.api
@@ -77,7 +78,6 @@ export default {
         console.log(res)
         if(res == '200'){
           this.store.setCredentials(this.username,this.password)
-          this.store.getProfile()
           this.isLogedIn = true
           this.loginSpinner = false
         }
@@ -92,6 +92,8 @@ export default {
         this.loginSpinner = false
       }
     }
+  },
+  mounted(){
   }
 }
 </script>
