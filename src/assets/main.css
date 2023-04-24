@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Almarai&family=Bebas+Neue&family=Cinzel&family=Poppins&display=swap');
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css");
+
+:root {
+    --text: #1d3557;
+    --light-text: #ced4da;
+    --aswad: #293241;
+    /* --gradient-background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); */
+    --gradient-background: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+    --gradient-text: linear-gradient(170deg, #2af598 0%, #009efd 70%);
+    --gradient-abyad: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+
+}
 .pop{
     font-family: 'Poppins', sans-serif;
 }
@@ -30,4 +41,8 @@ input[type=number] {
 
 .point{
     cursor: pointer;
+}
+
+.bg-abyad {
+    background: #e6e9f0;
 }

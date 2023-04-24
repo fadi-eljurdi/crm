@@ -96,5 +96,43 @@ async function hostImages(api, images) {
     return res
 }
 
+function getYouTubeId(url) {
+    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^\s&]+)/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+}
 
-export default { optimizeImageQuality, file64, timo, focus, getCurrentDate, compile, parseHTML, hostImages, text64 }
+function openFiles() {
+    return new Promise((res,rej) => {
+        try{
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/png, image/jpeg');
+            input.setAttribute('multiple', true);
+            // document.appendChild(input)
+            console.log(input);
+            input.click();
+            input.addEventListener('change', e => {
+                console.log(e.target.files);
+                res(e.target.files)
+            })
+        }catch(err){
+           console.log(err);
+           rej(500)
+        }
+    })
+}
+
+
+export default {
+    optimizeImageQuality,
+    file64,
+    timo,
+    focus,
+    getCurrentDate,
+    compile, parseHTML,
+    hostImages,
+    text64,
+    getYouTubeId,
+    openFiles
+}

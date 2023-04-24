@@ -5,7 +5,7 @@ export const useProfile = defineStore('profile',{
         profile:'',
         username:'',
         password:'',
-        api:'https://script.google.com/macros/s/AKfycbxLT_LaScyCKMWg_4tF2LAQzOX5YH8EvJD57ZdEobekr-Yh0AlFgYl2vAWDPLnWYeXX/exec',
+        api:'https://script.google.com/macros/s/AKfycbx8oxpYSNxu_Oks-rVzR7IQglgUMqBSSXvc6IHTMFiZJjF1MURw72jlTYuBfQ37T71q/exec',
         
 
     }),
