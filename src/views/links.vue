@@ -1,7 +1,7 @@
 <template>
     <section class="container">
         <div class="row">
-            <h3 class="pop text-primary fs-3">Add your custom links</h3>
+            <h3 class="pop text-secondary fs-3">Add your custom links</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
         <div class="row g-3">
@@ -16,7 +16,7 @@
         </div>
         <hr class="my-5">
         <div class="row">
-            <h3 class="pop text-primary fs-3">Remove links</h3>
+            <h3 class="pop text-secondary fs-3">Remove links</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
         <div class="row g-3">

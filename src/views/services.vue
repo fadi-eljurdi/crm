@@ -2,7 +2,7 @@
     <section class="container d-flex flex-column gap-2 mb-5">
         
         <div class="row">
-            <h3 class="pop text-primary fs-3">Add new services</h3>
+            <h3 class="pop text-secondary fs-3">Add new services</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
         
@@ -24,14 +24,17 @@
         </div>
         <div class="row justify-content-center mt-3">
             <div class="col-12 col-md-2">
-                <button class="w-100 btn btn-success btn-sm">save changes</button>
+                <button @click="addService" class="w-100 btn btn-success btn-sm">
+                    <span class="spinner-grow spinner-grow-sm" v-if="spinner"></span>
+                    <span v-else>save changes</span>
+                </button>
             </div>
         </div>
 
         
         <hr class="my-5">
         <div class="row">
-            <h3 class="pop text-primary fs-3">Remove service</h3>
+            <h3 class="pop text-secondary fs-3">Remove service</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
         <div class="row g-3">
@@ -50,6 +53,7 @@
             </div>
         </div>
     </section>
+    <message v-if="showMessage" :title="alertMessage"> <i class="bi bi-x-lg text-light fs-5 point" @click="showMessage = !showMessage"></i> </message>
 </template>
 <script>
 import message from '../components/message.vue'
@@ -86,9 +90,69 @@ export default {
         async uploadThumbnail(e){
             // console.log(e.target.files[0])
             var img64 = await utilities.file64(e.target.files[0])
-            console.log(img64)
+            
             img64 = await utilities.optimizeImageQuality(img64,0.7)
+            // console.log(img64)
             this.service.thumbnail = img64
+        },
+        async addService(){
+            try{
+                this.spinner = true
+                var api = this.store.api
+                api += this.store.loginQuery()
+                api += `&addService=1`
+
+                var res = await fetch(api,{
+                    method:'POST',
+                    headers:{
+                        "Content-Type":"text/plain"
+                    },
+                    body:JSON.stringify(this.service)
+                })
+
+                res = await res.json()
+                console.log(res)
+                if(res == '201'){
+                    this.showMessage = true
+                    this.alertMessage = 'meshe l7al'
+                    this.spinner = false
+                    this.profile.services.push(this.service)
+                }
+            }catch(err){
+                console.log(err)
+                    this.showMessage = true
+                    this.alertMessage = 'ma meshe l7al'
+                    this.spinner = false
+            }
+        },
+
+        async removeService(){
+            var title = document.getElementById('selectedService').value
+            try{
+                
+                this.spinner2 = true
+                var api = this.store.api
+                api += this.store.loginQuery()
+                api += `&removeService=1&title=${title}`
+
+                var res = await fetch(api)
+                // console.log(res)
+                res = await res.json()
+                if(res == '200'){
+                    this.spinner2 = false
+                    this.showMessage = true
+                    this.alertMessage = 'meshe l7al'
+                    // remove from list
+                    this.profile.services = this.profile.services.filter(s => s.title != title)
+                }
+            }catch(err){
+                console.log(err)
+                this.spinner2 = false
+                this.showMessage = true
+                this.alertMessage = 'ma meshe l7al'
+
+            }
+            
         }
     }
 }

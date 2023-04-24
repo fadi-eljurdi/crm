@@ -1,7 +1,7 @@
 <template>
     <section class="container d-flex flex-column gap-2">
         <div class="row">
-            <h3 class="pop text-primary fs-3">Manage your contact info</h3>
+            <h3 class="pop text-secondary fs-3">Manage your contact info</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
         <div class="row">

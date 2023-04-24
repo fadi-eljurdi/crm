@@ -75,7 +75,7 @@ export default {
         api += `?username=${this.username}&password=${this.password}`
         var res = await fetch(api)
         res = await res.json()
-        console.log(res)
+        // console.log(res)
         if(res == '200'){
           this.store.setCredentials(this.username,this.password)
           this.isLogedIn = true
@@ -86,7 +86,7 @@ export default {
         console.log(err);
         
         document.querySelectorAll('.loginInput').forEach(e=>{
-          console.log(e);
+          // console.log(e);
           e.classList.add('is-invalid')
         })
         this.loginSpinner = false
