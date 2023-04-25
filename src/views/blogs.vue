@@ -20,7 +20,7 @@
                     <button :disabled="spinner" @click="previewBlog" class="btn btn-sm btn-outline-secondary d-none d-lg-block">Preview changes</button>
                 </div>
                 <span class="material-symbols-outlined d-block d-lg-none text-primary fs-3">upload</span>
-                <button @click="generateBlog" :disabled="spinner" class="col-1 btn btn-sm btn-primary d-none d-lg-block">DEPLOY</button>
+                <button @click="deploy" :disabled="spinner" class="col-1 btn btn-sm btn-primary d-none d-lg-block">DEPLOY</button>
             </nav>
         </div>
         <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
@@ -183,8 +183,38 @@ export default {
 
             this.page = page.htmlPage
         },
-        pushToGithub(){
-            
+        
+        async githubPush(token, content, filename) {
+
+            var data = JSON.stringify({
+                "message": "html file",
+                "content": `${content}`
+            });
+
+            var headers = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            };
+
+            var url = `https://api.github.com/repos/fadi-eljurdi/app/contents/blogs/${filename}.html`;
+
+            var config = {
+                method: 'PUT',
+                headers: headers,
+                body: data
+            };
+
+            var res = await fetch(url, config);
+            var res = await res.json();
+            console.log(res);
+            // return data.content.sha;
+        },
+
+        async deploy(){
+            this.spinner = true
+            await this.generateBlog()
+            await this.githubPush(this.store.token1,utilities.text64(this.page),(this.title.replaceAll(' ','-')))
+            this.spinner = false
         }
     },
     mounted(){
