@@ -1,7 +1,5 @@
 <template>
     <section v-show="!preview" class="container">
-        
-        
         <div class="row">
             <h3 class="pop text-secondary fs-3">Create new blog</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
@@ -22,7 +20,7 @@
                     <button :disabled="spinner" @click="previewBlog" class="btn btn-sm btn-outline-secondary d-none d-lg-block">Preview changes</button>
                 </div>
                 <span class="material-symbols-outlined d-block d-lg-none text-primary fs-3">upload</span>
-                <button :disabled="spinner" class="col-1 btn btn-sm btn-primary d-none d-lg-block">DEPLOY</button>
+                <button @click="generateBlog" :disabled="spinner" class="col-1 btn btn-sm btn-primary d-none d-lg-block">DEPLOY</button>
             </nav>
         </div>
         <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
@@ -39,11 +37,11 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">SEO - Description</div>
-                <div class="col-12 col-md-10"><textarea rows="3" type="text" class="form-control"></textarea></div>
+                <div class="col-12 col-md-10"><textarea v-model="seoDescription" rows="3" type="text" class="form-control"></textarea></div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">SEO - Keywords</div>
-                <div class="col-12 col-md-10"><input type="text" class="form-control"></div>
+                <div class="col-12 col-md-10"><input v-model="seoKeywords" type="text" class="form-control"></div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">Article</div>
@@ -94,6 +92,7 @@
 
 import {useProfile} from '../stores/profile'
 import Media from '../Media'
+import Blog from '../Blog'
 import utilities from '../utilities.js'
 export default {
     setup(){
@@ -103,7 +102,10 @@ export default {
     data(){
         return{
             thumbnail:'',
+            seoDescription:'',
+            seoKeywords:'',
             quality:0.7,
+            page:'',
             mediaBox:[],
             preview:false,
             title:'',
@@ -169,6 +171,20 @@ export default {
             console.log(url);
             this.thumbnail = url[0].src
             this.spinner = false
+        },
+        async generateBlog(){
+            const page = new Blog(this.title,JSON.stringify(this.mediaBox))
+            page
+            .setArticle(utilities.compile('editor'))
+            .setIcon('https://picsum.photos/100')
+            .setThubnail(this.thumbnail)
+            .setSEO(this.seoDescription,this.seoKeywords)
+            .generatePage()
+
+            this.page = page.htmlPage
+        },
+        pushToGithub(){
+            
         }
     },
     mounted(){

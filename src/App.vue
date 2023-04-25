@@ -76,11 +76,10 @@ export default {
         var res = await fetch(api)
         res = await res.json()
         // console.log(res)
-        if(res == '200'){
-          this.store.setCredentials(this.username,this.password)
-          this.isLogedIn = true
-          this.loginSpinner = false
-        }
+        
+        this.store.setCredentials(this.username,this.password,res)
+        this.isLogedIn = true
+        this.loginSpinner = false
 
       }catch(err){
         console.log(err);

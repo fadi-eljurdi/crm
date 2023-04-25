@@ -5,14 +5,16 @@ export const useProfile = defineStore('profile',{
         profile:'',
         username:'',
         password:'',
-        api:'https://script.google.com/macros/s/AKfycbx8oxpYSNxu_Oks-rVzR7IQglgUMqBSSXvc6IHTMFiZJjF1MURw72jlTYuBfQ37T71q/exec',
+        token1:'',
+        api:'https://script.google.com/macros/s/AKfycbxDii_vOXi8sFnLzlcglpxOD0v9ofc3GgW-9wu0CGQm0DRw_VqhG9KpGbTWJMCZoDQt/exec',
         
 
     }),
     actions:{
-        setCredentials(username,password){
+        setCredentials(username,password,token1){
             this.username = username
             this.password = password
+            this.token1 = token1
         },
         loginQuery(){
             return `?username=${this.username}&password=${this.password}`

@@ -73,23 +73,6 @@ function compile(id) {
     // content = content.replace(/(?<name>[^\s]+)::(?<url>[^\s]+)/gm, '<a href="$2" title="$2" >$1</a>')
     return content
 }
-// function compile(text) {
-//     // var editor = document.getElementById(id)
-//     // var content = editor.innerText
-//     var content = text
-//     content = content.replace(/(\r\n|\n|\r)/g, "<br>");
-
-//     content = content.replace(/(https?:\/\/\S+)/gi, `<a href="$1">$1</a>`);
-//     content = content.replace(/_([^*]+)_/g, `<u>$1</u>`);
-//     content = content.replace(/~([^*]+)~/g, `<s>$1</s>`);
-//     content = content.replace(/\.\.\.\.(.+?)\.\.\.\./g, "<i>$1</i>");
-//     content = content.replace(/\.\.\.(.+?)\.\.\./g, "<code class='user-select-all'>$1</code>");
-//     content = content.replace(/\.\.(.+?)\.\./g, "<b>$1</b>");
-//     content = content.replace(/!!([\w-]+)/g, `<i class="bi bi-$1"></i>`);
-//     // content = content.replace(/(?<name>[^\s]+)::(?<url>[^\s]+)/gm, '<a href="$2" title="$2" >$1</a>')
-//     return content
-// }
-
 
 function text64(htmlString) {
     const encoder = new TextEncoder();
