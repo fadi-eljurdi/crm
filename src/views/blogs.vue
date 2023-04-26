@@ -20,11 +20,12 @@
                     <button :disabled="spinner" @click="previewBlog" class="btn btn-sm btn-outline-secondary d-none d-lg-block">Preview changes</button>
                 </div>
                 <span class="material-symbols-outlined d-block d-lg-none text-primary fs-3">upload</span>
-                <button @click="deploy" :disabled="spinner" class="col-1 btn btn-sm btn-primary d-none d-lg-block">DEPLOY</button>
+                <button @click="deploy" :disabled="spinner || !validateInput" class="col-1 btn btn-sm btn-primary d-none d-lg-block">DEPLOY</button>
             </nav>
         </div>
         <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
         <hr v-else class="my-3">
+       
         <section class="d-flex flex-column gap-2">
             
             <div class="row">
@@ -33,21 +34,22 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">Title</div>
-                <div class="col-12 col-md-10"><input v-model="title" type="text" class="form-control"></div>
+                <div class="col-12 col-md-10"><input v-model="title" type="text" class="form-control" :class="{'is-invalid':(title.length == 0)}"></div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">SEO - Description</div>
-                <div class="col-12 col-md-10"><textarea v-model="seoDescription" rows="3" type="text" class="form-control"></textarea></div>
+                <div class="col-12 col-md-10"><textarea v-model="seoDescription"  :class="{'is-invalid':(seoDescription.length == 0)}" rows="3" type="text" class="form-control"></textarea></div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">SEO - Keywords</div>
-                <div class="col-12 col-md-10"><input v-model="seoKeywords" type="text" class="form-control"></div>
+                <div class="col-12 col-md-10"><input v-model="seoKeywords"  :class="{'is-invalid':(seoKeywords.length == 0)}" type="text" class="form-control"></div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">Article</div>
                 <div class="col-12 col-md-10">
-                    <p contenteditable id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; height: 200px;"></p>
-                    <!-- <textarea id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; height: 200px;"></textarea> -->
+                    
+                    <p contenteditable id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; height: 200px;" ></p>
+                    <!-- <textarea v-model="article" id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; height: 200px;"></textarea> -->
                 </div>
             </div>
         </section>
@@ -102,17 +104,25 @@ export default {
     data(){
         return{
             thumbnail:'',
-            seoDescription:'',
-            seoKeywords:'',
+            seoDescription:'...',
+            seoKeywords:'...',
             quality:0.7,
             page:'',
+            article:'',
             mediaBox:[],
             preview:false,
-            title:'',
+            title:'...',
             spinner:false,
             utilities,
             
         }
+    },
+    computed:{
+
+        validateInput(){
+            if(this.thumbnail && this.title && this.seoDescription && this.seoKeywords && (this.mediaBox.length > 0) && (document.getElementById('editor').innerText.length > 0)) return true
+            return false
+        },
     },
     methods:{
         async addMedia(type){
@@ -209,7 +219,6 @@ export default {
             console.log(res);
             // return data.content.sha;
         },
-
         async deploy(){
             this.spinner = true
             await this.generateBlog()

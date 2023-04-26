@@ -61,6 +61,10 @@ function getCurrentDate() {
 function compile(id) {
     var editor = document.getElementById(id)
     var content = editor.innerText
+    
+    
+    
+    // content = content.replace(/ /g, "&nbsp");
     content = content.replace(/(\r\n|\n|\r)/g, "<br>");
 
     content = content.replace(/(https?:\/\/\S+)/gi, `<a href="$1">$1</a>`);
@@ -70,6 +74,7 @@ function compile(id) {
     content = content.replace(/\.\.\.(.+?)\.\.\./g, "<code class='user-select-all'>$1</code>");
     content = content.replace(/\.\.(.+?)\.\./g, "<b>$1</b>");
     content = content.replace(/!!([\w-]+)/g, `<i class="bi bi-$1"></i>`);
+    
     // content = content.replace(/(?<name>[^\s]+)::(?<url>[^\s]+)/gm, '<a href="$2" title="$2" >$1</a>')
     return content
 }
