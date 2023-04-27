@@ -6,6 +6,16 @@ export const useProfile = defineStore('profile',{
         username:'',
         password:'',
         token1:'',
+        quality:0.7,
+        blog:{
+            title:'',
+            seoDescription:'',
+            seoKeywords:'',
+            thumbnail:'',
+            url:'',
+            mediaBox:[],
+            article:''
+        },
         api:'https://script.google.com/macros/s/AKfycbxDii_vOXi8sFnLzlcglpxOD0v9ofc3GgW-9wu0CGQm0DRw_VqhG9KpGbTWJMCZoDQt/exec',
         
 

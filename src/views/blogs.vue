@@ -4,8 +4,8 @@
             <h3 class="pop text-secondary fs-3">Create new blog</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
-        <div class="row my-3 px-3">
-            <nav class="w-100 p-2 d-flex justify-content-between align-items-center font-monospace">
+        <div class="row my-3">
+            <nav class="w-100 py-2 d-flex justify-content-between align-items-center font-monospace">
                 <div class="d-flex gap-4">
                     <span @click="addMedia('youtube')" class="material-symbols-outlined d-block d-lg-none text-secondary fs-3">youtube_activity</span>
                     <button @click="addMedia('youtube')" class="btn btn-sm btn-outline-secondary d-none d-lg-block">+Youtube</button>
@@ -18,33 +18,66 @@
 
                     <span @click="previewBlog" class="material-symbols-outlined d-block d-lg-none text-secondary fs-3">preview</span>
                     <button :disabled="spinner" @click="previewBlog" class="btn btn-sm btn-outline-secondary d-none d-lg-block">Preview changes</button>
+                
                 </div>
                 <span class="material-symbols-outlined d-block d-lg-none text-primary fs-3">upload</span>
                 <button @click="deploy" :disabled="spinner || !validateInput" class="col-1 btn btn-sm btn-primary d-none d-lg-block">DEPLOY</button>
+                
             </nav>
         </div>
+
         <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
         <hr v-else class="my-3">
        
         <section class="d-flex flex-column gap-2">
+            <div class="row">
+                <div class="col-12 col-md-2 pb-2">Media</div>
+                <div class="col-12 col-md-10 d-flex flex-wrap gap-2">
+                    <div style="width:100px" v-for="m in store.blog.mediaBox" :key="m" @dblclick="mediaPop(m)">
+                        <section class="ratio ratio-16x9" v-if="m.type == 'youtube'">
+                            <img :src="`https://img.youtube.com/vi/${m.src}/maxresdefault.jpg`" alt="youtube" class="img-fluid object-fit-cover" >
+                        </section>
+                        <section v-if="m.type == 'image'" >
+                            <div class="ratio ratio-16x9"> 
+                                <img :src="m.src" :alt="m.alt" class="img-fluid rounded object-fit-cover">
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
             
             <div class="row">
+                <div class="col-12 col-md-2 pb-2">Domain</div>
+                <div class="col-12 col-md-10">
+                    <select class="form-select" aria-label="Default select example">
+                        <option value="jurdiconsult.media" selected>Jurdiconsult.media</option>
+                        <option value="jurdilaw.com">Jurdilaw.com</option>
+                        <option value="both">Both</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-12 col-md-2 pb-2">Thumbnail</div>
-                <div class="col-12 col-md-10"><input accept="image/png, image/jpeg, image/jpeg" @change="generateThumbnail" type="file" class="form-control"></div>
+                <div class="col-12 col-md-10">
+                    <div class="ratio ratio-16x9">
+
+                    </div>
+                    <input accept="image/png, image/jpeg, image/jpeg" @change="generateThumbnail" type="file" class="form-control">
+                </div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">Title</div>
-                <div class="col-12 col-md-10"><input v-model="title" type="text" class="form-control" :class="{'is-invalid':(title.length == 0)}"></div>
+                <div class="col-12 col-md-10"><input v-model="store.blog.title" type="text" class="form-control"></div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">SEO - Description</div>
-                <div class="col-12 col-md-10"><textarea v-model="seoDescription"  :class="{'is-invalid':(seoDescription.length == 0)}" rows="3" type="text" class="form-control"></textarea></div>
+                <div class="col-12 col-md-10"><textarea v-model="store.blog.seoDescription" rows="3" type="text" class="form-control"></textarea></div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">SEO - Keywords</div>
-                <div class="col-12 col-md-10"><input v-model="seoKeywords"  :class="{'is-invalid':(seoKeywords.length == 0)}" type="text" class="form-control"></div>
+                <div class="col-12 col-md-10"><input v-model="store.blog.seoKeywords" type="text" class="form-control"></div>
             </div>
-            <div class="row">
+            <div class="row mb-5">
                 <div class="col-12 col-md-2 pb-2">Article</div>
                 <div class="col-12 col-md-10">
                     
@@ -60,7 +93,7 @@
                 
                 <div class="swiper w-100 h-100">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide" style="height:fit-content;" v-for="m in mediaBox" :key="m">
+                        <div class="swiper-slide" style="height:fit-content;" v-for="m in store.blog.mediaBox" :key="m">
                             <section class="ratio ratio-16x9" v-if="m.type == 'youtube'">
                                 <iframe class="img-fluid object-fit-cover rounded" :src="`https://www.youtube.com/embed/${m.src}`" :title="m.alt" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                             </section>
@@ -74,12 +107,14 @@
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                     <div class="swiper-pagination"></div>
+                    
+                            <!-- <i class="bi bi-trash"></i> -->
                 </div>
             </figure>
         </div>
         <div class="row justify-content-center">
             <article  class="col-12 col-lg-8">
-                <h1 class="text-primary fs-1">{{title}}</h1>
+                <h1 class="text-primary fs-1">{{store.blog.title}}</h1>
                 <div id="blogArticle" class="text-secondary"></div>
             </article>
         </div>
@@ -103,15 +138,8 @@ export default {
     },
     data(){
         return{
-            thumbnail:'',
-            seoDescription:'...',
-            seoKeywords:'...',
-            quality:0.7,
             page:'',
-            article:'',
-            mediaBox:[],
             preview:false,
-            title:'...',
             spinner:false,
             utilities,
             
@@ -120,7 +148,7 @@ export default {
     computed:{
 
         validateInput(){
-            if(this.thumbnail && this.title && this.seoDescription && this.seoKeywords && (this.mediaBox.length > 0) && (document.getElementById('editor').innerText.length > 0)) return true
+            if(this.store.blog.thumbnail && this.store.blog.title && this.store.blog.seoDescription && this.store.blog.seoKeywords && (this.store.blog.mediaBox.length > 0) && (document.getElementById('editor').innerText.length > 0)) return true
             return false
         },
     },
@@ -129,7 +157,7 @@ export default {
             if(type == 'youtube'){
                 const url = prompt('Enter the youtube URL')
                 if(url !== null){
-                    this.mediaBox.push(new Media('Youtube video','youtube',url))
+                    this.store.blog.mediaBox.push(new Media('Youtube video','youtube',url))
                 }else{
                     console.log('Invalid');
                 }
@@ -142,7 +170,7 @@ export default {
                 for(let i = 0 ; i < files.length ; i++){
                     files64.push({
                         alt:`JURDI-Image-${utilities.getCurrentDate()}`,
-                        src64: await utilities.optimizeImageQuality(await utilities.file64(files[i]))
+                        src64: await utilities.optimizeImageQuality(await utilities.file64(files[i]),this.store.quality)
                     })
                 }
                 console.log(files64);
@@ -157,14 +185,14 @@ export default {
                 // pushing to media box
 
                 for(let i = 0 ; i < urls.length ; i++){
-                    this.mediaBox.push(new Media((urls[i].alt),'image',(urls[i].src)))
+                    this.store.blog.mediaBox.push(new Media((urls[i].alt),'image',(urls[i].src)))
                 }
                 this.spinner = false
             }
         },
         previewBlog(){
             this.preview = true
-            console.log(document.getElementById('editor').innerText);
+            // console.log(document.getElementById('editor').innerText);
             utilities.parseHTML('blogArticle',utilities.compile('editor'))
         },
         async generateThumbnail(e){
@@ -175,20 +203,20 @@ export default {
             var array = []
             array.push({
                 alt:`JURDI-Thumbnail-${utilities.getCurrentDate()}`,
-                src64: await utilities.optimizeImageQuality(await utilities.file64(e.target.files[0]))
+                src64: await utilities.optimizeImageQuality(await utilities.file64(e.target.files[0]),this.store.quality)
             })
             var url = await utilities.hostImages(api,array)
             console.log(url);
-            this.thumbnail = url[0].src
+            this.store.blog.thumbnail = url[0].src
             this.spinner = false
         },
         async generateBlog(){
-            const page = new Blog(this.title,JSON.stringify(this.mediaBox))
+            const page = new Blog(this.store.blog.title,JSON.stringify(this.store.blog.mediaBox))
             page
             .setArticle(utilities.compile('editor'))
             .setIcon('https://picsum.photos/100')
-            .setThubnail(this.thumbnail)
-            .setSEO(this.seoDescription,this.seoKeywords)
+            .setThubnail(this.store.blog.thumbnail)
+            .setSEO(this.store.blog.seoDescription,this.store.blog.seoKeywords)
             .generatePage()
 
             this.page = page.htmlPage
@@ -224,7 +252,16 @@ export default {
             await this.generateBlog()
             await this.githubPush(this.store.token1,utilities.text64(this.page),(this.title.replaceAll(' ','-')))
             this.spinner = false
+        },
+        mediaPop(m){
+            this.store.blog.mediaBox = this.store.blog.mediaBox.filter(media => m.src != media.src)
         }
+    },
+    beforeUnmount(){
+        // save blog to local store
+        this.store.blog.article = document.getElementById('editor').innerText
+
+
     },
     mounted(){
         var swiper = new Swiper('.swiper', {
@@ -238,6 +275,10 @@ export default {
               prevEl: '.swiper-button-prev',
             },
         });
+
+        if(this.store.blog.article != ''){
+            document.getElementById('editor').innerText = this.store.blog.article
+        }
     }
 }
 </script>
