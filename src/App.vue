@@ -77,7 +77,7 @@ export default {
         res = await res.json()
         // console.log(res)
         
-        this.store.setCredentials(this.username,this.password,res)
+        this.store.setCredentials(this.username,this.password,res.githubToken,res.gptApiKey)
         this.isLogedIn = true
         this.loginSpinner = false
 

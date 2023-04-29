@@ -11,38 +11,66 @@
     --gradient-abyad: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
 
 }
-.pop{
+
+.pop {
     font-family: 'Poppins', sans-serif;
 }
 
-.fs-small{
+
+.fs-small {
     font-size: small;
 }
-.fs-smaller{
+
+.fs-smaller {
     font-size: smaller;
 }
-.fs-xsmall{
+
+.fs-xsmall {
     font-size: x-small;
 }
-.fs-xxsmall{
+
+.fs-xxsmall {
     font-size: xx-small;
 }
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
 input[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
-.point{
+.point {
     cursor: pointer;
 }
 
 .bg-abyad {
     background: #e6e9f0;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    cursor: grabbing !important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-danger);
+    cursor: grabbing !important;
 }

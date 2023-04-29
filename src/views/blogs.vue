@@ -7,20 +7,38 @@
         <div class="row my-3">
             <nav class="w-100 py-2 d-flex justify-content-between align-items-center font-monospace">
                 <div class="d-flex gap-4">
-                    <span @click="addMedia('youtube')" class="material-symbols-outlined d-block d-lg-none text-secondary fs-3">youtube_activity</span>
-                    <button @click="addMedia('youtube')" class="btn btn-sm btn-outline-secondary d-none d-lg-block">+Youtube</button>
+                                        
+                    <button @click="addMedia('youtube')" :disabled="spinner" class="btn btn-sm btn-outline-danger d-flex justify-content-center align-items-center d-lg-none">
+                        <span class="material-symbols-outlined fs-3">youtube_activity</span>
+                    </button>
+                    <button @click="addMedia('youtube')" class="btn btn-sm btn-outline-danger d-none d-lg-block">+Youtube</button>
 
-                    <span @click="addMedia('image')" class="material-symbols-outlined d-block d-lg-none text-secondary fs-3">add_photo_alternate</span>
-                    <button @click="addMedia('image')" class="btn btn-sm btn-outline-secondary d-none d-lg-block">+Image</button>
 
-                    <span class="material-symbols-outlined d-block d-lg-none text-secondary fs-3">auto_awesome</span>
-                    <button class="btn btn-sm btn-outline-secondary d-none d-lg-block">AI-Generator</button>
+                    <button @click="addMedia('image')" :disabled="spinner" class="btn btn-sm btn-outline-info d-flex justify-content-center align-items-center d-lg-none">
+                        <span class="material-symbols-outlined fs-3">add_photo_alternate</span>
+                    </button>
+                    <button @click="addMedia('image')" class="btn btn-sm btn-outline-info d-none d-lg-block">+Image</button>
 
-                    <span @click="previewBlog" class="material-symbols-outlined d-block d-lg-none text-secondary fs-3">preview</span>
-                    <button :disabled="spinner" @click="previewBlog" class="btn btn-sm btn-outline-secondary d-none d-lg-block">Preview changes</button>
+
+                    <button @click="generateContent" :disabled="spinner" class="btn btn-sm btn-outline-success d-flex justify-content-center align-items-center d-lg-none">
+                        <!-- <span v-if="gptSpinner" class="spinner spinner-grow spinner-grow-sm"></span> -->
+                        <span class="material-symbols-outlined fs-3">auto_awesome</span>
+                    </button>
+                    <button @click="generateContent" class="btn btn-sm btn-outline-success d-none d-lg-block">AI-Generator</button>
+
+
+                    <button @click="previewBlog" :disabled="spinner" class="btn btn-sm btn-outline-primary d-flex justify-content-center align-items-center d-lg-none">
+                        <span class="material-symbols-outlined fs-3">preview</span>
+                    </button>
+                    <button :disabled="spinner" @click="previewBlog" class="btn btn-sm btn-outline-primary d-none d-lg-block">Preview changes</button>
                 
+
+                    <button @click="showSettings = !showSettings" :disabled="spinner" class="btn btn-sm btn-outline-secondary d-flex justify-content-center align-items-center d-lg-none"><span class="material-symbols-outlined fs-3">settings</span></button>
+                    <button @click="showSettings = !showSettings" :disabled="spinner" class="btn btn-sm btn-outline-secondary d-none d-lg-block">Settings</button>
+
                 </div>
-                <span class="material-symbols-outlined d-block d-lg-none text-primary fs-3">upload</span>
+                
+                <button @click="deploy" :disabled="spinner || !validateInput" class="btn btn-sm btn-primary d-flex justify-content-center align-items-center d-lg-none"><span class="material-symbols-outlined fs-3">upload</span></button>
                 <button @click="deploy" :disabled="spinner || !validateInput" class="col-1 btn btn-sm btn-primary d-none d-lg-block">DEPLOY</button>
                 
             </nav>
@@ -58,9 +76,11 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">Thumbnail</div>
-                <div class="col-12 col-md-10">
-                    <div class="ratio ratio-16x9">
-
+                <div class="col-12 col-md-10 d-flex flex-column gap-2">
+                    <div style="width:100px" v-if="store.blog.thumbnail">
+                        <div class="ratio ratio-16x9" >
+                            <img :src="store.blog.thumbnail" alt="thumbnail" class="img-fluid object-fit-cover">
+                        </div>
                     </div>
                     <input accept="image/png, image/jpeg, image/jpeg" @change="generateThumbnail" type="file" class="form-control">
                 </div>
@@ -81,11 +101,12 @@
                 <div class="col-12 col-md-2 pb-2">Article</div>
                 <div class="col-12 col-md-10">
                     
-                    <p contenteditable id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; height: 200px;" ></p>
+                    <p contenteditable id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; height: 500px;" ></p>
                     <!-- <textarea v-model="article" id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; height: 200px;"></textarea> -->
                 </div>
             </div>
         </section>
+        <settings v-if="showSettings"><button class="w-100 btn btn-sm btn-outline-secondary" @click="showSettings = !showSettings">back</button></settings>
     </section>
     <section v-show="preview" class="container my-5">
         <div class="row justify-content-center">
@@ -131,17 +152,20 @@ import {useProfile} from '../stores/profile'
 import Media from '../Media'
 import Blog from '../Blog'
 import utilities from '../utilities.js'
+import settings from '../components/settings.vue'
 export default {
     setup(){
         const store = useProfile()
         return {store}
     },
+    components:{settings},
     data(){
         return{
             page:'',
             preview:false,
             spinner:false,
             utilities,
+            showSettings:false
             
         }
     },
@@ -221,7 +245,6 @@ export default {
 
             this.page = page.htmlPage
         },
-        
         async githubPush(token, content, filename) {
 
             var data = JSON.stringify({
@@ -250,11 +273,69 @@ export default {
         async deploy(){
             this.spinner = true
             await this.generateBlog()
-            await this.githubPush(this.store.token1,utilities.text64(this.page),(this.title.replaceAll(' ','-')))
+            await this.githubPush(this.store.github,utilities.text64(this.page),(this.title.replaceAll(' ','-')))
             this.spinner = false
         },
         mediaPop(m){
             this.store.blog.mediaBox = this.store.blog.mediaBox.filter(media => m.src != media.src)
+        },
+
+        textCortext(){
+            // this.spinner = true
+            var data = {
+                max_tokens:256,
+                model:'velox-1',
+                n:1,
+                source_lang:'en',
+                target_lang:'en',
+                temperature:0.7,
+                text:`generate a blog about "${this.store.blog.title}" considering these rules [about 500 words, formal]`
+            }
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer gAAAAABkSU9HeA3Ll1dWuF4IIp0sY11mSN1flxIvRyY1wF_UqWM7V8v3dCEbnXOIiA1ujy35Tyhku1AUAIZhKAyaCX4tL71b5kqQoK6W5Vul2tfKGEos9rbrikwtVZFw-9C9uPSWjUTt'
+                },
+                body: JSON.stringify(data)
+            };
+
+            fetch('https://api.textcortex.com/v1/texts/expansions', options)
+            .then(response => response.json())
+            .then(res => {
+                console.log(res);
+                console.log(res.data.outputs[0].text);
+                this.store.blog.article = res.data.outputs[0].text
+            })
+            .catch(err => console.error(err));
+        },
+
+        generateContent(){
+            this.spinner = true
+            const OPENAI_API_KEY = this.store.gptToken
+            fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + OPENAI_API_KEY
+                },
+                body: JSON.stringify({
+                    "model": "gpt-3.5-turbo",
+                    "messages": [{ "role": "user", "content": `generate a blog about "${this.store.blog.title}" considering these rules "formal, about 500 words"` }]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Do something with the response data
+                console.log(data);
+                document.getElementById('editor').innerText = data.choices[0].message.content
+                this.store.blog.article += data.choices[0].message.content
+                this.spinner = false
+            })
+            .catch(error => {
+                console.error(error)
+                this.spinner = false
+            });
         }
     },
     beforeUnmount(){
@@ -279,6 +360,8 @@ export default {
         if(this.store.blog.article != ''){
             document.getElementById('editor').innerText = this.store.blog.article
         }
+
+        console.log(JSON.stringify("a,b,c".split(',')));
     }
 }
 </script>

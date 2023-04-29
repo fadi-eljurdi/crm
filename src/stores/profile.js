@@ -5,7 +5,8 @@ export const useProfile = defineStore('profile',{
         profile:'',
         username:'',
         password:'',
-        token1:'',
+        github:'',
+        gptToken:'',
         quality:0.7,
         blog:{
             title:'',
@@ -16,15 +17,27 @@ export const useProfile = defineStore('profile',{
             mediaBox:[],
             article:''
         },
-        api:'https://script.google.com/macros/s/AKfycbxDii_vOXi8sFnLzlcglpxOD0v9ofc3GgW-9wu0CGQm0DRw_VqhG9KpGbTWJMCZoDQt/exec',
+        api:'https://script.google.com/macros/s/AKfycbwPfvu0K1PK9LoH2Zg4hHhbJHmLng7cnzqxYunOLuBQqPbH3Z1DyELmwZuTSxylZXNO/exec',
+        settings:{
+            quality:0.7,
+            rules:['formal'],
+            words:100,
+            useYoutubeTitle:false,
+            useYoutubeCaptions:false,
+            useYoutubeDescription:false,
+            generateTitle:false,
+            generateSEOKeywords:false,
+            generateSEODescription:false
+        }
         
 
     }),
     actions:{
-        setCredentials(username,password,token1){
+        setCredentials(username,password,github,gptToken){
             this.username = username
             this.password = password
-            this.token1 = token1
+            this.github = github
+            this.gptToken = gptToken
         },
         loginQuery(){
             return `?username=${this.username}&password=${this.password}`
