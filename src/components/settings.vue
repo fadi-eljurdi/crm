@@ -32,37 +32,37 @@
       <div class="row">
         <div class="col-12">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" >
+                <input class="form-check-input" type="checkbox" v-model="store.settings.useYoutubeTitle" >
                 <label class="form-check-label" for="flexCheckDefault">
                     useYoutubeTitle
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value=""  >
+                <input class="form-check-input" type="checkbox" v-model="store.settings.useYoutubeCaptions" >
                 <label class="form-check-label" for="flexCheckChecked">
                     useYoutubeCaptions
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value=""  >
+                <input class="form-check-input" type="checkbox" v-model="store.settings.useYoutubeDescription" >
                 <label class="form-check-label" for="flexCheckChecked">
                     useYoutubeDescription
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="">
+                <input class="form-check-input" type="checkbox" v-model="store.settings.generateTitle" >
                 <label class="form-check-label" for="flexCheckChecked">
                     generateTitle
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="">
+                <input class="form-check-input" type="checkbox" v-model="store.settings.generateSEOKeywords" >
                 <label class="form-check-label" for="flexCheckChecked">
                     generateSEOKeywords
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="">
+                <input class="form-check-input" type="checkbox" v-model="store.settings.generateSEODescription" >
                 <label class="form-check-label" for="flexCheckChecked">
                     generateSEODescription
                 </label>
@@ -71,7 +71,10 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-6 col-lg-2">
-            <button class="w-100 btn btn-sm btn-success">save changes</button>
+            <button @click="saveSettings" class="w-100 btn btn-sm btn-success">
+                <span v-if="spinner" class="spinner-grow spinner-grow-sm"></span>
+                <span v-else>save changes</span>
+            </button>
         </div>
         <div class="col-6 col-lg-2"><slot></slot></div>
       </div>
@@ -90,7 +93,8 @@ export default {
     data(){
         return{
             newRule:'',
-            words:'100'
+            words:100,
+            spinner:false
         }
     },
     methods:{
@@ -104,7 +108,29 @@ export default {
         setWordsRange(){
             console.log(this.words);
             this.store.settings.words = this.words
+        },
+        saveSettings(){
+            this.spinner = true
+            var api = this.store.api
+            api += this.store.loginQuery()
+            api += `&setSettings=1`
+
+            fetch(api,{
+                method:"POST",
+                headers:{
+                    "Content-Type":"text/plain"
+                },
+                body:JSON.stringify(this.store.settings)
+            }).then(res => res.json()).then(res => {
+                console.log(res);
+                this.spinner = false
+            }).catch(err => {
+                console.log(err);
+            })
         }
+    },
+    mounted(){
+        this.words = this.store.settings.words
     }
 };
 </script>

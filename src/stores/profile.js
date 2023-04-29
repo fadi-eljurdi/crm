@@ -17,27 +17,30 @@ export const useProfile = defineStore('profile',{
             mediaBox:[],
             article:''
         },
-        api:'https://script.google.com/macros/s/AKfycbwPfvu0K1PK9LoH2Zg4hHhbJHmLng7cnzqxYunOLuBQqPbH3Z1DyELmwZuTSxylZXNO/exec',
-        settings:{
-            quality:0.7,
-            rules:['formal'],
-            words:100,
-            useYoutubeTitle:false,
-            useYoutubeCaptions:false,
-            useYoutubeDescription:false,
-            generateTitle:false,
-            generateSEOKeywords:false,
-            generateSEODescription:false
-        }
+        settings:'',
+        api:'https://script.google.com/macros/s/AKfycbzLGrV_1y1EqqA4Ft2Vd46AIW6r86h8FDeyZgFzbf5xy-z2u02vdpFluT6NynphZXfU/exec',
+        // settings:{
+        //     quality:0.7,
+        //     rules:['formal'],
+        //     words:100,
+        //     useYoutubeTitle:false,
+        //     useYoutubeCaptions:false,
+        //     useYoutubeDescription:false,
+        //     generateTitle:false,
+        //     generateSEOKeywords:false,
+        //     generateSEODescription:false
+        // }
+    
         
 
     }),
     actions:{
-        setCredentials(username,password,github,gptToken){
+        setCredentials(username,password,github,gptToken,settings){
             this.username = username
             this.password = password
             this.github = github
             this.gptToken = gptToken
+            this.settings = settings
         },
         loginQuery(){
             return `?username=${this.username}&password=${this.password}`

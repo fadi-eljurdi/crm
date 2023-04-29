@@ -6,7 +6,7 @@
         </div>
         <div class="row my-3">
             <nav class="w-100 py-2 d-flex justify-content-between align-items-center font-monospace">
-                <div class="d-flex gap-4">
+                <div class="d-flex gap-2">
                                         
                     <button @click="addMedia('youtube')" :disabled="spinner" class="btn btn-sm btn-outline-danger d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">youtube_activity</span>
@@ -101,7 +101,7 @@
                 <div class="col-12 col-md-2 pb-2">Article</div>
                 <div class="col-12 col-md-10">
                     
-                    <p contenteditable id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; height: 500px;" ></p>
+                    <p contenteditable id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; min-height:500px;height:fit-content;" ></p>
                     <!-- <textarea v-model="article" id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; height: 200px;"></textarea> -->
                 </div>
             </div>
@@ -311,6 +311,7 @@ export default {
         },
 
         generateContent(){
+            const prompt = `generate a ${this.store.settings.words} words blog about "${this.store.blog.title}" considering these rules "${this.store.settings.rules.toString()}"`
             this.spinner = true
             const OPENAI_API_KEY = this.store.gptToken
             fetch("https://api.openai.com/v1/chat/completions", {
@@ -321,7 +322,7 @@ export default {
                 },
                 body: JSON.stringify({
                     "model": "gpt-3.5-turbo",
-                    "messages": [{ "role": "user", "content": `generate a blog about "${this.store.blog.title}" considering these rules "formal, about 500 words"` }]
+                    "messages": [{ "role": "user", "content": prompt }]
                 })
             })
             .then(response => response.json())
