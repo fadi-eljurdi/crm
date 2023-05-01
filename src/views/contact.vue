@@ -30,7 +30,7 @@
         </div>
         <div class="row justify-content-center my-3">
             <div class="col-12 col-md-2">
-                <button :disabled="spinner" class="w-100 btn btn-primary btn-sm" @click="setContact">
+                <button :disabled="spinner || onEdit" class="w-100 btn btn-primary btn-sm" @click="setContact">
                     <span v-if="spinner" class="spinner-grow spinner-grow-sm"></span>
                     <span v-else>Save changes</span>
                 </button>
@@ -38,13 +38,15 @@
         </div>
         
     </section>
-    <message v-show="showMessage" :title="alertMessage">
-        <button class="btn btn-outline-light btn-sm" @click="showMessage = !showMessage">close</button>
+    <message v-show="store.showMessage" :title="store.theMessage">
+        <button class="btn btn-outline-light btn-sm" @click="store.showMessage = !store.showMessage">close</button>
     </message>
 </template>
 <script>
 import message from '../components/message.vue'
 import {useProfile} from '../stores/profile'
+import utilities from '../utilities'
+
 export default {
     setup(){
         const store = useProfile()
@@ -54,8 +56,7 @@ export default {
     data(){
         return{
             spinner:false,
-            showMessage:false,
-            alertMessage:'Meshe l7al',
+            onEdit:true,
             contact:{
                 email:'',
                 number:'',
@@ -66,12 +67,29 @@ export default {
             }
         }
     },
+    watch:{
+        contact: {
+            handler(newValue, oldValue) {
+                // Note: `newValue` will be equal to `oldValue` here
+                // on nested mutations as long as the object itself
+                // hasn't been replaced.
+                const contact = {
+                    email:'',
+                    number:'',
+                    whatsapp:'',
+                    linkedIn:'',
+                    address:'',
+                    openHours:''
+                }
+                if(utilities.deepEqual(contact,newValue)) this.onEdit = true
+                else this.onEdit = false
+                
+                
+            },
+            deep: true
+        }
+    },
     methods:{
-        newMessage(title){
-            this.showMessage = true
-            this.alertMessage = title
-
-        },
         async setContact(){
             try{
                 
@@ -89,11 +107,11 @@ export default {
 
                 res = await res.json()
                 // console.log(res)
-                this.newMessage('Meshe l7al')
+                this.store.alertMessage('Meshe l7al')
                 this.spinner = false
             }catch(err){
                 
-                this.newMessage('No ma meshe l7al')
+                this.store.alertMessage('Ma Meshe l7al')
                 this.spinner = false
             }
         }

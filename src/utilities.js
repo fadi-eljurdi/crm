@@ -61,22 +61,27 @@ function getCurrentDate() {
 function compile(id) {
     var editor = document.getElementById(id)
     var content = editor.innerText
-    
-    
-    
+
+
+
     // content = content.replace(/ /g, "&nbsp");
     content = content.replace(/(\r\n|\n|\r)/g, "<br>");
 
-    content = content.replace(/(https?:\/\/\S+)/gi, `<a href="$1">$1</a>`);
+    content = content.replace(/(?<name>[^\s]+)::(?<url>[^\s]+)/gm, '<a href="$2" title="$2" class="dotlink" >$1</a>')
+    // content = content.replace(/(https?:\/\/\S+)/gi, `<a href="$1" class="dotlink">$1</a>`);
     content = content.replace(/_([^*]+)_/g, `<u>$1</u>`);
     content = content.replace(/~([^*]+)~/g, `<s>$1</s>`);
     content = content.replace(/\.\.\.\.(.+?)\.\.\.\./g, "<i>$1</i>");
     content = content.replace(/\.\.\.(.+?)\.\.\./g, "<code class='user-select-all'>$1</code>");
     content = content.replace(/\.\.(.+?)\.\./g, "<b>$1</b>");
     content = content.replace(/!!([\w-]+)/g, `<i class="bi bi-$1"></i>`);
-    
-    // content = content.replace(/(?<name>[^\s]+)::(?<url>[^\s]+)/gm, '<a href="$2" title="$2" >$1</a>')
+
     return content
+}
+
+function isArabic(text) {
+    var arabicRegex = /[\u0600-\u06FF]/;
+    return arabicRegex.test(text)
 }
 
 function text64(htmlString) {
@@ -101,14 +106,52 @@ async function hostImages(api, images) {
 }
 
 function getYouTubeId(url) {
-    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^\s&]+)/;
+    // const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^\s&]+)/;
+    // const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^\s&]+)/;
+    // const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/|youtube\.com\/live\/)([^\s&]+)/;
+    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/\?v=)|youtu\.be\/)([^\s&]+)/;
+
+
     const match = url.match(regex);
+    // if(match) {
+    //     const regex = /(?:live\/|channel\/\w+\/live\/|watch\?v=)(\w+)/;
+    //     const match = url.match(regex);
+    //     return match ? match[1] : null;
+    // }
     return match ? match[1] : null;
+    
+}
+
+async function getYouTubeVideoDetails(videoUrl) {
+    return new Promise( async (resolve,reject) => {
+        const videoId = this.getYouTubeId(videoUrl);
+        console.log(videoId);
+        const apiKey = "AIzaSyAM6IGBPEtFrI8w62LSSlpV18LvdJtWRaE";
+        const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet%2C+contentDetails`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            console.log(data);
+            // const captions = data.items[0].captions;
+            const title = data.items[0].snippet.title;
+            const description = data.items[0].snippet.description;
+            const thumbnail = data.items[0].snippet.thumbnails.default.url;
+
+            const youtube = { title, description, thumbnail };
+            // console.log(youtube)
+            // return youtube;
+            resolve(youtube)
+        } catch (error) {
+            console.error(error);
+            reject(err)
+        }
+    })
 }
 
 function openFiles() {
-    return new Promise((res,rej) => {
-        try{
+    return new Promise((res, rej) => {
+        try {
             const input = document.createElement('input');
             input.setAttribute('type', 'file');
             input.setAttribute('accept', 'image/png, image/jpeg');
@@ -120,11 +163,39 @@ function openFiles() {
                 console.log(e.target.files);
                 res(e.target.files)
             })
-        }catch(err){
-           console.log(err);
-           rej(500)
+        } catch (err) {
+            console.log(err);
+            rej(500)
         }
     })
+}
+
+function noQuotes(str) {
+    if (str.startsWith('"') && str.endsWith('"')) {
+        return str.substring(1, str.length - 1);
+    }
+    return str;
+}
+
+function deepEqual(obj1, obj2) {
+    if (obj1 === obj2) {
+        return true;
+    }
+    if (typeof obj1 != "object" || obj1 == null ||
+        typeof obj2 != "object" || obj2 == null) {
+        return false;
+    }
+    let keys1 = Object.keys(obj1);
+    let keys2 = Object.keys(obj2);
+    if (keys1.length != keys2.length) {
+        return false;
+    }
+    for (let key of keys1) {
+        if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
+            return false;
+        }
+    }
+    return true;
 }
 
 
@@ -138,5 +209,9 @@ export default {
     hostImages,
     text64,
     getYouTubeId,
-    openFiles
+    openFiles,
+    noQuotes,
+    isArabic,
+    deepEqual,
+    getYouTubeVideoDetails
 }

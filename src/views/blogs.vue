@@ -2,7 +2,7 @@
     <section v-show="!preview" class="container">
         <div class="row">
             <h3 class="pop text-secondary fs-3">Create new blog</h3>
-            <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
+            <p class="text-secondary fs-small">Craft compelling blog posts in minutes with our powerful and streamlined blog creation software</p>
         </div>
         <div class="row my-3">
             <nav class="w-100 py-2 d-flex justify-content-between align-items-center font-monospace">
@@ -11,27 +11,25 @@
                     <button @click="addMedia('youtube')" :disabled="spinner" class="btn btn-sm btn-outline-danger d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">youtube_activity</span>
                     </button>
-                    <button @click="addMedia('youtube')" class="btn btn-sm btn-outline-danger d-none d-lg-block">+Youtube</button>
+                    <button @click="addMedia('youtube')" :disabled="spinner"  class="btn btn-sm btn-outline-danger d-none d-lg-block">+Youtube</button>
 
 
                     <button @click="addMedia('image')" :disabled="spinner" class="btn btn-sm btn-outline-info d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">add_photo_alternate</span>
                     </button>
-                    <button @click="addMedia('image')" class="btn btn-sm btn-outline-info d-none d-lg-block">+Image</button>
+                    <button @click="addMedia('image')" :disabled="spinner"  class="btn btn-sm btn-outline-info d-none d-lg-block">+Image</button>
 
 
-                    <button @click="generateContent" :disabled="spinner" class="btn btn-sm btn-outline-success d-flex justify-content-center align-items-center d-lg-none">
-                        <!-- <span v-if="gptSpinner" class="spinner spinner-grow spinner-grow-sm"></span> -->
+                    <button @click="runGPT" :disabled="spinner" class="btn btn-sm btn-outline-success d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">auto_awesome</span>
                     </button>
-                    <button @click="generateContent" class="btn btn-sm btn-outline-success d-none d-lg-block">AI-Generator</button>
+                    <button @click="runGPT" :disabled="spinner" class="btn btn-sm btn-outline-success d-none d-lg-block">AI-Generator</button>
 
 
                     <button @click="previewBlog" :disabled="spinner" class="btn btn-sm btn-outline-primary d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">preview</span>
                     </button>
                     <button :disabled="spinner" @click="previewBlog" class="btn btn-sm btn-outline-primary d-none d-lg-block">Preview changes</button>
-                
 
                     <button @click="showSettings = !showSettings" :disabled="spinner" class="btn btn-sm btn-outline-secondary d-flex justify-content-center align-items-center d-lg-none"><span class="material-symbols-outlined fs-3">settings</span></button>
                     <button @click="showSettings = !showSettings" :disabled="spinner" class="btn btn-sm btn-outline-secondary d-none d-lg-block">Settings</button>
@@ -46,10 +44,9 @@
 
         <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
         <hr v-else class="my-3">
-       
         <section class="d-flex flex-column gap-2">
             <div class="row">
-                <div class="col-12 col-md-2 pb-2">Media</div>
+                <div class="col-12 col-md-2 pb-2" @click="setYoutubePrompt">Media</div>
                 <div class="col-12 col-md-10 d-flex flex-wrap gap-2">
                     <div style="width:100px" v-for="m in store.blog.mediaBox" :key="m" @dblclick="mediaPop(m)">
                         <section class="ratio ratio-16x9" v-if="m.type == 'youtube'">
@@ -87,22 +84,50 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">Title</div>
-                <div class="col-12 col-md-10"><input v-model="store.blog.title" type="text" class="form-control"></div>
+                <div class="col-12 col-md-10 d-flex align-items-center">
+                    
+                    <div class="input-group">
+                        <!-- <span class="input-group-text point" title="revise with GPT" @click="generateBlogTitle">
+                            <span class="material-symbols-outlined">auto_awesome</span>
+                        </span> -->
+                        <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
+                            <input autocomplete="off" @load="alignRight('blog-title')" @focus="alignRight('blog-title')" id="blog-title" v-model="store.blog.title" type="text" class="form-control">
+                        </GrammarlyEditorPlugin>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">SEO - Description</div>
-                <div class="col-12 col-md-10"><textarea v-model="store.blog.seoDescription" rows="3" type="text" class="form-control"></textarea></div>
+                <div class="col-12 col-md-10">
+                    <div class="input-group">
+                        <!-- <span class="input-group-text point" title="revise with GPT" @click="generateSEODescription">
+                            <span class="material-symbols-outlined">auto_awesome</span>
+                        </span> -->
+                        <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
+                        <textarea  autocomplete="off"  @focus="alignRight('blog-seo-description')" id="blog-seo-description" v-model="store.blog.seoDescription" rows="4" type="text" class="form-control"></textarea>
+                        </GrammarlyEditorPlugin>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">SEO - Keywords</div>
-                <div class="col-12 col-md-10"><input v-model="store.blog.seoKeywords" type="text" class="form-control"></div>
+                <div class="col-12 col-md-10">
+                    <div class="input-group">
+                        <!-- <span class="input-group-text point" title="revise with GPT" @click="generateSEOKeywords">
+                            <span class="material-symbols-outlined">auto_awesome</span>
+                        </span> -->
+                        <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
+                        <input  autocomplete="off"  @focus="alignRight('blog-seo-keywords')" id="blog-seo-keywords"  v-model="store.blog.seoKeywords" type="text" class="form-control">
+                        </GrammarlyEditorPlugin>
+                    </div>
+                </div>
             </div>
             <div class="row mb-5">
                 <div class="col-12 col-md-2 pb-2">Article</div>
                 <div class="col-12 col-md-10">
-                    
-                    <p contenteditable id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; min-height:500px;height:fit-content;" ></p>
-                    <!-- <textarea v-model="article" id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; height: 200px;"></textarea> -->
+                    <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
+                    <p contenteditable @focus="alignRight('editor')" id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; min-height:500px;height:fit-content;" ></p>
+                    </GrammarlyEditorPlugin>
                 </div>
             </div>
         </section>
@@ -147,7 +172,7 @@
     </section>
 </template>
 <script>
-
+import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-vue'
 import {useProfile} from '../stores/profile'
 import Media from '../Media'
 import Blog from '../Blog'
@@ -158,14 +183,14 @@ export default {
         const store = useProfile()
         return {store}
     },
-    components:{settings},
+    components:{settings,GrammarlyEditorPlugin},
     data(){
         return{
             page:'',
             preview:false,
             spinner:false,
             utilities,
-            showSettings:false
+            showSettings:false,
             
         }
     },
@@ -175,6 +200,9 @@ export default {
             if(this.store.blog.thumbnail && this.store.blog.title && this.store.blog.seoDescription && this.store.blog.seoKeywords && (this.store.blog.mediaBox.length > 0) && (document.getElementById('editor').innerText.length > 0)) return true
             return false
         },
+        blogTitle(){
+            return this.store.blog.title.replaceAll('/','|')
+        }
     },
     methods:{
         async addMedia(type){
@@ -182,8 +210,18 @@ export default {
                 const url = prompt('Enter the youtube URL')
                 if(url !== null){
                     this.store.blog.mediaBox.push(new Media('Youtube video','youtube',url))
-                }else{
-                    console.log('Invalid');
+                    this.store.youtube = await utilities.getYouTubeVideoDetails(url)
+                    // this.store.blog.title = this.store.youtube.title
+                    // this.store.blog.seoDescription = this.store.youtube.description
+                    // console.log();
+                    if(this.store.settings.useYoutubeTitle){
+                        // await this.setYoutubePrompt()
+                        this.store.blog.title = this.store.youtube.title
+                    }
+                    if(this.store.settings.useYoutubeDescription){
+                        // await this.setYoutubePrompt()
+                        this.store.blog.seoDescription = this.store.youtube.description
+                    }
                 }
             }else{
                 // select image > base64 > host > get url
@@ -204,7 +242,7 @@ export default {
                 api += `&uploadImagesToDrive=1&folderId=1e2g3ajgOnFv4-sljLYqRTq9s-7GLPcgH`
                 
                 var urls = await utilities.hostImages(api,files64)
-                console.log(urls)
+                // console.log(urls)
 
                 // pushing to media box
 
@@ -230,20 +268,21 @@ export default {
                 src64: await utilities.optimizeImageQuality(await utilities.file64(e.target.files[0]),this.store.quality)
             })
             var url = await utilities.hostImages(api,array)
-            console.log(url);
+            // console.log(url);
             this.store.blog.thumbnail = url[0].src
             this.spinner = false
         },
         async generateBlog(){
-            const page = new Blog(this.store.blog.title,JSON.stringify(this.store.blog.mediaBox))
+            const page = new Blog(this.blogTitle,JSON.stringify(this.store.blog.mediaBox))
             page
             .setArticle(utilities.compile('editor'))
-            .setIcon('https://picsum.photos/100')
+            .setIcon(this.store.blog.thumbnail)
             .setThubnail(this.store.blog.thumbnail)
             .setSEO(this.store.blog.seoDescription,this.store.blog.seoKeywords)
             .generatePage()
 
             this.page = page.htmlPage
+
         },
         async githubPush(token, content, filename) {
 
@@ -267,76 +306,197 @@ export default {
 
             var res = await fetch(url, config);
             var res = await res.json();
-            console.log(res);
+            // console.log(res);
             // return data.content.sha;
         },
+        async saveBlog(){
+            return new Promise(async (resolve,reject) => {
+                var api = this.store.api
+                api += this.store.loginQuery()
+                api += `&saveBlog=1`
+                var res = await fetch(api,{
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"text/plain",
+                    },
+                    body:JSON.stringify({
+                        title:this.blogTitle,
+                        description:this.store.blog.seoDescription,
+                        thumbnail:this.store.blog.thumbnail,
+                        url: this.store.blog.url
+                    })
+                })
+                res = await res.json()
+                console.log(res);
+                if(res == '200'){
+                    resolve(res)
+                }else{
+                    reject(res)
+                }
+            })
+        },
         async deploy(){
-            this.spinner = true
-            await this.generateBlog()
-            await this.githubPush(this.store.github,utilities.text64(this.page),(this.title.replaceAll(' ','-')))
-            this.spinner = false
+            try{
+               this.spinner = true
+                await this.generateBlog()
+                await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle.replaceAll(' ','-')))
+                this.store.blog.url = `https://fadi-eljurdi.github.io/app/blogs/${(this.blogTitle).replaceAll(' ', '-')}.html`
+                // save to sheets
+                await this.saveBlog()
+                this.spinner = false
+                this.store.alertMessage(`Meshe l7al | URL = ${this.store.blog.url}`)
+            }catch(err){
+               console.log(err);
+               this.store.alertMessage('Ma Meshe l7al')
+            }
         },
         mediaPop(m){
             this.store.blog.mediaBox = this.store.blog.mediaBox.filter(media => m.src != media.src)
         },
 
-        textCortext(){
-            // this.spinner = true
-            var data = {
-                max_tokens:256,
-                model:'velox-1',
-                n:1,
-                source_lang:'en',
-                target_lang:'en',
-                temperature:0.7,
-                text:`generate a blog about "${this.store.blog.title}" considering these rules [about 500 words, formal]`
-            }
-            const options = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer gAAAAABkSU9HeA3Ll1dWuF4IIp0sY11mSN1flxIvRyY1wF_UqWM7V8v3dCEbnXOIiA1ujy35Tyhku1AUAIZhKAyaCX4tL71b5kqQoK6W5Vul2tfKGEos9rbrikwtVZFw-9C9uPSWjUTt'
-                },
-                body: JSON.stringify(data)
-            };
-
-            fetch('https://api.textcortex.com/v1/texts/expansions', options)
-            .then(response => response.json())
-            .then(res => {
-                console.log(res);
-                console.log(res.data.outputs[0].text);
-                this.store.blog.article = res.data.outputs[0].text
+        async generateArticle(){
+            return new Promise(async (resolve,reject) => {
+                try{
+                    var description = ''
+                    if(this.store.settings.useYoutubeDescription){
+                        description = `instead of "${this.store.blog.seoDescription}"`
+                    }
+                    const prompt = `generate a ${this.store.settings.words} words blog about "${this.store.blog.title}" ${description} and considering these rules "${this.store.settings.rules.toString()}"`
+                    console.log(prompt);
+                    const OPENAI_API_KEY = this.store.gptToken
+                    var res = await fetch("https://api.openai.com/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + OPENAI_API_KEY
+                        },
+                        body: JSON.stringify({
+                            "model": "gpt-3.5-turbo",
+                            "messages": [{ "role": "user", "content": prompt }]
+                        })
+                    })
+                    var data = await res.json()
+                    resolve(data.choices[0].message.content)
+                }catch(err){
+                   console.log(err);
+                   reject(err)
+                }
             })
-            .catch(err => console.error(err));
+            
         },
-
-        generateContent(){
-            const prompt = `generate a ${this.store.settings.words} words blog about "${this.store.blog.title}" considering these rules "${this.store.settings.rules.toString()}"`
+        generateBlogTitle(){
+            return new Promise(async (resolve,reject) => {
+                try{
+                   const prompt = `generate a blog title about "${this.store.blog.title}" considering these rules "${this.store.settings.rules.toString()}"`
+                    const OPENAI_API_KEY = this.store.gptToken
+                    var res = await fetch("https://api.openai.com/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + OPENAI_API_KEY
+                        },
+                        body: JSON.stringify({
+                            "model": "gpt-3.5-turbo",
+                            "messages": [{ "role": "user", "content": prompt }]
+                        })
+                    })
+                    var data = await res.json()
+                    resolve(data.choices[0].message.content)
+                }catch(err){
+                   console.log(err);
+                   reject(err)
+                }
+            })
+        },
+        generateSEOKeywords(){
+            return new Promise(async (resolve,reject) => {
+                try{
+                   const prompt = `generate a brief SEO keywords (comma seperated) about "${this.store.blog.title}"`
+                    const OPENAI_API_KEY = this.store.gptToken
+                    var res = await fetch("https://api.openai.com/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + OPENAI_API_KEY
+                        },
+                        body: JSON.stringify({
+                            "model": "gpt-3.5-turbo",
+                            "messages": [{ "role": "user", "content": prompt }]
+                        })
+                    })
+                    var data = await res.json()
+                    resolve(data.choices[0].message.content)
+                }catch(err){
+                   console.log(err);
+                   reject(err)
+                }
+            })
+        },
+        async generateSEODescription(){
+            return new Promise(async (resolve,reject) => {
+                try{
+                   const prompt = `generate a brief SEO description about "${this.store.blog.title}" considering these rules "${this.store.settings.rules.toString()}"`
+                    const OPENAI_API_KEY = this.store.gptToken
+                    var res = await fetch("https://api.openai.com/v1/chat/completions", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + OPENAI_API_KEY
+                        },
+                        body: JSON.stringify({
+                            "model": "gpt-3.5-turbo",
+                            "messages": [{ "role": "user", "content": prompt }]
+                        })
+                    })
+                    var data = await res.json()
+                    resolve(data.choices[0].message.content)
+                }catch(err){
+                   console.log(err);
+                   reject(err)
+                }
+            })
+        },
+        
+        async runGPT(){
+            
+            
             this.spinner = true
-            const OPENAI_API_KEY = this.store.gptToken
-            fetch("https://api.openai.com/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + OPENAI_API_KEY
-                },
-                body: JSON.stringify({
-                    "model": "gpt-3.5-turbo",
-                    "messages": [{ "role": "user", "content": prompt }]
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Do something with the response data
-                console.log(data);
-                document.getElementById('editor').innerText = data.choices[0].message.content
-                this.store.blog.article += data.choices[0].message.content
-                this.spinner = false
-            })
-            .catch(error => {
-                console.error(error)
-                this.spinner = false
-            });
+            var content = await this.generateArticle()
+            document.getElementById('editor').innerText = content
+            // this.alignRight('editor')
+            this.store.blog.article += content
+
+            if(this.store.settings.generateSEOKeywords) {
+                content = await this.generateSEOKeywords()
+                this.store.blog.seoKeywords = utilities.noQuotes(content)
+                // this.alignRight('blog-seo-keywords')
+            }
+            if(this.store.settings.generateTitle) {
+                content = await this.generateBlogTitle()
+                this.store.blog.title = utilities.noQuotes(content)
+            }
+            if(this.store.settings.generateSEODescription) {
+                content = await this.generateSEODescription()
+                this.store.blog.seoDescription = utilities.noQuotes(content)
+                // this.alignRight('blog-seo-description')
+            }
+            this.spinner = false
+        },
+        alignRight(id){
+            if(document.getElementById(id).tagName === 'INPUT' || document.getElementById(id).tagName === 'TEXTAREA'){
+                if(utilities.isArabic(document.getElementById(id).value)) {
+                    document.getElementById(id).dir = 'rtl'
+                }else{
+                    document.getElementById(id).dir = 'ltr'
+                }
+
+            }else{
+                if(utilities.isArabic(document.getElementById(id).innerText)) {
+                    document.getElementById(id).dir = 'rtl'
+                }else{
+                    document.getElementById(id).dir = 'ltr'
+                }
+            }
         }
     },
     beforeUnmount(){
@@ -362,7 +522,6 @@ export default {
             document.getElementById('editor').innerText = this.store.blog.article
         }
 
-        console.log(JSON.stringify("a,b,c".split(',')));
     }
 }
 </script>

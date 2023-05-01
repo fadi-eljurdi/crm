@@ -5,9 +5,7 @@
         <div class="col-12">
             <h3 class="pop text-secondary fs-3">Settings</h3>
             <p class="text-secondary fs-small">
-            Our platform offers an easy and seamless way to manage your contact
-            information, ensuring that you're always up-to-date and never miss out
-            on important opportunities.
+            Effortlessly configure your CRM platform to match your business goals and preferences with our intuitive and flexible settings options.
             </p>
         </div>
       </div>
@@ -37,12 +35,12 @@
                     useYoutubeTitle
                 </label>
             </div>
-            <div class="form-check">
+            <!-- <div class="form-check">
                 <input class="form-check-input" type="checkbox" v-model="store.settings.useYoutubeCaptions" >
                 <label class="form-check-label" for="flexCheckChecked">
                     useYoutubeCaptions
                 </label>
-            </div>
+            </div> -->
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" v-model="store.settings.useYoutubeDescription" >
                 <label class="form-check-label" for="flexCheckChecked">
@@ -52,19 +50,19 @@
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" v-model="store.settings.generateTitle" >
                 <label class="form-check-label" for="flexCheckChecked">
-                    generateTitle
+                    generateTitle with Chat GPT
                 </label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" v-model="store.settings.generateSEOKeywords" >
                 <label class="form-check-label" for="flexCheckChecked">
-                    generateSEOKeywords
+                    generateSEOKeywords with Chat GPT
                 </label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" v-model="store.settings.generateSEODescription" >
                 <label class="form-check-label" for="flexCheckChecked">
-                    generateSEODescription
+                    generateSEODescription with Chat GPT
                 </label>
             </div>
         </div>
@@ -114,7 +112,14 @@ export default {
             var api = this.store.api
             api += this.store.loginQuery()
             api += `&setSettings=1`
-
+            if(this.store.settings.useYoutubeTitle){
+                // await this.setYoutubePrompt()
+                this.store.blog.title = this.store.youtube.title
+            }
+            if(this.store.settings.useYoutubeDescription){
+                // await this.setYoutubePrompt()
+                this.store.blog.seoDescription = this.store.youtube.description
+            }
             fetch(api,{
                 method:"POST",
                 headers:{
@@ -123,6 +128,7 @@ export default {
                 body:JSON.stringify(this.store.settings)
             }).then(res => res.json()).then(res => {
                 console.log(res);
+                
                 this.spinner = false
             }).catch(err => {
                 console.log(err);

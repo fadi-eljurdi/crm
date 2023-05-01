@@ -4,7 +4,7 @@
         
         <div class="row">
             <h3 class="pop text-secondary fs-3">Remove service</h3>
-            <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
+            <p class="text-secondary fs-small">Streamline your service offerings and optimize your business by easily removing outdated or redundant services from your CRM.</p>
         </div>
         <div class="row g-3">
             <div class="col-12 col-lg-10">
@@ -26,7 +26,7 @@
         
         <div class="row">
             <h3 class="pop text-secondary fs-3">Add new services</h3>
-            <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
+            <p class="text-secondary fs-small">Stay ahead of the competition by adding new and innovative services to your CRM platform and staying ahead of industry trends.</p>
         </div>
         
         <div class="row">

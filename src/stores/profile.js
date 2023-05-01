@@ -8,6 +8,10 @@ export const useProfile = defineStore('profile',{
         github:'',
         gptToken:'',
         quality:0.7,
+        
+        showMessage:false,
+        theMessage:'',
+        youtube:'',
         blog:{
             title:'',
             seoDescription:'',
@@ -18,7 +22,7 @@ export const useProfile = defineStore('profile',{
             article:''
         },
         settings:'',
-        api:'https://script.google.com/macros/s/AKfycbzLGrV_1y1EqqA4Ft2Vd46AIW6r86h8FDeyZgFzbf5xy-z2u02vdpFluT6NynphZXfU/exec',
+        api:'https://script.google.com/macros/s/AKfycbxYqtGjp9MvEaf9jbwu3HcExdvPhNypd1jQtGgN9HinpK7_Lvt0tb6mcgpsMXK_Ut3m/exec',
         // settings:{
         //     quality:0.7,
         //     rules:['formal'],
@@ -59,6 +63,11 @@ export const useProfile = defineStore('profile',{
                     rej(err)
                 }
             })
+        },
+        alertMessage(msg){
+            this.showMessage = true
+            this.theMessage = msg
+
         }
 
     }

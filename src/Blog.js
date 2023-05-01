@@ -59,10 +59,8 @@ class Blog {
                             <article class="shadow-sm bg-light p-3 rounded">
                                 <blog-media :media='##blog_media'></blog-media>
                                 <h1 class="pop text-primary">##blog_page_title</h1>
-                                <p class="text-secondary">##blog_article
-                                    <i class="bi bi-dot"></i>
-                                    <u class="opacity-75">see translation</u>
-                                </p>
+                                <p id="g-translate" class="text-secondary">##blog_article</p>                                
+                                <p v-show="translate" id="translate-result" class="text-secondary"></p>
                                 <hr>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <time class="fs-xsmall">{{utilities.timo('##blog_date')}}</time>
@@ -82,6 +80,13 @@ class Blog {
             <section v-if="spinner" class="w-100 h-100 z-3 position-fixed top-0 start-0 bg-glass d-flex justify-content-center align-items-center">
                 <span class="spinner spinner-grow"></span>
             </section>
+            <aside class="position-fixed z-3 bottom-0 end-0 p-4">
+                <button class="btn btn-sm btn-danger" >
+                    <i class="bi bi-translate me-2"></i>
+                    <span v-if="!translate" @click="gTranslate">ARB</span>
+                    <span v-else @click="translate = !translate">ENG</span>
+                </button>
+            </aside>
             
             <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
