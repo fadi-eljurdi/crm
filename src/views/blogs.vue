@@ -170,6 +170,10 @@
             </div>
         </div>
     </section>
+    
+    <message v-show="store.showMessage" :title="store.theMessage">
+        <button class="btn btn-outline-light btn-sm" @click="store.showMessage = !store.showMessage">close</button>
+    </message>
 </template>
 <script>
 import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-vue'
@@ -178,12 +182,13 @@ import Media from '../Media'
 import Blog from '../Blog'
 import utilities from '../utilities.js'
 import settings from '../components/settings.vue'
+import message from '../components/message.vue'
 export default {
     setup(){
         const store = useProfile()
         return {store}
     },
-    components:{settings,GrammarlyEditorPlugin},
+    components:{settings,GrammarlyEditorPlugin,message},
     data(){
         return{
             page:'',
@@ -310,6 +315,7 @@ export default {
             // return data.content.sha;
         },
         async saveBlog(){
+            // saves to google sheet
             return new Promise(async (resolve,reject) => {
                 var api = this.store.api
                 api += this.store.loginQuery()
@@ -344,7 +350,7 @@ export default {
                 // save to sheets
                 await this.saveBlog()
                 this.spinner = false
-                this.store.alertMessage(`Meshe l7al | URL = ${this.store.blog.url}`)
+                this.store.alertMessage(`Meshe l7al : ${this.store.blog.url}`)
             }catch(err){
                console.log(err);
                this.store.alertMessage('Ma Meshe l7al')
@@ -521,6 +527,8 @@ export default {
         if(this.store.blog.article != ''){
             document.getElementById('editor').innerText = this.store.blog.article
         }
+
+        // this.store.alertMessage('Welcome')
 
     }
 }
