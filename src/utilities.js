@@ -67,7 +67,7 @@ function compile(id) {
     // content = content.replace(/ /g, "&nbsp");
     content = content.replace(/(\r\n|\n|\r)/g, "<br>");
 
-    content = content.replace(/(?<name>[^\s]+)::(?<url>[^\s]+)/gm, '<a href="$2" title="$2" class="dotlink" >$1</a>')
+    content = content.replace(/(?<name>[^\s]+)::(?<url>[^\s]+)/gm, '<a href="$2" title="$2">$1</a>')
     // content = content.replace(/(https?:\/\/\S+)/gi, `<a href="$1" class="dotlink">$1</a>`);
     content = content.replace(/_([^*]+)_/g, `<u>$1</u>`);
     content = content.replace(/~([^*]+)~/g, `<s>$1</s>`);
