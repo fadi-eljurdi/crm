@@ -15,7 +15,7 @@
               <span v-else>Login</span>
             </button>
           </div>
-          <small class="fs-xsmall pop text-secondary text-center">Developed by <a href="https://libancode.com">Libancode</a> - version 1.1.0</small>
+          <small class="fs-xsmall pop text-secondary text-center">Developed by <a href="https://libancode.com">Libancode</a> - version 1.1.2</small>
         </section>
       </div>
     </div>
@@ -23,23 +23,38 @@
 </section>
 
 <header v-if="isLogedIn" class="w-100 p-3 z-2 position-fixed top-0 start-0 d-flex justify-content-between align-items-center bg-light shadow-sm">
-    <section>
-        <router-link to="/" class="link-underline link-underline-opacity-0"><h3 class="pop m-0">JURDI CRM</h3></router-link>
+    <section class="d-flex align-items-center gap-2">
+        <router-link to="/" class="link-underline link-underline-opacity-0"><h5 class="pop m-0">Dashboard</h5></router-link>
     </section>
     <nav class="pop d-none d-md-flex align-items-center gap-3">
         <router-link to="/contact" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Contact</router-link>
         <router-link to="/links" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Links</router-link>
-        <router-link to="/blogs" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Blogs</router-link>
+        <router-link to="/blogs" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Blog</router-link>
         <router-link to="/services" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Services</router-link>
         
         <!-- <span class="material-symbols-outlined point" @click="refresh">cached</span> -->
+        <span>
+          <select class="form-control" v-model="store.domain">
+            <option value="www.jurdiconsult.media" selected>www.jurdiconsult.media</option>
+            <option value="www.jurdilaw.com">www.jurdilaw.com</option>
+          </select>
+        </span>
     </nav>
+    
     <i class="bi bi-three-dots-vertical d-block d-md-none fs-3 text-secondary" type="button" data-bs-toggle="dropdown"></i>
     <ul class="dropdown-menu">
         <li><router-link class="dropdown-item" to="/contact">Contact</router-link></li>
         <li><router-link class="dropdown-item" to="/links">Links</router-link></li>
         <li><router-link class="dropdown-item" to="/blogs">Blogs</router-link></li>
         <li><router-link class="dropdown-item" to="/services">Services</router-link></li>
+        <li>
+          <span>
+            <select class="form-control" v-model="store.domain">
+              <option value="www.jurdiconsult.media" selected>www.jurdiconsult.media</option>
+              <option value="www.jurdilaw.com">www.jurdilaw.com</option>
+            </select>
+          </span>
+        </li>
     </ul>
 </header>
 <main v-if="isLogedIn" style="margin-top:100px;">
@@ -71,7 +86,7 @@ export default {
     async Login(){  
       try{
         this.loginSpinner = true
-        var api = this.store.api
+        var api = this.store.api()
         api += `?username=${this.username}&password=${this.password}`
         var res = await fetch(api)
         res = await res.json()

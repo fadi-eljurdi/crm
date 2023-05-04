@@ -20,10 +20,10 @@
                     <button @click="addMedia('image')" :disabled="spinner"  class="btn btn-sm btn-outline-info d-none d-lg-block">+Image</button>
 
 
-                    <button @click="runGPT" :disabled="spinner" class="btn btn-sm btn-outline-success d-flex justify-content-center align-items-center d-lg-none">
+                    <button @click="runGPT" :disabled="spinner || store.blog.title.length == 0" class="btn btn-sm btn-outline-success d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">auto_awesome</span>
                     </button>
-                    <button @click="runGPT" :disabled="spinner" class="btn btn-sm btn-outline-success d-none d-lg-block">AI-Generator</button>
+                    <button @click="runGPT" :disabled="spinner || store.blog.title.length == 0" class="btn btn-sm btn-outline-success d-none d-lg-block">AI-Generator</button>
 
 
                     <button @click="previewBlog" :disabled="spinner" class="btn btn-sm btn-outline-primary d-flex justify-content-center align-items-center d-lg-none">
@@ -58,17 +58,6 @@
                             </div>
                         </section>
                     </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-12 col-md-2 pb-2">Domain</div>
-                <div class="col-12 col-md-10">
-                    <select class="form-select" aria-label="Default select example">
-                        <option value="jurdiconsult.media" selected>Jurdiconsult.media</option>
-                        <option value="jurdilaw.com">Jurdilaw.com</option>
-                        <option value="both">Both</option>
-                    </select>
                 </div>
             </div>
             <div class="row">
@@ -171,7 +160,8 @@
         </div>
     </section>
     
-    <message v-show="store.showMessage" :title="store.theMessage">
+    
+    <message v-show="store.showMessage" :title="store.theMessage" :callback="store.callback" :spinner="spinner">
         <button class="btn btn-outline-light btn-sm" @click="store.showMessage = !store.showMessage">close</button>
     </message>
 </template>
@@ -242,7 +232,7 @@ export default {
                 }
                 console.log(files64);
                 // hosting images
-                var api = this.store.api
+                var api = this.store.api()
                 api += this.store.loginQuery()
                 api += `&uploadImagesToDrive=1&folderId=1e2g3ajgOnFv4-sljLYqRTq9s-7GLPcgH`
                 
@@ -264,7 +254,7 @@ export default {
         },
         async generateThumbnail(e){
             this.spinner = true
-            var api = this.store.api
+            var api = this.store.api()
             api += this.store.loginQuery()
             api += `&uploadImagesToDrive=1&folderId=1Z73hzjMWM8U3tsuiULJP6UA1eQY_cHJV`
             var array = []
@@ -278,7 +268,7 @@ export default {
             this.spinner = false
         },
         async generateBlog(){
-            const page = new Blog(this.blogTitle,JSON.stringify(this.store.blog.mediaBox))
+            const page = new Blog(this.blogTitle,JSON.stringify(this.store.blog.mediaBox),this.store.domain)
             page
             .setArticle(utilities.compile('editor'))
             .setIcon(this.store.blog.thumbnail)
@@ -301,7 +291,11 @@ export default {
                 'Content-Type': 'application/json'
             };
 
-            var url = `https://api.github.com/repos/fadi-eljurdi/app/contents/blogs/${filename}.html`;
+            
+
+            var url ;
+            if(this.store.domain == 'www.jurdilaw.com') url = `https://api.github.com/repos/fadi-eljurdi/LLC/contents/blogs/${filename}.html`;
+            else url = `https://api.github.com/repos/fadi-eljurdi/app/contents/blogs/${filename}.html`;
 
             var config = {
                 method: 'PUT',
@@ -317,7 +311,7 @@ export default {
         async saveBlog(){
             // saves to google sheet
             return new Promise(async (resolve,reject) => {
-                var api = this.store.api
+                var api = this.store.api()
                 api += this.store.loginQuery()
                 api += `&saveBlog=1`
                 var res = await fetch(api,{
@@ -342,19 +336,23 @@ export default {
             })
         },
         async deploy(){
-            try{
-               this.spinner = true
-                await this.generateBlog()
-                await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle.replaceAll(' ','-')))
-                this.store.blog.url = `https://fadi-eljurdi.github.io/app/blogs/${(this.blogTitle).replaceAll(' ', '-')}.html`
-                // save to sheets
-                await this.saveBlog()
-                this.spinner = false
-                this.store.alertMessage(`Meshe l7al : ${this.store.blog.url}`)
-            }catch(err){
-               console.log(err);
-               this.store.alertMessage('Ma Meshe l7al')
-            }
+            this.store.alertMessage(`Publish blog to ${this.store.domain} ?`).setAction(async ()=>{
+                try{
+                this.spinner = true
+                    await this.generateBlog()
+                    await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle.replaceAll(' ','-')))
+
+                    if(this.store.domain == 'www.jurdilaw.com') this.store.blog.url = `https://fadi-eljurdi.github.io/LLC/blogs/${(this.blogTitle).replaceAll(' ', '-')}.html`
+                    else this.store.blog.url = `https://fadi-eljurdi.github.io/app/blogs/${(this.blogTitle).replaceAll(' ', '-')}.html`
+                    // save to sheets
+                    await this.saveBlog()
+                    this.spinner = false
+                    this.store.alertMessage(`Meshe l7al : ${this.store.blog.url}`).endAction()
+                }catch(err){
+                console.log(err);
+                this.store.alertMessage('Ma Meshe l7al').endAction()
+                }
+            })
         },
         mediaPop(m){
             this.store.blog.mediaBox = this.store.blog.mediaBox.filter(media => m.src != media.src)
@@ -393,7 +391,7 @@ export default {
         generateBlogTitle(){
             return new Promise(async (resolve,reject) => {
                 try{
-                   const prompt = `generate a blog title about "${this.store.blog.title}" considering these rules "${this.store.settings.rules.toString()}"`
+                   const prompt = `generate a blog title about "${this.store.blog.title}"`
                     const OPENAI_API_KEY = this.store.gptToken
                     var res = await fetch("https://api.openai.com/v1/chat/completions", {
                         method: "POST",
@@ -441,7 +439,7 @@ export default {
         async generateSEODescription(){
             return new Promise(async (resolve,reject) => {
                 try{
-                   const prompt = `generate a brief SEO description about "${this.store.blog.title}" considering these rules "${this.store.settings.rules.toString()}"`
+                   const prompt = `generate a brief SEO description about "${this.store.blog.title}"`
                     const OPENAI_API_KEY = this.store.gptToken
                     var res = await fetch("https://api.openai.com/v1/chat/completions", {
                         method: "POST",

@@ -6,7 +6,10 @@
                     <div class="d-flex gap-2 align-items-center flex-column flex-lg-row">
                         <h5 class="fs-5 text-info m-0 pop text-center"> {{title}} </h5>
                     </div>
-                    <div class=""><slot></slot></div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button v-if="callback" :disabled="spinner" @click="runCallback()" class="btn btn-sm btn-info">Confirm</button>
+                        <div class=""><slot></slot></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -14,6 +17,12 @@
 </template>
 <script>
 export default {
-    props:['title']
+    props:['title','callback','spinner'],
+    methods:{
+        runCallback(){
+            this.callback()
+        }
+    },
+    
 }
 </script>

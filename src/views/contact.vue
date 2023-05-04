@@ -1,9 +1,18 @@
 <template>
-    <section class="container d-flex flex-column gap-2">
+    <section class="container d-flex flex-column gap-2 my-5">
         <div class="row">
             <h3 class="pop text-secondary fs-3">Manage your contact info</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
+        <!-- <div class="row">
+            <div class="col-12 col-md-2 pb-2">Choose a domain</div>
+            <div class="col-12 col-md-10">
+                <select class="form-control" v-model="store.domain">
+                    <option value="www.jurdiconsult.media" selected>www.jurdiconsult.media</option>
+                    <option value="www.jurdilaw.com">www.jurdilaw.com</option>
+                </select>
+            </div>
+        </div> -->
         <div class="row">
             <div class="col-12 col-md-2 pb-2">Email</div>
             <div class="col-12 col-md-10"><input v-model="contact.email" type="email" class="form-control"></div>
@@ -30,7 +39,7 @@
         </div>
         <div class="row justify-content-center my-3">
             <div class="col-12 col-md-2">
-                <button :disabled="spinner || onEdit" class="w-100 btn btn-primary btn-sm" @click="setContact">
+                <button :disabled="spinner || onEdit" class="w-100 btn btn-primary btn-sm" @click="save">
                     <span v-if="spinner" class="spinner-grow spinner-grow-sm"></span>
                     <span v-else>Save changes</span>
                 </button>
@@ -38,9 +47,10 @@
         </div>
         
     </section>
-    <message v-show="store.showMessage" :title="store.theMessage">
+    <message v-show="store.showMessage" :title="store.theMessage" :callback="store.callback" :spinner="spinner">
         <button class="btn btn-outline-light btn-sm" @click="store.showMessage = !store.showMessage">close</button>
     </message>
+
 </template>
 <script>
 import message from '../components/message.vue'
@@ -90,11 +100,18 @@ export default {
         }
     },
     methods:{
+        save(){
+            
+            this.store.alertMessage('Are u sure ?').setAction(async ()=>{
+                await this.setContact()
+                this.store.endAction()
+            })
+        },
         async setContact(){
             try{
                 
                 this.spinner = true
-                var api = this.store.api
+                var api = this.store.api()
                 api += `${this.store.loginQuery()}&setContact=1`
                 var data = JSON.stringify(this.contact)
                 var res = await fetch(api,{

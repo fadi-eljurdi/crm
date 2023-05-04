@@ -1,5 +1,5 @@
 <template>
-    <section class="container d-flex flex-column gap-2 mb-5">
+    <section class="container d-flex flex-column gap-2 my-5">
 
         
         <div class="row">
@@ -9,8 +9,8 @@
         <div class="row g-3">
             <div class="col-12 col-lg-10">
                 <select class="form-select form-select-sm" aria-label="Default select example" id="selectedService">
-                    <option selected>Select a service</option>
-                    <option v-for="s in profile.services" :key="s" :value="s.title">{{s.title}}</option>
+                    <!-- <option v-if="profile.services" selected>No remaining services</option> -->
+                    <option v-for="s in profile.services" :key="s" selected :value="s.title">{{s.title}}</option>
                 </select>
             </div>
             <div class="col-12 col-lg-2 d-flex align-items-center">
@@ -56,7 +56,7 @@
 
         
     </section>
-    <message v-if="showMessage" :title="alertMessage"> <i class="bi bi-x-lg text-light fs-5 point" @click="showMessage = !showMessage"></i> </message>
+    <message v-if="store.showMessage" :title="store.theMessage"> <i class="bi bi-x-lg text-light fs-5 point" @click="store.showMessage = !store.showMessage"></i> </message>
 </template>
 <script>
 import message from '../components/message.vue'
@@ -73,8 +73,6 @@ export default {
         return{
             spinner:false,
             spinner2:false,
-            showMessage:false,
-            alertMessage:'Meshe l7al',
             service:{
                 title:'',
                 description:'',
@@ -116,15 +114,13 @@ export default {
                 res = await res.json()
                 console.log(res)
                 if(res == '201'){
-                    this.showMessage = true
-                    this.alertMessage = 'meshe l7al'
+                    this.store.alertMessage('Meshe l7al')
                     this.spinner = false
                     this.profile.services.push(this.service)
                 }
             }catch(err){
                 console.log(err)
-                    this.showMessage = true
-                    this.alertMessage = 'ma meshe l7al'
+                this.store.alertMessage('Ma meshe l7al')
                     this.spinner = false
             }
         },
@@ -143,16 +139,14 @@ export default {
                 res = await res.json()
                 if(res == '200'){
                     this.spinner2 = false
-                    this.showMessage = true
-                    this.alertMessage = 'meshe l7al'
+                    this.store.alertMessage('Meshe l7al')
                     // remove from list
                     this.profile.services = this.profile.services.filter(s => s.title != title)
                 }
             }catch(err){
                 console.log(err)
                 this.spinner2 = false
-                this.showMessage = true
-                this.alertMessage = 'ma meshe l7al'
+                    this.store.alertMessage('Meshe l7al')
 
             }
             
