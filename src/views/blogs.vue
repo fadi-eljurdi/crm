@@ -365,7 +365,8 @@ export default {
                     this.spinner = false
                     this.store.alertMessage('Ma Meshe l7al').endAction()
                 }
-                // this.store.alertMessage(`Meshe l7al : ${this.store.blog.url}`).endAction()
+                
+                
             })
         },
         mediaPop(m){
