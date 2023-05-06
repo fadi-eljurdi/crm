@@ -61,6 +61,17 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-12 col-md-2 pb-2">Blog type {{store.blog.baas}}</div>
+                <div class="col-12 col-md-10 d-flex flex-column gap-2">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" v-model="store.blog.baas" >
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Consider as a service
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-12 col-md-2 pb-2">Thumbnail</div>
                 <div class="col-12 col-md-10 d-flex flex-column gap-2">
                     <div style="width:100px" v-if="store.blog.thumbnail">
@@ -320,6 +331,7 @@ export default {
                         "Content-Type":"text/plain",
                     },
                     body:JSON.stringify({
+                        baas:this.store.blog.baas,
                         title:this.blogTitle,
                         description:this.store.blog.seoDescription,
                         thumbnail:this.store.blog.thumbnail,
@@ -338,7 +350,7 @@ export default {
         async deploy(){
             this.store.alertMessage(`Publish blog to ${this.store.domain} ?`).setAction(async ()=>{
                 try{
-                this.spinner = true
+                    this.spinner = true
                     await this.generateBlog()
                     await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle.replaceAll(' ','-')))
 
@@ -349,9 +361,11 @@ export default {
                     this.spinner = false
                     this.store.alertMessage(`Meshe l7al : ${this.store.blog.url}`).endAction()
                 }catch(err){
-                console.log(err);
-                this.store.alertMessage('Ma Meshe l7al').endAction()
+                    console.log(err);
+                    this.spinner = false
+                    this.store.alertMessage('Ma Meshe l7al').endAction()
                 }
+                // this.store.alertMessage(`Meshe l7al : ${this.store.blog.url}`).endAction()
             })
         },
         mediaPop(m){

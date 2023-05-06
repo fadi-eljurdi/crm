@@ -13,6 +13,7 @@ export const useProfile = defineStore('profile',{
         theMessage:'',
         youtube:'',
         blog:{
+            baas:false,
             title:'',
             seoDescription:'',
             seoKeywords:'',
@@ -47,6 +48,7 @@ export const useProfile = defineStore('profile',{
                     var result = await fetch(api)
                     result = await result.json()
                     this.profile = result
+                    
                     res(result)
                 }catch(err){
                     console.log(err)
@@ -65,11 +67,12 @@ export const useProfile = defineStore('profile',{
         },
         endAction(){
             this.callback = false
+            this.showMessage = false
         },
         api(){
-            if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbxYqtGjp9MvEaf9jbwu3HcExdvPhNypd1jQtGgN9HinpK7_Lvt0tb6mcgpsMXK_Ut3m/exec"
-            return "https://script.google.com/macros/s/AKfycbycOa0V0SO8EkZiMORD9gqG_CATaFM39uG1D4gus1EZVYl2F6t4YBE-2JuyAcV0Lch4/exec"
-        }
+            if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbxr6-5oVDiX22ZLuBRXr_G5XWly3J0jCKGWZ3a5GhpqOPpJyxSRtH-KHcqMx3B5Qeo/exec"
+            return "https://script.google.com/macros/s/AKfycby5hmfNJiUO892Uv9UB45R5iVBfMJcd62C6E1prrgZbmx2cisppoKJAf68A7ywVr2p3/exec"
+        },
 
 
 

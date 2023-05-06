@@ -1,28 +1,5 @@
 <template>
     <section class="container d-flex flex-column gap-2 my-5">
-
-        
-        <div class="row">
-            <h3 class="pop text-secondary fs-3">Remove service</h3>
-            <p class="text-secondary fs-small">Streamline your service offerings and optimize your business by easily removing outdated or redundant services from your CRM.</p>
-        </div>
-        <div class="row g-3">
-            <div class="col-12 col-lg-10">
-                <select class="form-select form-select-sm" aria-label="Default select example" id="selectedService">
-                    <!-- <option v-if="profile.services" selected>No remaining services</option> -->
-                    <option v-for="s in profile.services" :key="s" selected :value="s.title">{{s.title}}</option>
-                </select>
-            </div>
-            <div class="col-12 col-lg-2 d-flex align-items-center">
-                <button class="flex-fill btn btn-outline-danger btn-sm" @click="removeService" :disabled="spinner2">
-                    <span v-if="spinner2" class="spinner-grow spinner-grow-sm"></span>
-                    <span v-else>Remove Link</span>
-                </button>
-                <!-- <button class="flex-fill btn btn-outline-danger btn-sm" @click="removeLink" :disabled="spinner2">Remove</button> -->
-            </div>
-        </div>
-        
-        <hr class="my-3">
         
         <div class="row">
             <h3 class="pop text-secondary fs-3">Add new services</h3>
@@ -47,7 +24,7 @@
         </div>
         <div class="row justify-content-center mt-3">
             <div class="col-12 col-md-2">
-                <button @click="addService" class="w-100 btn btn-success btn-sm">
+                <button :disabled="onEdit" @click="addService" class="w-100 btn btn-primary btn-sm">
                     <span class="spinner-grow spinner-grow-sm" v-if="spinner"></span>
                     <span v-else>save changes</span>
                 </button>
@@ -56,7 +33,12 @@
 
         
     </section>
-    <message v-if="store.showMessage" :title="store.theMessage"> <i class="bi bi-x-lg text-light fs-5 point" @click="store.showMessage = !store.showMessage"></i> </message>
+    <message v-show="store.showMessage" :title="store.theMessage" :callback="store.callback" :spinner="spinner">
+        <button class="btn btn-outline-light btn-sm" @click="store.showMessage = !store.showMessage">close</button>
+    </message>
+    <section v-if="spinner" class="w-100 h-100 position-fixed top-0 start-0 z-3 bg-glass d-flex justify-content-center align-items-center">
+        <span class="spinner-grow"></span>
+    </section>
 </template>
 <script>
 import message from '../components/message.vue'
@@ -72,7 +54,7 @@ export default {
     data(){
         return{
             spinner:false,
-            spinner2:false,
+            onEdit:true,
             service:{
                 title:'',
                 description:'',
@@ -82,6 +64,26 @@ export default {
             profile:""
             
             
+        }
+    },
+    watch:{
+        service: {
+            handler(newValue, oldValue) {
+                // Note: `newValue` will be equal to `oldValue` here
+                // on nested mutations as long as the object itself
+                // hasn't been replaced.
+                // alert(newValue)
+                // console.log(newValue);
+                const service={
+                    title:'',
+                    description:'',
+                    thumbnail:'',
+                    url:''
+                }
+                if(utilities.deepEqual(service,newValue)) this.onEdit = true
+                else this.onEdit = false
+            },
+            deep: true
         }
     },
     async mounted(){
@@ -97,60 +99,36 @@ export default {
             this.service.thumbnail = img64
         },
         async addService(){
-            try{
-                this.spinner = true
-                var api = this.store.api
-                api += this.store.loginQuery()
-                api += `&addService=1`
+            this.store.alertMessage('Are you sure ?').setAction(async () => {
+                try{
+                    this.spinner = true
+                    var api = this.store.api()
+                    api += this.store.loginQuery()
+                    api += `&addService=1`
 
-                var res = await fetch(api,{
-                    method:'POST',
-                    headers:{
-                        "Content-Type":"text/plain"
-                    },
-                    body:JSON.stringify(this.service)
-                })
+                    var res = await fetch(api,{
+                        method:'POST',
+                        headers:{
+                            "Content-Type":"text/plain"
+                        },
+                        body:JSON.stringify(this.service)
+                    })
 
-                res = await res.json()
-                console.log(res)
-                if(res == '201'){
-                    this.store.alertMessage('Meshe l7al')
+                    res = await res.json()
+                    console.log(res)
+                    if(res == '201'){
+                        this.store.alertMessage('Meshe l7al').endAction()
+                        this.spinner = false
+                        this.profile.services.push(this.service)
+                    }
+                }catch(err){
+                    console.log(err)
+                    this.store.alertMessage('Ma meshe l7al').endAction()
                     this.spinner = false
-                    this.profile.services.push(this.service)
                 }
-            }catch(err){
-                console.log(err)
-                this.store.alertMessage('Ma meshe l7al')
-                    this.spinner = false
-            }
+            })
         },
-
-        async removeService(){
-            var title = document.getElementById('selectedService').value
-            try{
-                
-                this.spinner2 = true
-                var api = this.store.api
-                api += this.store.loginQuery()
-                api += `&removeService=1&title=${title}`
-
-                var res = await fetch(api)
-                // console.log(res)
-                res = await res.json()
-                if(res == '200'){
-                    this.spinner2 = false
-                    this.store.alertMessage('Meshe l7al')
-                    // remove from list
-                    this.profile.services = this.profile.services.filter(s => s.title != title)
-                }
-            }catch(err){
-                console.log(err)
-                this.spinner2 = false
-                    this.store.alertMessage('Meshe l7al')
-
-            }
-            
-        }
+        
     }
 }
 </script>

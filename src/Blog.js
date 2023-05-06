@@ -89,6 +89,7 @@ class Blog {
                 <section v-if="blogSpinner" class="w-100 h-100 position-fixed start-0 top-0 z-3 bg-glass d-flex justify-content-center align-items-center">
                 <span class="spinner-grow text-heading"></span>
                 </section>
+                <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
                 <script src="../assets/js/vue.js" type="module"></script>
             </body>
