@@ -7,21 +7,21 @@
         
         <div class="row">
             <div class="col-12 col-md-2 pb-2">New Logo</div>
-            <div class="col-12 col-md-10"><input type="file" accept="Image/png" class="form-control"></div>
+            <div class="col-12 col-md-10 d-flex flex-column gap-2">
+                <img v-show="contact.logo" :src="contact.logo" alt="logo" class="img-fluid object-fit-cover" width="100">
+                <input type="file" @change="uploadLogo" accept="Image/png,Image/jpeg,Image/jpj" class="form-control">
+            </div>
         </div>
         <div class="row">
             <div class="col-12 col-md-2 pb-2">Heading</div>
-            <div class="col-12 col-md-10"><input type="text" class="form-control"></div>
+            <div class="col-12 col-md-10"><textarea v-model="contact.heading" class="form-control"></textarea></div>
         </div>
         <div class="row">
             <div class="col-12 col-md-2 pb-2">Bio</div>
-            <div class="col-12 col-md-10"><input type="text" class="form-control"></div>
+            <div class="col-12 col-md-10"><textarea v-model="contact.bio" class="form-control"></textarea></div>
         </div>
-        <div class="row">
-            <div class="col-12 col-md-2 pb-2">New Password</div>
-            <div class="col-12 col-md-10"><input type="text" class="form-control"></div>
-        </div>
-        <hr>
+        <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
+        <hr v-else class="my-3">
         <div class="row">
             <div class="col-12 col-md-2 pb-2">Email</div>
             <div class="col-12 col-md-10"><input v-model="contact.email" type="email" class="form-control"></div>
@@ -78,7 +78,9 @@ export default {
                 whatsapp:'',
                 linkedIn:'',
                 address:'',
-                openHours:''
+                logo:'',
+                heading:'',
+                bio:''
             }
         }
     },
@@ -94,7 +96,9 @@ export default {
                     whatsapp:'',
                     linkedIn:'',
                     address:'',
-                    openHours:''
+                    logo:false,
+                    heading:'',
+                    bio:''
                 }
                 if(utilities.deepEqual(contact,newValue)) this.onEdit = true
                 else this.onEdit = false
@@ -108,11 +112,11 @@ export default {
         save(){
             
             this.store.alertMessage('Are u sure ?').setAction(async ()=>{
-                await this.setContact()
+                await this.setProfile()
                 this.store.endAction()
             })
         },
-        async setContact(){
+        async setProfile(){
             try{
                 
                 this.spinner = true
@@ -136,6 +140,26 @@ export default {
                 this.store.alertMessage('Ma Meshe l7al')
                 this.spinner = false
             }
+        },
+        async uploadLogo(e){
+            var files = e.target.files
+            this.spinner = true
+            var files64 = [];// turn to b64
+            for(let i = 0 ; i < files.length ; i++){
+                files64.push({
+                    alt:`JURDI-Logo-${utilities.getCurrentDate()}`,
+                    src64: await utilities.file64(files[i])
+                    // src64: await utilities.optimizeImageQuality(await utilities.file64(files[i]),this.store.quality)
+                })
+            }
+            // hosting images
+            var api = this.store.api()
+            api += this.store.loginQuery()
+            api += `&uploadImagesToDrive=1&folderId=1e2g3ajgOnFv4-sljLYqRTq9s-7GLPcgH`
+            
+            var urls = await utilities.hostImages(api,files64)
+            this.spinner = false
+            this.contact.logo = urls[0].src
         }
     }
 }

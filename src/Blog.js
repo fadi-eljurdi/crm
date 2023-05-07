@@ -1,3 +1,4 @@
+import utilities from './utilities.js'
 class Blog {
     constructor(title, media,domain) {
         this.title = title
@@ -211,9 +212,9 @@ class Blog {
         htmlPageCopy = htmlPageCopy.replace('##blog_page_keywords', this.seoKeywords)
         htmlPageCopy = htmlPageCopy.replace('##blog_date', this.date)
         if(this.domain == 'www.jurdilaw.com'){
-            htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_url', `https://fadi-eljurdi.github.io/LLC/blogs/${(this.title).replaceAll(' ', '-')}.html`)
+            htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_url', `https://fadi-eljurdi.github.io/LLC/blogs/${utilities.titlePath(this.title)}.html`)
         }else{
-            htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_url', `https://fadi-eljurdi.github.io/app/blogs/${(this.title).replaceAll(' ', '-')}.html`)
+            htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_url', `https://fadi-eljurdi.github.io/app/blogs/${utilities.titlePath(this.title)}.html`)
         }
 
         htmlPageCopy = htmlPageCopy.replaceAll('##blog_thubnail', this.thubnail)

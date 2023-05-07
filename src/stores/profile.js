@@ -70,7 +70,7 @@ export const useProfile = defineStore('profile',{
             // this.showMessage = false
         },
         api(){
-            if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbxr6-5oVDiX22ZLuBRXr_G5XWly3J0jCKGWZ3a5GhpqOPpJyxSRtH-KHcqMx3B5Qeo/exec"
+            if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbxpXSX7z55eQ4ATlVyk0XSSceoSChDG7W2GWN0QzwB-VbWzr8AjiWeiDE6pelXTmJ1t/exec"
             return "https://script.google.com/macros/s/AKfycby5hmfNJiUO892Uv9UB45R5iVBfMJcd62C6E1prrgZbmx2cisppoKJAf68A7ywVr2p3/exec"
         },
 

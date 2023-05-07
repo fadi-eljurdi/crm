@@ -198,6 +198,21 @@ function noQuotes(str) {
     return str;
 }
 
+function titlePath(title){
+    return removeSpecialCharsExceptKeys(title.trim(),[' ','-']).replaceAll(' ','-').replace(/-+/g, '-').toLowerCase()
+}
+
+function removeSpecialCharsExceptKeys(str, keys) {
+    // Escape special characters in keys array to use in a regular expression
+    const escapedKeys = keys.map(key => key.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+  
+    // Regular expression to match all non-alphanumeric characters except keys
+    const regex = new RegExp(`[^a-zA-Z0-9${escapedKeys.join('')}]`, 'g');
+  
+    return str.replace(regex, '');
+}
+  
+
 function deepEqual(obj1, obj2) {
     if (obj1 === obj2) {
         return true;
@@ -234,5 +249,6 @@ export default {
     noQuotes,
     isArabic,
     deepEqual,
-    getYouTubeVideoDetails
+    getYouTubeVideoDetails,
+    titlePath
 }

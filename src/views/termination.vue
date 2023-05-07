@@ -11,7 +11,7 @@
         
         <div class="row g-3">
             <div class="col-12"> <h5 class="pop text-secondary">Remove Links</h5> </div>
-            <div v-for="link in profile.links" :key="link" class="col-12 col-md-6 col-lg-3">
+            <div v-for="link in profile.links" :key="link" class="col-12 col-md-6 col-lg-3 point">
                 <div @click="removeItem(link.text,'Links')" class="d-flex align-items-center gap-2 px-3 py-1 bg-light shadow-sm rounded ">
                     <span class="material-symbols-outlined text-primary">link</span>
                     <span class="text-secondary">{{link.text}}</span>
@@ -21,7 +21,7 @@
         
         <div class="row g-3">
             <div class="col-12"> <h5 class="pop text-secondary">Remove Blogs</h5> </div>
-            <div v-for="blog in profile.blogs" :key="blog" class="col-12 col-md-6 col-lg-3">
+            <div v-for="blog in profile.blogs" :key="blog" class="col-12 col-md-6 col-lg-3 point">
                 <div @click="removeItem(blog.title,'Blogs')" class="d-flex flex-column gap-2 bg-light shadow-sm rounded p-3">
                     <div class="ratio ratio-4x3">
                         <img :src="blog.thumbnail" :alt="blog.title" class="img-fluid object-fit-cover">
@@ -34,7 +34,7 @@
         </div>
         <div class="row g-3">
             <div class="col-12"> <h5 class="pop text-secondary">Remove Services</h5> </div>
-            <div v-for="service in profile.services" :key="service" class="col-12 col-md-6 col-lg-3">
+            <div v-for="service in profile.services" :key="service" class="col-12 col-md-6 col-lg-3 point">
                 <div @click="removeItem(service.title,'Services')" class="d-flex flex-column gap-2 bg-light shadow-sm rounded p-3">
                     <div class="ratio ratio-4x3">
                         <img :src="service.thumbnail" :alt="service.title" class="img-fluid object-fit-cover">
@@ -67,7 +67,7 @@ export default {
     data(){
         return{
             utilities,
-            profile:'',
+            profile:{},
             spinner:false,
             
         }
@@ -100,10 +100,12 @@ export default {
                     this.spinner = false
                 }else{
                     if(sheet == 'Blogs'){
+                        
+                        titleIndex = utilities.titlePath(titleIndex)
                         // remove from github
                         var repo = "app"
                         if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
-                        await this.removePageFromGithub(repo,'blogs',titleIndex.replaceAll(' ','-'),await this.getFileSha(repo,titleIndex.replaceAll(' ','-')))
+                        await this.removePageFromGithub(repo,'blogs',titleIndex,await this.getFileSha(repo,titleIndex))
 
 
                         // remove from sheets
@@ -113,9 +115,10 @@ export default {
                         this.spinner = false
                     }else{
                         
+                        titleIndex = utilities.titlePath(titleIndex)
                         var repo = "app"
                         if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
-                        await this.removePageFromGithub(repo,'blogs',titleIndex.replaceAll(' ','-'),await this.getFileSha(repo,titleIndex.replaceAll(' ','-')))
+                        await this.removePageFromGithub(repo,'blogs',titleIndex,await this.getFileSha(repo,titleIndex))
 
                         await this.removeItemFromSheets(titleIndex,sheet)
                         this.profile.services = this.profile.services.filter(s => s.title != titleIndex)
@@ -131,8 +134,17 @@ export default {
                 //    var api = this.store.apiQuery()
                     var api = this.store.api()
                     api += this.store.loginQuery()
-                    api += `&removeItem=1&titleIndex=${titleIndex}&sheetName=${sheet}`
-                    fetch(api).then(res=>res.json()).then(res=>{
+                    api += `&removeItem=1`
+                    fetch(api,{
+                        method:"POST",
+                        headers:{
+                            "Content-Type":"text/plain"
+                        },
+                        body:JSON.stringify({
+                            titleIndex,
+                            sheet
+                        })
+                    }).then(res=>res.json()).then(res=>{
                         if(res == '200') resolve(res)
                         reject(res)
                     })

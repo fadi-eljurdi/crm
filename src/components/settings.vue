@@ -109,16 +109,16 @@ export default {
         },
         saveSettings(){
             this.spinner = true
-            var api = this.store.api
+            var api = this.store.api()
             api += this.store.loginQuery()
             api += `&setSettings=1`
             if(this.store.settings.useYoutubeTitle){
                 // await this.setYoutubePrompt()
-                this.store.blog.title = this.store.youtube.title
+                this.store.blog.title += this.store.youtube.title
             }
             if(this.store.settings.useYoutubeDescription){
                 // await this.setYoutubePrompt()
-                this.store.blog.seoDescription = this.store.youtube.description
+                this.store.blog.seoDescription += this.store.youtube.description
             }
             fetch(api,{
                 method:"POST",

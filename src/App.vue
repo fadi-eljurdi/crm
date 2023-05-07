@@ -1,6 +1,9 @@
 <template>
 
-<section v-if="!isLogedIn" class="w-100 h-100 bg-light z-3 position-fixed top-0 start-0 d-flex justify-content-center align-items-center">
+<!-- <section class="w-100 h-100 bg-light z-3 position-fixed top-0 start-0 d-flex justify-content-center align-items-center">
+  <h5>CRM is under development ...</h5>
+</section> -->
+<section v-if="!isLogedIn" class="w-100 h-100 bg-light z-1 position-fixed top-0 start-0 d-flex justify-content-center align-items-center">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-lg-5">
@@ -59,7 +62,7 @@
           </span>
         </li>
         <li><hr class="dropdown-divider"></li>
-        <li><router-link class="dropdown-item" to="/contact">+Profile</router-link></li>
+        <li><router-link class="dropdown-item" to="/profile">+Profile</router-link></li>
         <li><router-link class="dropdown-item" to="/links">+Links</router-link></li>
         <li><router-link class="dropdown-item" to="/blogs">+Blogs</router-link></li>
         <li><router-link class="dropdown-item" to="/termination">-Termination</router-link></li>

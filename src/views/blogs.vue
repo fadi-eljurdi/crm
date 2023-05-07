@@ -84,8 +84,8 @@
             </div>
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">Title</div>
-                <div class="col-12 col-md-10 d-flex align-items-center">
-                    
+                <div class="col-12 col-md-10 d-flex flex-column gap-2">
+                    {{blogTitle}}
                     <div class="input-group">
                         <!-- <span class="input-group-text point" title="revise with GPT" @click="generateBlogTitle">
                             <span class="material-symbols-outlined">auto_awesome</span>
@@ -207,7 +207,8 @@ export default {
             return false
         },
         blogTitle(){
-            return this.store.blog.title.replaceAll('/','|')
+            // return this.store.blog.title.replaceAll('/','|')
+            return utilities.titlePath(this.store.blog.title)
         }
     },
     methods:{
@@ -232,7 +233,7 @@ export default {
             }else{
                 // select image > base64 > host > get url
                 var files = await utilities.openFiles() // we selected the files
-                console.log(files)
+                // console.log(files)
                 this.spinner = true
                 var files64 = [];// turn to b64
                 for(let i = 0 ; i < files.length ; i++){
@@ -281,7 +282,7 @@ export default {
             this.spinner = false
         },
         async generateBlog(){
-            const page = new Blog(this.blogTitle,JSON.stringify(this.store.blog.mediaBox),this.store.domain)
+            const page = new Blog(this.store.blog.title,JSON.stringify(this.store.blog.mediaBox),this.store.domain)
             page
             .setArticle(utilities.compile('editor'))
             .setIcon(this.store.blog.thumbnail)
@@ -334,7 +335,7 @@ export default {
                     },
                     body:JSON.stringify({
                         baas:this.store.blog.baas,
-                        title:this.blogTitle,
+                        title:this.store.blog.title,
                         description:this.store.blog.seoDescription,
                         thumbnail:this.store.blog.thumbnail,
                         url: this.store.blog.url
@@ -354,10 +355,10 @@ export default {
                 try{
                     this.spinner = true
                     await this.generateBlog()
-                    await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle.replaceAll(' ','-')))
+                    await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle))
 
-                    if(this.store.domain == 'www.jurdilaw.com') this.store.blog.url = `https://fadi-eljurdi.github.io/LLC/blogs/${(this.blogTitle).replaceAll(' ', '-')}.html`
-                    else this.store.blog.url = `https://fadi-eljurdi.github.io/app/blogs/${(this.blogTitle).replaceAll(' ', '-')}.html`
+                    if(this.store.domain == 'www.jurdilaw.com') this.store.blog.url = `https://fadi-eljurdi.github.io/LLC/blogs/${this.blogTitle}.html`
+                    else this.store.blog.url = `https://fadi-eljurdi.github.io/app/blogs/${this.blogTitle}.html`
                     // save to sheets
                     await this.saveBlog()
                     this.spinner = false
