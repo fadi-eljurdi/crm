@@ -1,18 +1,27 @@
 <template>
     <section class="container d-flex flex-column gap-2 my-5">
         <div class="row">
-            <h3 class="pop text-secondary fs-3">Manage your contact info</h3>
+            <h3 class="pop text-secondary fs-3">Manage your profile</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
-        <!-- <div class="row">
-            <div class="col-12 col-md-2 pb-2">Choose a domain</div>
-            <div class="col-12 col-md-10">
-                <select class="form-control" v-model="store.domain">
-                    <option value="www.jurdiconsult.media" selected>www.jurdiconsult.media</option>
-                    <option value="www.jurdilaw.com">www.jurdilaw.com</option>
-                </select>
-            </div>
-        </div> -->
+        
+        <div class="row">
+            <div class="col-12 col-md-2 pb-2">New Logo</div>
+            <div class="col-12 col-md-10"><input type="file" accept="Image/png" class="form-control"></div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-2 pb-2">Heading</div>
+            <div class="col-12 col-md-10"><input type="text" class="form-control"></div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-2 pb-2">Bio</div>
+            <div class="col-12 col-md-10"><input type="text" class="form-control"></div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-2 pb-2">New Password</div>
+            <div class="col-12 col-md-10"><input type="text" class="form-control"></div>
+        </div>
+        <hr>
         <div class="row">
             <div class="col-12 col-md-2 pb-2">Email</div>
             <div class="col-12 col-md-10"><input v-model="contact.email" type="email" class="form-control"></div>
@@ -32,10 +41,6 @@
         <div class="row">
             <div class="col-12 col-md-2 pb-2">Address</div>
             <div class="col-12 col-md-10"><input v-model="contact.address"  type="text" class="form-control"></div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-md-2 pb-2">Open hours</div>
-            <div class="col-12 col-md-10"><input v-model="contact.openHours"  type="text" class="form-control"></div>
         </div>
         <div class="row justify-content-center my-3">
             <div class="col-12 col-md-2">

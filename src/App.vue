@@ -33,22 +33,19 @@
         </span> -->
     </section>
     <nav class="pop d-none d-md-flex align-items-center gap-3">
-        <router-link to="/contact" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Contact</router-link>
-        <router-link to="/links" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Links</router-link>
-        <router-link to="/blogs" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Blog</router-link>
-        <!-- <router-link to="/services" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Services</router-link> -->
-        <router-link to="/termination" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">-Termination</router-link>
-            
-        <div class="d-none d-lg-flex gap-2 align-items-center ms-3">
-              <i class="bi bi-globe"></i>
-              <select class="form-select form-select-sm" v-model="store.domain">
-                <option value="www.jurdiconsult.media" selected>www.jurdiconsult.media</option>
-                <option value="www.jurdilaw.com">www.jurdilaw.com</option>
-              </select>
-        </div>
-        
-        
-        
+      <router-link to="/profile" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Profile</router-link>
+      <router-link to="/links" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Links</router-link>
+      <router-link to="/blogs" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Blog</router-link>
+      <!-- <router-link to="/services" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Services</router-link> -->
+      <router-link to="/termination" class="link-offset-2 link-offset-3-hover link-danger link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover">-Termination</router-link>
+          
+      <div class="d-none d-lg-flex gap-2 align-items-center ms-3">
+            <i class="bi bi-globe"></i>
+            <select class="form-select form-select-sm" v-model="store.domain">
+              <option value="www.jurdiconsult.media" selected>www.jurdiconsult.media</option>
+              <option value="www.jurdilaw.com">www.jurdilaw.com</option>
+            </select>
+      </div>
     </nav>
     
     <i class="bi bi-three-dots-vertical d-block d-md-none fs-3 text-secondary" type="button" data-bs-toggle="dropdown"></i>
@@ -62,10 +59,9 @@
           </span>
         </li>
         <li><hr class="dropdown-divider"></li>
-        <li><router-link class="dropdown-item" to="/contact">+Contact</router-link></li>
+        <li><router-link class="dropdown-item" to="/contact">+Profile</router-link></li>
         <li><router-link class="dropdown-item" to="/links">+Links</router-link></li>
         <li><router-link class="dropdown-item" to="/blogs">+Blogs</router-link></li>
-        <!-- <li><router-link class="dropdown-item" to="/services">+Services</router-link></li> -->
         <li><router-link class="dropdown-item" to="/termination">-Termination</router-link></li>
     </ul>
 </header>

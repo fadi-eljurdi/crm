@@ -10,6 +10,7 @@
   "dependencies": {
     "@grammarly/editor-sdk-vue": "^2.3.17",
     "pinia": "^2.0.32",
+    "sharp": "^0.32.1",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },

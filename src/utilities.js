@@ -19,6 +19,27 @@ function optimizeImageQuality(imageDataURI, quality) {
     });
 }
 
+// function optimizeImageQuality2(imageDataURI, quality) {
+//     return new Promise((resolve, reject) => {
+//         const img = new Image();
+//         img.onload = () => {
+//             const canvas = document.createElement('canvas');
+//             canvas.width = img.width;
+//             canvas.height = img.height;
+//             const ctx = canvas.getContext('2d');
+//             ctx.clearRect(0, 0, canvas.width, canvas.height); // clear the canvas
+//             ctx.drawImage(img, 0, 0);
+//             const optimizedImageDataURI = canvas.toDataURL('image/jpeg', quality);
+//             resolve(optimizedImageDataURI);
+//         };
+//         img.onerror = (err) => {
+//             reject(err);
+//         };
+//         img.src = imageDataURI;
+//     });
+// }
+
+
 function file64(path) {
     return new Promise((yes, no) => {
         try {

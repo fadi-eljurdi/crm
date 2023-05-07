@@ -238,7 +238,8 @@ export default {
                 for(let i = 0 ; i < files.length ; i++){
                     files64.push({
                         alt:`JURDI-Image-${utilities.getCurrentDate()}`,
-                        src64: await utilities.optimizeImageQuality(await utilities.file64(files[i]),this.store.quality)
+                        src64: await utilities.file64(files[i])
+                        // src64: await utilities.optimizeImageQuality(await utilities.file64(files[i]),this.store.quality)
                     })
                 }
                 console.log(files64);
@@ -271,7 +272,8 @@ export default {
             var array = []
             array.push({
                 alt:`JURDI-Thumbnail-${utilities.getCurrentDate()}`,
-                src64: await utilities.optimizeImageQuality(await utilities.file64(e.target.files[0]),this.store.quality)
+                src64: await utilities.file64(e.target.files[0])
+                // src64: await utilities.optimizeImageQuality(await utilities.file64(e.target.files[0]),this.store.quality)
             })
             var url = await utilities.hostImages(api,array)
             // console.log(url);

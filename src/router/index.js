@@ -6,13 +6,13 @@ const router = createRouter({
     
     {
       path: '/',
-      name: 'contact',
-      component: () => import('../views/contact.vue')
+      name: 'profile',
+      component: () => import('../views/profile.vue')
     },
     {
-      path: '/contact',
+      path: '/profile',
       name: 'home',
-      component: () => import('../views/contact.vue')
+      component: () => import('../views/profile.vue')
     },
     {
       path: '/links',
@@ -23,11 +23,6 @@ const router = createRouter({
       path: '/blogs',
       name: 'blogs',
       component: () => import('../views/blogs.vue')
-    },
-    {
-      path: '/services',
-      name: 'services',
-      component: () => import('../views/services.vue')
     },
     {
       path: '/termination',

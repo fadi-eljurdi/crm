@@ -45,8 +45,6 @@ export default {
                 url:''
             },
             spinner:false,
-            spinner2:false,
-            profile:'',
             onEdit:true
             
         }
@@ -91,21 +89,18 @@ export default {
                     res = await res.json()
                     console.log(res)
                     if(res == '200'){
-                        
-                        this.profile.links.push(data)
                         this.spinner = false
                         this.store.alertMessage('Meshe l7al').endAction()
                     }else{
                         
-                    this.spinner = false
-                    this.store.alertMessage('Ma Meshe l7al').endAction()
+                        this.spinner = false
+                        this.store.alertMessage('Ma Meshe l7al').endAction()
                     }
                 }catch(err){
                     console.log(err);
                     this.spinner = false
                     this.store.alertMessage('Ma Meshe l7al').endAction()
                 }
-                // this.store.endAction()
             })
        },
     },
