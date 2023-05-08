@@ -1,8 +1,8 @@
 <template>
 
-<!-- <section class="w-100 h-100 bg-light z-3 position-fixed top-0 start-0 d-flex justify-content-center align-items-center">
-  <h5>CRM is under development ...</h5>
-</section> -->
+<section v-if="devi" class="w-100 h-100 bg-light z-3 position-fixed top-0 start-0 d-flex justify-content-center align-items-center">
+  <h5 class="user-select-none">CRM is under <span @dblclick="devi = false">development</span> ...</h5>
+</section>
 <section v-if="!isLogedIn" class="w-100 h-100 bg-light z-1 position-fixed top-0 start-0 d-flex justify-content-center align-items-center">
   <div class="container">
     <div class="row justify-content-center">
@@ -83,6 +83,7 @@ export default {
   data(){
     return{
       utilities,
+      devi:true,
       username:'',
       password:'',
       isLogedIn:false,
