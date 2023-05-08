@@ -75,7 +75,7 @@ export const useProfile = defineStore('profile',{
             return this
         },
         api(){
-            if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbyidrvpdvlPVfB7llbE9liU222XX2urect--TZj1_fn8zZdSdwNYKOGAk3V-zkqH60e/exec"
+            if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbwHX3de7KVOP6t5wzGdcqOdapyL93_goxigPjI2evk51CBeyAcbxOsfwyxCuwZQoyus/exec"
             return "https://script.google.com/macros/s/AKfycby5hmfNJiUO892Uv9UB45R5iVBfMJcd62C6E1prrgZbmx2cisppoKJAf68A7ywVr2p3/exec"
         },
 

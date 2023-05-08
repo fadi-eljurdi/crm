@@ -93,40 +93,48 @@ export default {
             this.store.alertMessage(`Delete: ${titleIndex} ?`).setAction(async ()=>{
                 this.spinner = true
                 
-                if(sheet == "Links"){
-                    await this.removeItemFromSheets(titleIndex,sheet)
-                    this.profile.links = this.profile.links.filter(l => l.text != titleIndex)
-                    this.store.alertMessage('Meshe l7al').endAction()
-                    this.spinner = false
-                }else{
-                    if(sheet == 'Blogs'){
-                        
-                        // remove from github
-                        var repo = "app"
-                        if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
-                        await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
-
-
-                        // remove from sheets
+                try{
+                    if(sheet == "Links"){
                         await this.removeItemFromSheets(titleIndex,sheet)
-                        this.profile.blogs = this.profile.blogs.filter(b => b.title != titleIndex)
+                        this.profile.links = this.profile.links.filter(l => l.text != titleIndex)
                         this.store.alertMessage('Meshe l7al').endAction()
                         this.spinner = false
                     }else{
-                        
-                        var repo = "app"
-                        if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
-                        await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
+                        if(sheet == 'Blogs'){
+                            
+                            // remove from github
+                            var repo = "app"
+                            if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
+                            await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
 
-                        await this.removeItemFromSheets(titleIndex,sheet)
-                        this.profile.services = this.profile.services.filter(s => s.title != titleIndex)
-                        this.store.alertMessage('Meshe l7al').endAction()
-                        this.spinner = false
+
+                            // remove from sheets
+                            await this.removeItemFromSheets(titleIndex,sheet)
+                            this.profile.blogs = this.profile.blogs.filter(b => b.title != titleIndex)
+                            this.store.alertMessage('Meshe l7al').endAction()
+                            this.spinner = false
+                        }else{
+                            
+                            var repo = "app"
+                            if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
+                            await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
+
+                            await this.removeItemFromSheets(titleIndex,sheet)
+                            this.profile.services = this.profile.services.filter(s => s.title != titleIndex)
+                            this.store.alertMessage('Meshe l7al').endAction()
+                            this.spinner = false
+                        }
                     }
+                }catch(err){
+                    this.spinner = false
+                    console.log(err);
+                    this.store.alertMessage(err)
                 }
             })
         },
         removeItemFromSheets(titleIndex,sheet){
+            console.log(titleIndex);
+            console.log(sheet);
             return new Promise((resolve,reject)=>{
                 try{
                 //    var api = this.store.apiQuery()
