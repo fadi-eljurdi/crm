@@ -234,9 +234,31 @@ function deepEqual(obj1, obj2) {
     return true;
 }
 
+function convertGoogleDriveLink(link) {
+    const fileId = link.split("/")[5].split("?")[0];
+    return `https://drive.google.com/uc?id=${fileId}`;
+}
+  
+function checkNetwork() {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    
+    if (!navigator.onLine) {
+      alert("Offline");
+    } else if (connection && connection.effectiveType === "2g") {
+      alert("Weak network");
+    }
+}
+function getYouTubeThumbnailUrl(videoId) {
+    return `https://img.youtube.com/vi/${videoId}/default.jpg`;
+  }
+  
+  
 
 export default {
     optimizeImageQuality,
+    getYouTubeThumbnailUrl,
+    checkNetwork,
+    convertGoogleDriveLink,
     file64,
     timo,
     focus,

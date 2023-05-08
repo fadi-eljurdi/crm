@@ -8,8 +8,15 @@
         <div class="row">
             <div class="col-12 col-md-2 pb-2">New Logo</div>
             <div class="col-12 col-md-10 d-flex flex-column gap-2">
-                <img v-show="contact.logo" :src="contact.logo" alt="logo" class="img-fluid object-fit-cover" width="100">
+                <img v-show="contact.logo" :src="contact.logo" alt="logo" class="img-fluid object-fit-cover rounded" width="100">
                 <input type="file" @change="uploadLogo" accept="Image/png,Image/jpeg,Image/jpj" class="form-control">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-2 pb-2">Google drive video URL</div>
+            <div class="col-12 col-md-10 d-flex flex-column gap-2">
+                <video v-show="video" :src="video" width="100" class="img-fluid rounded"></video>
+                <input type="text" class="form-control" v-model="contact.video">
             </div>
         </div>
         <div class="row">
@@ -80,7 +87,8 @@ export default {
                 address:'',
                 logo:'',
                 heading:'',
-                bio:''
+                bio:'',
+                video:''
             }
         }
     },
@@ -98,7 +106,8 @@ export default {
                     address:'',
                     logo:false,
                     heading:'',
-                    bio:''
+                    bio:'',
+                    video:''
                 }
                 if(utilities.deepEqual(contact,newValue)) this.onEdit = true
                 else this.onEdit = false
@@ -106,6 +115,19 @@ export default {
                 
             },
             deep: true
+        }
+    },
+    computed:{
+        video(){
+            if(this.contact.video != ''){
+                try{
+                   return utilities.convertGoogleDriveLink(this.contact.video)
+                }catch(err){
+                   console.log(err);
+                   this.store.alertMessage('Invalid Drive URL')
+                }
+            }
+            
         }
     },
     methods:{
@@ -160,7 +182,7 @@ export default {
             var urls = await utilities.hostImages(api,files64)
             this.spinner = false
             this.contact.logo = urls[0].src
-        }
+        },
     }
 }
 </script>

@@ -38,7 +38,7 @@ export const useProfile = defineStore('profile',{
             
         },
         loginQuery(){
-            return `?username=${this.username}&password=${this.password}`
+            return `?username=${encodeURIComponent(this.username)}&password=${encodeURIComponent(this.password)}`
         },
         getProfile(){
             return new Promise(async (res,rej)=>{
@@ -70,7 +70,7 @@ export const useProfile = defineStore('profile',{
             // this.showMessage = false
         },
         api(){
-            if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbxpXSX7z55eQ4ATlVyk0XSSceoSChDG7W2GWN0QzwB-VbWzr8AjiWeiDE6pelXTmJ1t/exec"
+            if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbyidrvpdvlPVfB7llbE9liU222XX2urect--TZj1_fn8zZdSdwNYKOGAk3V-zkqH60e/exec"
             return "https://script.google.com/macros/s/AKfycby5hmfNJiUO892Uv9UB45R5iVBfMJcd62C6E1prrgZbmx2cisppoKJAf68A7ywVr2p3/exec"
         },
 

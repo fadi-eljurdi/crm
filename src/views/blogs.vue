@@ -50,7 +50,7 @@
                 <div class="col-12 col-md-10 d-flex flex-wrap gap-2">
                     <div style="width:100px" v-for="m in store.blog.mediaBox" :key="m" @dblclick="mediaPop(m)">
                         <section class="ratio ratio-16x9" v-if="m.type == 'youtube'">
-                            <img :src="`https://img.youtube.com/vi/${m.src}/maxresdefault.jpg`" alt="youtube" class="img-fluid object-fit-cover" >
+                            <img :src="`https://img.youtube.com/vi/${m.src}/default.jpg`" alt="youtube" class="img-fluid object-fit-cover" >
                         </section>
                         <section v-if="m.type == 'image'" >
                             <div class="ratio ratio-16x9"> 
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 col-md-2 pb-2">Blog type {{store.blog.baas}}</div>
+                <div class="col-12 col-md-2 pb-2">Blog type</div>
                 <div class="col-12 col-md-10 d-flex flex-column gap-2">
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" v-model="store.blog.baas" >
@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-12 col-md-2 pb-2">Thumbnail</div>
                 <div class="col-12 col-md-10 d-flex flex-column gap-2">
                     <div style="width:100px" v-if="store.blog.thumbnail">
@@ -81,7 +81,7 @@
                     </div>
                     <input accept="image/png, image/jpeg, image/jpeg" @change="generateThumbnail" type="file" class="form-control">
                 </div>
-            </div>
+            </div> -->
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">Title</div>
                 <div class="col-12 col-md-10 d-flex flex-column gap-2">
@@ -218,16 +218,13 @@ export default {
                 if(url !== null){
                     this.store.blog.mediaBox.push(new Media('Youtube video','youtube',url))
                     this.store.youtube = await utilities.getYouTubeVideoDetails(url)
-                    // this.store.blog.title = this.store.youtube.title
-                    // this.store.blog.seoDescription = this.store.youtube.description
-                    // console.log();
                     if(this.store.settings.useYoutubeTitle){
                         // await this.setYoutubePrompt()
-                        this.store.blog.title = this.store.youtube.title
+                        this.store.blog.title += this.store.youtube.title
                     }
                     if(this.store.settings.useYoutubeDescription){
                         // await this.setYoutubePrompt()
-                        this.store.blog.seoDescription = this.store.youtube.description
+                        this.store.blog.seoDescription += this.store.youtube.description
                     }
                 }
             }else{
@@ -266,20 +263,25 @@ export default {
             utilities.parseHTML('blogArticle',utilities.compile('editor'))
         },
         async generateThumbnail(e){
-            this.spinner = true
-            var api = this.store.api()
-            api += this.store.loginQuery()
-            api += `&uploadImagesToDrive=1&folderId=1Z73hzjMWM8U3tsuiULJP6UA1eQY_cHJV`
-            var array = []
-            array.push({
-                alt:`JURDI-Thumbnail-${utilities.getCurrentDate()}`,
-                src64: await utilities.file64(e.target.files[0])
-                // src64: await utilities.optimizeImageQuality(await utilities.file64(e.target.files[0]),this.store.quality)
-            })
-            var url = await utilities.hostImages(api,array)
-            // console.log(url);
-            this.store.blog.thumbnail = url[0].src
-            this.spinner = false
+            // this.spinner = true
+            // var api = this.store.api()
+            // api += this.store.loginQuery()
+            // api += `&uploadImagesToDrive=1&folderId=1Z73hzjMWM8U3tsuiULJP6UA1eQY_cHJV`
+            // var array = []
+            // array.push({
+            //     alt:`JURDI-Thumbnail-${utilities.getCurrentDate()}`,
+            //     src64: await utilities.file64(e.target.files[0])
+            //     // src64: await utilities.optimizeImageQuality(await utilities.file64(e.target.files[0]),this.store.quality)
+            // })
+            // var url = await utilities.hostImages(api,array)
+            // this.store.blog.thumbnail = url[0].src
+            // this.spinner = false
+            var media = this.store.blog.mediaBox[0]
+            if(media.type == 'youtube'){
+                this.store.blog.thumbnail = utilities.getYouTubeThumbnailUrl(media.src)
+            }else{
+                this.store.blog.thumbnail = media.src
+            }
         },
         async generateBlog(){
             const page = new Blog(this.store.blog.title,JSON.stringify(this.store.blog.mediaBox),this.store.domain)

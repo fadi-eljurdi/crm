@@ -39,9 +39,8 @@
       <router-link to="/profile" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Profile</router-link>
       <router-link to="/links" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Links</router-link>
       <router-link to="/blogs" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Blog</router-link>
-      <!-- <router-link to="/services" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Services</router-link> -->
+      <router-link to="/settings" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Settings</router-link>
       <router-link to="/termination" class="link-offset-2 link-offset-3-hover link-danger link-underline-danger link-underline-opacity-0 link-underline-opacity-75-hover">-Termination</router-link>
-          
       <div class="d-none d-lg-flex gap-2 align-items-center ms-3">
             <i class="bi bi-globe"></i>
             <select class="form-select form-select-sm" v-model="store.domain">
@@ -98,7 +97,8 @@ export default {
       try{
         this.loginSpinner = true
         var api = this.store.api()
-        api += `?username=${this.username}&password=${this.password}`
+        api += `?username=${encodeURIComponent(this.username)}&password=${encodeURIComponent(this.password)}`
+        // console.log(api);
         var res = await fetch(api)
         res = await res.json()
         // console.log(res)
@@ -119,6 +119,7 @@ export default {
     }
   },
   mounted(){
+    utilities.checkNetwork()
   }
 }
 </script>
