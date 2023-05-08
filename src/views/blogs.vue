@@ -25,10 +25,10 @@
                     </button>
                     <button @click="runGPT" :disabled="spinner || store.blog.title.length == 0" class="btn btn-sm btn-outline-dark d-none d-lg-block">AI-Generator</button>
 
-                    <!-- <button @click="translate" data-bs-toggle="modal" :disabled="spinner" class="btn btn-sm btn-outline-dark d-flex justify-content-center align-items-center d-lg-none">
-                        <span class="material-symbols-outlined fs-3">translate</span>
+                    <button @click="clearBlog"  :disabled="spinner" class="btn btn-sm btn-outline-dark d-flex justify-content-center align-items-center d-lg-none">
+                        <span class="material-symbols-outlined fs-3">clear</span>
                     </button>
-                    <button @click="translate" data-bs-toggle="modal" :disabled="spinner"  class="btn btn-sm btn-outline-dark d-none d-lg-block">Translate</button> -->
+                    <button @click="clearBlog" :disabled="spinner"  class="btn btn-sm btn-outline-dark d-none d-lg-block">clear page</button>
 
                     <button @click="previewBlog" :disabled="spinner" class="btn btn-sm btn-outline-dark d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">preview</span>
@@ -130,7 +130,7 @@
                 <div class="col-12 col-md-2 pb-2">Article</div>
                 <div class="col-12 col-md-10">
                     <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
-                    <p contenteditable @focus="alignRight('editor')" id="editor" class="form-control pop text-secondary" style="overflow: auto; resize: vertical; min-height:500px;height:fit-content;" ></p>
+                    <p contenteditable @focus="alignRight('editor')" id="editor" class="form-control pop text-secondary py-4" style="overflow: auto; resize: vertical; min-height:500px;height:fit-content;" ></p>
                     </GrammarlyEditorPlugin>
                 </div>
             </div>
@@ -141,7 +141,7 @@
         
         <div class="row justify-content-center my-5">
             <div class="col-12 col-lg-8">
-                <button class="w-100 btn btn-outline-secondary btn-sm" @click="preview = !preview">back</button>
+                <button class="w-100 btn btn-outline-secondary btn-sm" @click="preview = !preview">back to blogs</button>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -170,13 +170,17 @@
         <div class="row justify-content-center">
             <article class="col-12 col-lg-8">
                 <div v-show="!showTranslation" id="original">
-                    <h1>{{store.blog.title}}</h1>
+                    <h1 class="text-primary">{{store.blog.title}}</h1>
                     <div id="blogArticle"></div>
                 </div>
-                <div v-show="showTranslation" id="showTranslation"></div>
-                <hr>
-                <u v-show="!showTranslation" @click="translate" class="point">see translation</u>
+                <div v-show="showTranslation" id="showTranslation" dir="rtl" class="arb"></div>
+                
+                <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
+                <hr v-else class="my-3">
+                <u v-show="!showTranslation" @click="translate" class="point"> see translation</u>
                 <u v-show="showTranslation" @click="showTranslation = !showTranslation" class="point">see original</u>
+                <i class="bi bi-dot mx-1"></i>
+                <u @click="preview = !preview" class="point" >back to blogs</u>
             </article>
             
         </div>
@@ -217,7 +221,7 @@ export default {
     computed:{
 
         validateInput(){
-            if(this.store.blog.thumbnail && this.store.blog.title && this.store.blog.seoDescription && this.store.blog.seoKeywords && (this.store.blog.mediaBox.length > 0) && (document.getElementById('editor').innerText.length > 0)) return true
+            if(this.store.blog.title && this.store.blog.seoDescription && this.store.blog.seoKeywords && (this.store.blog.mediaBox.length >= 1)) return true
             return false
         },
         blogTitle(){
@@ -226,6 +230,22 @@ export default {
         }
     },
     methods:{
+        clearBlog(){
+            this.store.alertMessage('Start new blog ?').setAction(()=>{
+                this.store.blog = {
+                    baas:false,
+                    title:'',
+                    seoDescription:'',
+                    seoKeywords:'',
+                    thumbnail:'',
+                    url:'',
+                    mediaBox:[],
+                    article:''
+                }
+                document.getElementById('editor').innerText = ''
+                this.store.endAction().closeAction()
+            })
+        },
         async addMedia(type){
             if(type == 'youtube'){
                 const url = prompt('Enter the youtube URL')
@@ -370,6 +390,7 @@ export default {
             this.store.alertMessage(`Publish blog to ${this.store.domain} ?`).setAction(async ()=>{
                 try{
                     this.spinner = true
+                    this.generateThumbnail()
                     await this.generateBlog()
                     await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle))
 
@@ -378,7 +399,7 @@ export default {
                     // save to sheets
                     await this.saveBlog()
                     this.spinner = false
-                    this.store.alertMessage(`Meshe l7al : ${this.store.blog.url}`).endAction()
+                    this.store.alertMessage(`${this.store.blog.url}`).endAction()
                 }catch(err){
                     console.log(err);
                     this.spinner = false
@@ -497,28 +518,33 @@ export default {
         
         async runGPT(){
             
-            
-            this.spinner = true
-            var content = await this.generateArticle()
-            document.getElementById('editor').innerText = content
-            // this.alignRight('editor')
-            this.store.blog.article += content
+            try {
+                this.spinner = true
+                var content = await this.generateArticle()
+                document.getElementById('editor').innerText = content
+                // this.alignRight('editor')
+                this.store.blog.article += content
 
-            if(this.store.settings.generateSEOKeywords) {
-                content = await this.generateSEOKeywords()
-                this.store.blog.seoKeywords = utilities.noQuotes(content)
-                // this.alignRight('blog-seo-keywords')
+                if(this.store.settings.generateSEOKeywords) {
+                    content = await this.generateSEOKeywords()
+                    this.store.blog.seoKeywords = utilities.noQuotes(content)
+                    // this.alignRight('blog-seo-keywords')
+                }
+                if(this.store.settings.generateTitle) {
+                    content = await this.generateBlogTitle()
+                    this.store.blog.title = utilities.noQuotes(content)
+                }
+                if(this.store.settings.generateSEODescription) {
+                    content = await this.generateSEODescription()
+                    this.store.blog.seoDescription = utilities.noQuotes(content)
+                    // this.alignRight('blog-seo-description')
+                }
+                this.spinner = false
+            }catch(err){
+                
+                this.spinner = false
+                this.store.alertMessage(err)
             }
-            if(this.store.settings.generateTitle) {
-                content = await this.generateBlogTitle()
-                this.store.blog.title = utilities.noQuotes(content)
-            }
-            if(this.store.settings.generateSEODescription) {
-                content = await this.generateSEODescription()
-                this.store.blog.seoDescription = utilities.noQuotes(content)
-                // this.alignRight('blog-seo-description')
-            }
-            this.spinner = false
         },
         alignRight(id){
             if(document.getElementById(id).tagName === 'INPUT' || document.getElementById(id).tagName === 'TEXTAREA'){
@@ -538,6 +564,7 @@ export default {
         },
         async translate(){
             this.showTranslation = true
+            this.spinner = true
             var api = this.store.api()
             api += `?translate=1`
             var res = await fetch(api,{
@@ -555,7 +582,7 @@ export default {
             console.log(res);
             document.getElementById('showTranslation').innerHTML = (utilities.fixClosingTags(res)).replaceAll(' & nbsp؛ ',' ')
 
-            
+            this.spinner = false
         }
     },
     beforeUnmount(){

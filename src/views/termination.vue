@@ -101,11 +101,10 @@ export default {
                 }else{
                     if(sheet == 'Blogs'){
                         
-                        titleIndex = utilities.titlePath(titleIndex)
                         // remove from github
                         var repo = "app"
                         if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
-                        await this.removePageFromGithub(repo,'blogs',titleIndex,await this.getFileSha(repo,titleIndex))
+                        await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
 
 
                         // remove from sheets
@@ -115,10 +114,9 @@ export default {
                         this.spinner = false
                     }else{
                         
-                        titleIndex = utilities.titlePath(titleIndex)
                         var repo = "app"
                         if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
-                        await this.removePageFromGithub(repo,'blogs',titleIndex,await this.getFileSha(repo,titleIndex))
+                        await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
 
                         await this.removeItemFromSheets(titleIndex,sheet)
                         this.profile.services = this.profile.services.filter(s => s.title != titleIndex)

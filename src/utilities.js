@@ -249,7 +249,7 @@ function checkNetwork() {
     }
 }
 function getYouTubeThumbnailUrl(videoId) {
-    return `https://img.youtube.com/vi/${videoId}/default.jpg`;
+    return `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
 }
   
 function fixClosingTags(htmlString) {
