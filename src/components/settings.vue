@@ -20,7 +20,7 @@
       </div>
       <div class="row">
         
-        <h6 class="fs-6 text-primary">Reset credentials {{cred}}</h6>
+        <h6 class="fs-6 text-primary">Reset credentials</h6>
         <div class="col-12 col-lg-5">
             <input type="text" v-model="cred.username" placeholder="username" class="form-control form-control-sm">
         </div>

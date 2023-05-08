@@ -8,31 +8,35 @@
             <nav class="w-100 py-2 d-flex justify-content-between align-items-center font-monospace">
                 <div class="d-flex gap-2">
                                         
-                    <button @click="addMedia('youtube')" :disabled="spinner" class="btn btn-sm btn-outline-danger d-flex justify-content-center align-items-center d-lg-none">
+                    <button @click="addMedia('youtube')" :disabled="spinner" class="btn btn-sm btn-outline-dark d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">youtube_activity</span>
                     </button>
-                    <button @click="addMedia('youtube')" :disabled="spinner"  class="btn btn-sm btn-outline-danger d-none d-lg-block">+Youtube</button>
+                    <button @click="addMedia('youtube')" :disabled="spinner"  class="btn btn-sm btn-outline-dark d-none d-lg-block">+Youtube</button>
 
 
-                    <button @click="addMedia('image')" :disabled="spinner" class="btn btn-sm btn-outline-info d-flex justify-content-center align-items-center d-lg-none">
+                    <button @click="addMedia('image')" :disabled="spinner" class="btn btn-sm btn-outline-dark d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">add_photo_alternate</span>
                     </button>
-                    <button @click="addMedia('image')" :disabled="spinner"  class="btn btn-sm btn-outline-info d-none d-lg-block">+Image</button>
+                    <button @click="addMedia('image')" :disabled="spinner"  class="btn btn-sm btn-outline-dark d-none d-lg-block">+Image</button>
 
 
-                    <button @click="runGPT" :disabled="spinner || store.blog.title.length == 0" class="btn btn-sm btn-outline-success d-flex justify-content-center align-items-center d-lg-none">
+                    <button @click="runGPT" :disabled="spinner || store.blog.title.length == 0" class="btn btn-sm btn-outline-dark d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">auto_awesome</span>
                     </button>
-                    <button @click="runGPT" :disabled="spinner || store.blog.title.length == 0" class="btn btn-sm btn-outline-success d-none d-lg-block">AI-Generator</button>
+                    <button @click="runGPT" :disabled="spinner || store.blog.title.length == 0" class="btn btn-sm btn-outline-dark d-none d-lg-block">AI-Generator</button>
 
+                    <!-- <button @click="translate" data-bs-toggle="modal" :disabled="spinner" class="btn btn-sm btn-outline-dark d-flex justify-content-center align-items-center d-lg-none">
+                        <span class="material-symbols-outlined fs-3">translate</span>
+                    </button>
+                    <button @click="translate" data-bs-toggle="modal" :disabled="spinner"  class="btn btn-sm btn-outline-dark d-none d-lg-block">Translate</button> -->
 
-                    <button @click="previewBlog" :disabled="spinner" class="btn btn-sm btn-outline-primary d-flex justify-content-center align-items-center d-lg-none">
+                    <button @click="previewBlog" :disabled="spinner" class="btn btn-sm btn-outline-dark d-flex justify-content-center align-items-center d-lg-none">
                         <span class="material-symbols-outlined fs-3">preview</span>
                     </button>
-                    <button :disabled="spinner" @click="previewBlog" class="btn btn-sm btn-outline-primary d-none d-lg-block">Preview changes</button>
+                    <button @click="previewBlog" :disabled="spinner"  class="btn btn-sm btn-outline-dark d-none d-lg-block">Preview changes</button>
 
-                    <button @click="showSettings = !showSettings" :disabled="spinner" class="btn btn-sm btn-outline-secondary d-flex justify-content-center align-items-center d-lg-none"><span class="material-symbols-outlined fs-3">settings</span></button>
-                    <button @click="showSettings = !showSettings" :disabled="spinner" class="btn btn-sm btn-outline-secondary d-none d-lg-block">Settings</button>
+                    <!-- <button @click="showSettings = !showSettings" :disabled="spinner" class="btn btn-sm btn-outline-secondary d-flex justify-content-center align-items-center d-lg-none"><span class="material-symbols-outlined fs-3">settings</span></button>
+                    <button @click="showSettings = !showSettings" :disabled="spinner" class="btn btn-sm btn-outline-secondary d-none d-lg-block">Settings</button> -->
 
                 </div>
                 
@@ -85,7 +89,7 @@
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">Title</div>
                 <div class="col-12 col-md-10 d-flex flex-column gap-2">
-                    {{blogTitle}}
+                    
                     <div class="input-group">
                         <!-- <span class="input-group-text point" title="revise with GPT" @click="generateBlogTitle">
                             <span class="material-symbols-outlined">auto_awesome</span>
@@ -134,6 +138,12 @@
         <settings v-if="showSettings"><button class="w-100 btn btn-sm btn-outline-secondary" @click="showSettings = !showSettings">back</button></settings>
     </section>
     <section v-show="preview" class="container my-5">
+        
+        <div class="row justify-content-center my-5">
+            <div class="col-12 col-lg-8">
+                <button class="w-100 btn btn-outline-secondary btn-sm" @click="preview = !preview">back</button>
+            </div>
+        </div>
         <div class="row justify-content-center">
             <figure class="col-12 col-lg-8">
                 
@@ -154,20 +164,21 @@
                     <div class="swiper-button-prev"></div>
                     <div class="swiper-pagination"></div>
                     
-                            <!-- <i class="bi bi-trash"></i> -->
                 </div>
             </figure>
         </div>
         <div class="row justify-content-center">
-            <article  class="col-12 col-lg-8">
-                <h1 class="text-primary fs-1">{{store.blog.title}}</h1>
-                <div id="blogArticle" class="text-secondary"></div>
+            <article class="col-12 col-lg-8">
+                <div v-show="!showTranslation" id="original">
+                    <h1>{{store.blog.title}}</h1>
+                    <div id="blogArticle"></div>
+                </div>
+                <div v-show="showTranslation" id="showTranslation"></div>
+                <hr>
+                <u v-show="!showTranslation" @click="translate" class="point">see translation</u>
+                <u v-show="showTranslation" @click="showTranslation = !showTranslation" class="point">see original</u>
             </article>
-        </div>
-        <div class="row justify-content-center my-5">
-            <div class="col-12 col-lg-8">
-                <button class="w-100 btn btn-secondary btn-sm" @click="preview = !preview">back</button>
-            </div>
+            
         </div>
     </section>
     
@@ -175,6 +186,8 @@
     <message v-show="store.showMessage" :title="store.theMessage" :callback="store.callback" :spinner="spinner">
         <button class="btn btn-outline-light btn-sm" @click="store.showMessage = !store.showMessage">close</button>
     </message>
+    
+    
 </template>
 <script>
 import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-vue'
@@ -197,6 +210,7 @@ export default {
             spinner:false,
             utilities,
             showSettings:false,
+            showTranslation:false
             
         }
     },
@@ -521,6 +535,27 @@ export default {
                     document.getElementById(id).dir = 'ltr'
                 }
             }
+        },
+        async translate(){
+            this.showTranslation = true
+            var api = this.store.api()
+            api += `?translate=1`
+            var res = await fetch(api,{
+                method:"POST",
+                headers:{
+                    "Content-Type":"text/plain",
+                },
+                body:JSON.stringify({
+                    text:document.getElementById('original').innerHTML,
+                    source:'en',
+                    target:'ar'
+                })
+            })
+            res = await res.json()
+            console.log(res);
+            document.getElementById('showTranslation').innerHTML = (utilities.fixClosingTags(res)).replaceAll(' & nbsp؛ ',' ')
+
+            
         }
     },
     beforeUnmount(){

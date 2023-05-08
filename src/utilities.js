@@ -250,12 +250,16 @@ function checkNetwork() {
 }
 function getYouTubeThumbnailUrl(videoId) {
     return `https://img.youtube.com/vi/${videoId}/default.jpg`;
-  }
+}
   
-  
+function fixClosingTags(htmlString) {
+    const regex = /<\/\s*(\w+)\s*>/g;
+    return htmlString.replace(regex, "</$1>");
+}
 
 export default {
     optimizeImageQuality,
+    fixClosingTags,
     getYouTubeThumbnailUrl,
     checkNetwork,
     convertGoogleDriveLink,
