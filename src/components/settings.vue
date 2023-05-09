@@ -64,12 +64,12 @@
                     generateTitle with Chat GPT
                 </label>
             </div>
-            <div class="form-check">
+            <!-- <div class="form-check">
                 <input class="form-check-input" type="checkbox" v-model="store.settings.generateSEOKeywords" >
                 <label class="form-check-label" for="flexCheckChecked">
                     generateSEOKeywords with Chat GPT
                 </label>
-            </div>
+            </div> -->
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" v-model="store.settings.generateSEODescription" >
                 <label class="form-check-label" for="flexCheckChecked">

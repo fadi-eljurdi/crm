@@ -3,6 +3,7 @@
         <div class="row">
             <h3 class="pop text-secondary fs-3">Create new blog</h3>
             <p class="text-secondary fs-small">Craft compelling blog posts in minutes with our powerful and streamlined blog creation software</p>
+            
         </div>
         <div class="row my-3">
             <nav class="w-100 py-2 d-flex justify-content-between align-items-center font-monospace">
@@ -50,7 +51,7 @@
         <hr v-else class="my-3">
         <section class="d-flex flex-column gap-2">
             <div class="row">
-                <div class="col-12 col-md-2 pb-2" @click="setYoutubePrompt">Media</div>
+                <div class="col-12 col-md-2 pb-2" @click="setYoutubePrompt">1. Media <strong class="text-danger" v-show="store.blog.mediaBox.length == 0">*</strong></div>
                 <div class="col-12 col-md-10 d-flex flex-wrap gap-2">
                     <div style="width:100px" v-for="m in store.blog.mediaBox" :key="m" @dblclick="mediaPop(m)">
                         <section class="ratio ratio-16x9" v-if="m.type == 'youtube'">
@@ -65,7 +66,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 col-md-2 pb-2">Blog type</div>
+                <div class="col-12 col-md-2 pb-2">2. Blog type</div>
                 <div class="col-12 col-md-10 d-flex flex-column gap-2">
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" v-model="store.blog.baas" >
@@ -87,7 +88,7 @@
                 </div>
             </div> -->
             <div class="row">
-                <div class="col-12 col-md-2 pb-2">Title</div>
+                <div class="col-12 col-md-2 pb-2">3. Title <strong class="text-danger" v-show="store.blog.title.length == 0">*</strong></div>
                 <div class="col-12 col-md-10 d-flex flex-column gap-2">
                     
                     <div class="input-group">
@@ -101,20 +102,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 col-md-2 pb-2">SEO - Description</div>
-                <div class="col-12 col-md-10">
-                    <div class="input-group">
-                        <!-- <span class="input-group-text point" title="revise with GPT" @click="generateSEODescription">
-                            <span class="material-symbols-outlined">auto_awesome</span>
-                        </span> -->
-                        <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
-                        <textarea  autocomplete="off"  @focus="alignRight('blog-seo-description')" id="blog-seo-description" v-model="store.blog.seoDescription" rows="4" type="text" class="form-control"></textarea>
-                        </GrammarlyEditorPlugin>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-2 pb-2">SEO - Keywords</div>
+                <div class="col-12 col-md-2 pb-2">4. SEO - Keywords <strong class="text-danger" v-show="store.blog.seoKeywords.length == 0">*</strong></div>
                 <div class="col-12 col-md-10">
                     <div class="input-group">
                         <!-- <span class="input-group-text point" title="revise with GPT" @click="generateSEOKeywords">
@@ -126,8 +114,21 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12 col-md-2 pb-2">5. SEO - Description <strong class="text-danger" v-show="store.blog.seoDescription.length == 0">*</strong></div>
+                <div class="col-12 col-md-10">
+                    <div class="input-group">
+                        <!-- <span class="input-group-text point" title="revise with GPT" @click="generateSEODescription">
+                            <span class="material-symbols-outlined">auto_awesome</span>
+                        </span> -->
+                        <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
+                        <textarea  autocomplete="off"  @focus="alignRight('blog-seo-description')" id="blog-seo-description" v-model="store.blog.seoDescription" rows="4" type="text" class="form-control"></textarea>
+                        </GrammarlyEditorPlugin>
+                    </div>
+                </div>
+            </div>
             <div class="row mb-5">
-                <div class="col-12 col-md-2 pb-2">Article</div>
+                <div class="col-12 col-md-2 pb-2">6. Article</div>
                 <div class="col-12 col-md-10">
                     <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
                     <p contenteditable @focus="alignRight('editor')" id="editor" class="form-control pop text-secondary py-4" style="overflow: auto; resize: vertical; min-height:500px;height:fit-content;" ></p>
@@ -416,11 +417,15 @@ export default {
         async generateArticle(){
             return new Promise(async (resolve,reject) => {
                 try{
-                    var description = ''
-                    if(this.store.settings.useYoutubeDescription){
-                        description = `instead of "${this.store.blog.seoDescription}"`
+                    // var description = ''
+                    // if(this.store.settings.useYoutubeDescription){
+                    //     description = `using these keywords "${this.store.blog.seoKeywords}"`
+                    // }
+                    var useKeywords = ''
+                    if(this.store.blog.seoKeywords.length > 0){
+                        useKeywords = `using these keywords "${this.store.blog.seoKeywords}" `
                     }
-                    const prompt = `generate a ${this.store.settings.words} words blog about "${this.store.blog.title}" ${description} and considering these rules "${this.store.settings.rules.toString()}"`
+                    const prompt = `generate a ${this.store.settings.words} words blog about "${this.store.blog.title}" ${useKeywords}and considering these rules "${this.store.settings.rules.toString()}"`
                     console.log(prompt);
                     const OPENAI_API_KEY = this.store.gptToken
                     var res = await fetch("https://api.openai.com/v1/chat/completions", {

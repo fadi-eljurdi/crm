@@ -75,7 +75,9 @@ export default {
     computed:{
         domain(){
             return this.store.domain
-        }
+        },
+        
+
     },
     watch:{
         domain: {
