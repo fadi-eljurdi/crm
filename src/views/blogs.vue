@@ -35,9 +35,8 @@
                         <span class="material-symbols-outlined fs-3">preview</span>
                     </button>
                     <button @click="previewBlog" :disabled="spinner"  class="btn btn-sm btn-outline-dark d-none d-lg-block">Preview changes</button>
-
-                    <!-- <button @click="showSettings = !showSettings" :disabled="spinner" class="btn btn-sm btn-outline-secondary d-flex justify-content-center align-items-center d-lg-none"><span class="material-symbols-outlined fs-3">settings</span></button>
-                    <button @click="showSettings = !showSettings" :disabled="spinner" class="btn btn-sm btn-outline-secondary d-none d-lg-block">Settings</button> -->
+                    
+                    <!-- <button class="btn btn-sm btn-outline-dark">Edit Blog</button> -->
 
                 </div>
                 
@@ -330,35 +329,6 @@ export default {
             this.page = page.htmlPage
 
         },
-        async githubPush(token, content, filename) {
-
-            var data = JSON.stringify({
-                "message": "html file",
-                "content": `${content}`
-            });
-
-            var headers = {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            };
-
-            
-
-            var url ;
-            if(this.store.domain == 'www.jurdilaw.com') url = `https://api.github.com/repos/fadi-eljurdi/LLC/contents/blogs/${filename}.html`;
-            else url = `https://api.github.com/repos/fadi-eljurdi/app/contents/blogs/${filename}.html`;
-
-            var config = {
-                method: 'PUT',
-                headers: headers,
-                body: data
-            };
-
-            var res = await fetch(url, config);
-            var res = await res.json();
-            // console.log(res);
-            // return data.content.sha;
-        },
         async saveBlog(){
             // saves to google sheet
             return new Promise(async (resolve,reject) => {
@@ -387,6 +357,35 @@ export default {
                 }
             })
         },
+        async  githubPush(token, content, filename) {
+
+            var data = JSON.stringify({
+                "message": "html file",
+                "content": `${content}`
+            });
+
+            var headers = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            };
+
+            
+
+            var url ;
+            if(this.store.domain == 'www.jurdilaw.com') url = `https://api.github.com/repos/fadi-eljurdi/LLC/contents/blogs/${filename}.html`;
+            else url = `https://api.github.com/repos/fadi-eljurdi/app/contents/blogs/${filename}.html`;
+
+            var config = {
+                method: 'PUT',
+                headers: headers,
+                body: data
+            };
+
+            var res = await fetch(url, config);
+            var res = await res.json();
+            // console.log(res);
+            // return data.content.sha;
+        },
         async deploy(){
             this.store.alertMessage(`Publish blog to ${this.store.domain} ?`).setAction(async ()=>{
                 try{
@@ -404,7 +403,7 @@ export default {
                 }catch(err){
                     console.log(err);
                     this.spinner = false
-                    this.store.alertMessage('Ma Meshe l7al').endAction()
+                    this.store.alertMessage(`ERROR : ${err}`).endAction()
                 }
                 
                 
@@ -593,8 +592,6 @@ export default {
     beforeUnmount(){
         // save blog to local store
         this.store.blog.article = document.getElementById('editor').innerText
-
-
     },
     mounted(){
         var swiper = new Swiper('.swiper', {

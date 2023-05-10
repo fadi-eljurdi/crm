@@ -15,6 +15,16 @@ const router = createRouter({
       component: () => import('../views/profile.vue')
     },
     {
+      path: '/terms',
+      name: 'terms',
+      component: () => import('../views/terms.vue')
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: () => import('../views/privacy.vue')
+    },
+    {
       path: '/settings',
       name: 'settings',
       component: () => import('../components/settings.vue')

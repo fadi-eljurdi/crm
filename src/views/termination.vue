@@ -12,7 +12,7 @@
         <div class="row g-3">
             <div class="col-12"> <h5 class="pop text-secondary">Remove Links</h5> </div>
             <div v-for="link in profile.links" :key="link" class="col-12 col-md-6 col-lg-3 point">
-                <div @click="removeItem(link.text,'Links')" class="d-flex align-items-center gap-2 px-3 py-1 bg-light shadow-sm rounded ">
+                <div @dblclick="removeItem(link.text,'Links')" class="d-flex align-items-center gap-2 px-3 py-1 bg-light shadow-sm rounded ">
                     <span class="material-symbols-outlined text-primary">link</span>
                     <span class="text-secondary">{{link.text}}</span>
                 </div>
@@ -22,25 +22,31 @@
         <div class="row g-3">
             <div class="col-12"> <h5 class="pop text-secondary">Remove Blogs</h5> </div>
             <div v-for="blog in profile.blogs" :key="blog" class="col-12 col-md-6 col-lg-3 point">
-                <div @click="removeItem(blog.title,'Blogs')" class="d-flex flex-column gap-2 bg-light shadow-sm rounded p-3">
+                <div title="double click to delete" @dblclick="removeItem(blog.title,'Blogs')" class="d-flex flex-column gap-2 bg-light shadow-sm rounded p-3">
                     <div class="ratio ratio-4x3">
                         <img :src="blog.thumbnail" :alt="blog.title" class="img-fluid object-fit-cover">
                     </div>
                     <h5 style="min-height:50px;" class="text-primary text-fade-2">{{blog.title}}</h5>
-                    <p style="min-height:80px;" class="fs-small text-secondary text-fade-4">{{blog.description}}</p>
-                    <small class="text-secondary fs-xsmall">{{utilities.timo(blog.date)}}</small>
+                    <p style="min-height:30px;" class="fs-small text-secondary text-fade-4 m-0">{{blog.description}}</p>
+                    <hr>
+                    <small class="text-secondary fs-xsmall">{{utilities.timo(blog.date)}} <i class="bi bi-dot"></i> <u @click="copyURL(blog.url)">COPY URL</u></small>
+                    
                 </div>
             </div>
         </div>
         <div class="row g-3">
             <div class="col-12"> <h5 class="pop text-secondary">Remove Services</h5> </div>
             <div v-for="service in profile.services" :key="service" class="col-12 col-md-6 col-lg-3 point">
-                <div @click="removeItem(service.title,'Services')" class="d-flex flex-column gap-2 bg-light shadow-sm rounded p-3">
+                <div title="double click to delete" @dblclick="removeItem(service.title,'Services')" class="d-flex flex-column gap-2 bg-light shadow-sm rounded p-3">
                     <div class="ratio ratio-4x3">
                         <img :src="service.thumbnail" :alt="service.title" class="img-fluid object-fit-cover">
                     </div>
                     <h5 style="min-height:50px;" class="text-primary text-fade-2">{{service.title}}</h5>
-                    <p style="min-height:80px;" class="fs-small text-secondary text-fade-4">{{service.description}}</p>
+                    <p style="min-height:30px;" class="fs-small text-secondary m-0 text-fade-4">{{service.description}}</p>
+                    <hr>
+                    <!-- <u class="fs-xsmall" @click="copyURL(service.url)">COPY URL</u> -->
+                    <small class="text-secondary fs-xsmall">{{utilities.timo(service.date)}} <i class="bi bi-dot"></i> <u @click="copyURL(service.url)">COPY URL</u></small>
+
                 </div>
             </div>
         </div>
@@ -91,6 +97,10 @@ export default {
         }
     },
     methods:{
+        copyURL(url){
+            navigator.clipboard.writeText(url)
+            this.store.alertMessage('URL Copied successfuly')
+        },
         removeItem(titleIndex,sheet){
             this.store.alertMessage(`Delete: ${titleIndex} ?`).setAction(async ()=>{
                 this.spinner = true
@@ -163,6 +173,27 @@ export default {
                 }
             })
         },
+        
+        getFileSha(repo,path) {
+
+            return new Promise((resolve,reject) => {
+                
+                fetch(`https://api.github.com/repos/fadi-eljurdi/${repo}/contents/blogs/${path}.html`,{
+                headers:{
+                    'Authorization': `Bearer ${this.store.github}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+                }).then(res => res.json()).then(res => {
+                    console.log(res);
+                    resolve(res.sha)
+                }).catch(err=>{
+                    console.log(err);
+                    reject(err)
+                })
+                
+            })
+        },
         async removePageFromGithub(repo,folder,path, sha) {
             return new Promise((resolve,reject)=>{        
                 var data = {
@@ -188,26 +219,6 @@ export default {
                 
             })
         },
-        getFileSha(repo,path) {
-
-            return new Promise((resolve,reject) => {
-                
-                fetch(`https://api.github.com/repos/fadi-eljurdi/${repo}/contents/blogs/${path}.html`,{
-                headers:{
-                    'Authorization': `Bearer ${this.store.github}`,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/vnd.github.v3+json'
-                }
-                }).then(res => res.json()).then(res => {
-                    console.log(res);
-                    resolve(res.sha)
-                }).catch(err=>{
-                    console.log(err);
-                    reject(err)
-                })
-                
-            })
-        },
     },
     components:{message},
     async mounted(){
@@ -215,7 +226,7 @@ export default {
         this.profile = await this.store.getProfile()
         this.spinner = false
 
-        // console.log(await this.getFileSha('app','Patents-and-Trademarks-for-Developers'));
+        // console.log(await utilities.getFileSha('app','Patents-and-Trademarks-for-Developers'));
     }
 }
 </script>

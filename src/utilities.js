@@ -140,11 +140,11 @@ function getYouTubeId(url) {
     //     return match ? match[1] : null;
     // }
     return match ? match[1] : null;
-    
+
 }
 
 async function getYouTubeVideoDetails(videoUrl) {
-    return new Promise( async (resolve,reject) => {
+    return new Promise(async (resolve, reject) => {
         const videoId = this.getYouTubeId(videoUrl);
         console.log(videoId);
         const apiKey = "AIzaSyAM6IGBPEtFrI8w62LSSlpV18LvdJtWRaE";
@@ -198,20 +198,20 @@ function noQuotes(str) {
     return str;
 }
 
-function titlePath(title){
-    return removeSpecialCharsExceptKeys(title.trim(),[' ','-']).replaceAll(' ','-').replace(/-+/g, '-').toLowerCase()
+function titlePath(title) {
+    return removeSpecialCharsExceptKeys(title.trim(), [' ', '-']).replaceAll(' ', '-').replace(/-+/g, '-').toLowerCase()
 }
 
 function removeSpecialCharsExceptKeys(str, keys) {
     // Escape special characters in keys array to use in a regular expression
     const escapedKeys = keys.map(key => key.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
-  
+
     // Regular expression to match all non-alphanumeric characters except keys
     const regex = new RegExp(`[^a-zA-Z0-9${escapedKeys.join('')}]`, 'g');
-  
+
     return str.replace(regex, '');
 }
-  
+
 
 function deepEqual(obj1, obj2) {
     if (obj1 === obj2) {
@@ -238,27 +238,134 @@ function convertGoogleDriveLink(link) {
     const fileId = link.split("/")[5].split("?")[0];
     return `https://drive.google.com/uc?id=${fileId}`;
 }
-  
+
 function checkNetwork() {
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    
+
     if (!navigator.onLine) {
-      alert("Offline");
+        alert("Offline");
     } else if (connection && connection.effectiveType === "2g") {
-      alert("Weak network");
+        alert("Weak network");
     }
 }
 function getYouTubeThumbnailUrl(videoId) {
     return `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
 }
-  
+
 function fixClosingTags(htmlString) {
     const regex = /<\/\s*(\w+)\s*>/g;
     return htmlString.replace(regex, "</$1>");
 }
+function extractTextContent(htmlString) {
+    // Create a new DOM object from the HTML string
+    const dom = new DOMParser().parseFromString(htmlString, 'text/html');
+
+    // Get the text content of the document body
+    const textContent = dom.body.textContent;
+
+    // Return the text content
+    return textContent;
+}
+
+function removeExtraLines(str) {
+    // Replace all occurrences of more than 2 new lines with 2 new lines
+    const cleanedStr = str.replace(/(\n{1,})/g, '\n\n');
+
+    // Return the cleaned string
+    return cleanedStr;
+}
+
+function removeDoubleSpaces(str) {
+    // Replace all occurrences of double spaces with single spaces
+    const cleanedStr = str.replace(/\s{2,}/g, ' ');
+
+    // Return the cleaned string
+    return cleanedStr;
+}
+
+function githubPush(cred) {
+    // const authToken = 'your_access_token';
+    // const owner = 'your_username_or_organization';
+    // const repo = 'your_repository_name';
+    // const path = 'path/to/your/file.txt';
+    // const message = 'Update file.txt';
+    // const newContent = 'This is the new content of the file.';
+    // const sha = 'current_sha_of_the_file';
+    return new Promise((resolve, reject) => {
+        var { authToken, owner, repo, path, message, newContent, sha } = cred
+
+        fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: message,
+                // content: btoa(newContent),
+                content: newContent,
+                sha: sha
+            })
+        })
+            .then(response => response.json())
+            .then(response => {
+                console.log(response);
+                // handle response
+                resolve(response)
+
+            })
+            .catch(error => {
+                console.error(error);
+                // handle error
+                reject(err)
+            });
+    })
+
+
+}
+
+
+function getFileSha(data) {
+    // const authToken = 'your_access_token';
+    // const owner = 'your_username_or_organization';
+    // const repo = 'your_repository_name';
+    // const path = 'path/to/your/file.txt';
+    var { authToken, owner, repo, path } = data
+
+    return new Promise((resolve, reject) => {
+        fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(`Failed to get file contents (${response.status} ${response.statusText})`);
+            }
+        })
+        .then(data => {
+            console.log(data.sha);
+            // handle SHA
+            resolve(data.sha)
+        })
+        .catch(error => {
+            console.error(error);
+            // handle error
+            reject(data.sha)
+        });
+    })
+
+}
 
 export default {
     optimizeImageQuality,
+    getFileSha,
+    githubPush,
+    removeDoubleSpaces,
+    extractTextContent,
+    removeExtraLines,
     fixClosingTags,
     getYouTubeThumbnailUrl,
     checkNetwork,

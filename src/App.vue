@@ -28,15 +28,12 @@
 <header v-if="isLogedIn" class="w-100 p-3 z-2 position-fixed top-0 start-0 d-flex justify-content-between align-items-center bg-light shadow-sm">
     <section class="d-flex align-items-center gap-2">
         <router-link to="/" class="link-underline link-underline-opacity-0"><h5 class="pop m-0">Dashboard</h5></router-link>
-        <!-- <span id="form-floating">
-          <label for="domain"></label>
-
-          
-
-        </span> -->
     </section>
     <nav class="pop d-none d-md-flex align-items-center gap-3">
       <router-link to="/profile" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Profile</router-link>
+
+      <router-link to="/terms" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Terms</router-link>
+      <router-link to="/privacy" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Privacy Policy</router-link>
       <router-link to="/links" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Links</router-link>
       <router-link to="/blogs" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Blog</router-link>
       <router-link to="/settings" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Settings</router-link>
@@ -62,8 +59,11 @@
         </li>
         <li><hr class="dropdown-divider"></li>
         <li><router-link class="dropdown-item" to="/profile">+Profile</router-link></li>
+        <li><router-link class="dropdown-item" to="/terms">+Terms</router-link></li>
+        <li><router-link class="dropdown-item" to="/privacy">+Privacy Policy</router-link></li>
         <li><router-link class="dropdown-item" to="/links">+Links</router-link></li>
         <li><router-link class="dropdown-item" to="/blogs">+Blogs</router-link></li>
+        <li><router-link class="dropdown-item" to="/settings">+Settings</router-link></li>
         <li><router-link class="dropdown-item" to="/termination">-Termination</router-link></li>
     </ul>
 </header>
@@ -121,6 +121,9 @@ export default {
   },
   mounted(){
     utilities.checkNetwork()
+
+
+
   }
 }
 </script>
