@@ -18,7 +18,7 @@
               <span v-else>Login</span>
             </button>
           </div>
-          <small class="fs-xsmall pop text-secondary text-center">Developed by <a href="https://libancode.com">Libancode</a> - version 1.1.3</small>
+          <small class="fs-xsmall pop text-secondary text-center">Developed by <a href="https://libancode.com">Libancode</a> - version 1.1.4</small>
         </section>
       </div>
     </div>

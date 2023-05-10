@@ -49,8 +49,20 @@
         <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
         <hr v-else class="my-3">
         <section class="d-flex flex-column gap-2">
+            
             <div class="row">
-                <div class="col-12 col-md-2 pb-2" @click="setYoutubePrompt">1. Media <strong class="text-danger" v-show="store.blog.mediaBox.length == 0">*</strong></div>
+                <div class="col-12 col-md-2 pb-2">1. Blog type</div>
+                <div class="col-12 col-md-10 d-flex flex-column gap-2">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" v-model="store.blog.baas" >
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Consider as a service
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-2 pb-2" @click="setYoutubePrompt">2. Media <strong class="text-danger" v-show="store.blog.mediaBox.length == 0">*</strong></div>
                 <div class="col-12 col-md-10 d-flex flex-wrap gap-2">
                     <div style="width:100px" v-for="m in store.blog.mediaBox" :key="m" @dblclick="mediaPop(m)">
                         <section class="ratio ratio-16x9" v-if="m.type == 'youtube'">
@@ -61,17 +73,6 @@
                                 <img :src="m.src" :alt="m.alt" class="img-fluid rounded object-fit-cover">
                             </div>
                         </section>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-2 pb-2">2. Blog type</div>
-                <div class="col-12 col-md-10 d-flex flex-column gap-2">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" v-model="store.blog.baas" >
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Consider as a service
-                        </label>
                     </div>
                 </div>
             </div>

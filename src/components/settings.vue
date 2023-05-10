@@ -18,7 +18,7 @@
             <input @keyup.enter="addRule" v-model="newRule" type="text" class="form-control form-control-sm" placeholder="Add a rule">
         </div>
       </div>
-      <div class="row">
+      <div class="row g-2">
         
         <h6 class="fs-6 text-primary">Reset credentials</h6>
         <div class="col-12 col-lg-5">
