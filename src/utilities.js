@@ -359,8 +359,31 @@ function getFileSha(data) {
 
 }
 
+function getFolderId(domain,baas){
+    if(domain == 'jurdiconsult.media'){
+        var thumbnailsId = '1Z73hzjMWM8U3tsuiULJP6UA1eQY_cHJV'
+        var blogsId = '1e2g3ajgOnFv4-sljLYqRTq9s-7GLPcgH'
+        var servicesId = '1nm0-UKTTyKwUK_AO75BjbSKPcItW4PYy'
+        if(baas == 'thumbnail') return thumbnailsId
+        if(baas) return servicesId
+        return blogsId
+        
+
+    }else{
+        // jurdilaw
+        
+        var thumbnailsId = '1KRfNdun7uvFdpowTknj__DC8BVnKwD-X'
+        var blogsId = '1SOSRARfsdRbFx-we-gdt49FgKK2o7jEt'
+        var servicesId = '1JHM95YOVpHQYnqBgESWa570_2Y7-j5vp'
+        if(baas == 'thumbnail') return thumbnailsId
+        if(baas) return servicesId
+        return blogsId
+    }
+}
+
 export default {
     optimizeImageQuality,
+    getFolderId,
     getFileSha,
     githubPush,
     removeDoubleSpaces,

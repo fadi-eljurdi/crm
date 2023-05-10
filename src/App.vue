@@ -29,7 +29,7 @@
     <section class="d-flex align-items-center gap-2">
         <router-link to="/" class="link-underline link-underline-opacity-0"><h5 class="pop m-0">Dashboard</h5></router-link>
     </section>
-    <nav class="pop d-none d-md-flex align-items-center gap-3">
+    <nav class="pop d-none d-lg-flex align-items-center gap-3">
       <router-link to="/profile" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Profile</router-link>
 
       <router-link to="/terms" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Terms</router-link>
@@ -47,7 +47,7 @@
       </div>
     </nav>
     
-    <i class="bi bi-three-dots-vertical d-block d-md-none fs-3 text-secondary" type="button" data-bs-toggle="dropdown"></i>
+    <i class="bi bi-three-dots-vertical d-block d-lg-none fs-3 text-secondary" type="button" data-bs-toggle="dropdown"></i>
     <ul class="dropdown-menu">
         <li>
           <span class="dropdown-item">

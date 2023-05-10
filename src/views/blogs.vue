@@ -278,7 +278,7 @@ export default {
                 // hosting images
                 var api = this.store.api()
                 api += this.store.loginQuery()
-                api += `&uploadImagesToDrive=1&folderId=1e2g3ajgOnFv4-sljLYqRTq9s-7GLPcgH`
+                api += `&uploadImagesToDrive=1&folderId=${utilities.getFolderId(this.store.domain,this.store.blog.baas)}`
                 
                 var urls = await utilities.hostImages(api,files64)
                 // console.log(urls)
