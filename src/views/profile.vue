@@ -133,7 +133,7 @@ export default {
     methods:{
         save(){
             
-            this.store.alertMessage('Are u sure ?').setAction(async ()=>{
+            this.store.alertMessage(`Save to ${this.store.domain}`).setAction(async ()=>{
                 await this.setProfile()
                 this.store.endAction()
             })

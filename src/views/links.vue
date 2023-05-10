@@ -67,7 +67,7 @@ export default {
     },
     methods:{
        async addLink(){
-        this.store.alertMessage('Are u sure ?').setAction(async ()=>{
+        this.store.alertMessage(`Add to ${this.store.domain}`).setAction(async ()=>{
             try{
                     this.spinner = true
                     const data = {

@@ -47,7 +47,7 @@ export default {
     },
     methods:{
         saveTerms(){
-            this.store.alertMessage('Are you sure ?').setAction(async ()=>{
+            this.store.alertMessage(`Save terms to ${this.store.domain}`).setAction(async ()=>{
                 try{
                     this.spinner = true
                     var terms = utilities.compile('terms-editor')
@@ -55,7 +55,7 @@ export default {
                         if(this.store.domain == 'www.jurdilaw.com') return 'LLC'
                         return 'app'
                     }
-                    var page = new Terms(terms).render()  
+                    var page = new Terms(terms,this.store.domain).render()  
                     var res = await utilities.githubPush({
                         authToken:this.store.github,
                         owner:'fadi-eljurdi',
