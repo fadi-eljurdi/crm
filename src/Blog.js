@@ -51,7 +51,7 @@ class Blog {
                 <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/plugin/relativeTime.min.js"></script>
                 <!-- VUE JS -->
-                <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+                <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
             </head>
             <body class="bg-aswad" id="app">
@@ -62,7 +62,7 @@ class Blog {
                             <div class="col-12 col-lg-8">
                                 <article class="shadow-sm bg-glass p-3 rounded">
                                     <blog-media :media='##blog_media'></blog-media>
-                                    <section v-show="!translated" id="original" class="pop">
+                                    <section v-show="!translated" id="original">
                                         <h1>##blog_page_title</h1>
                                         <p>##blog_article</p> 
                                     </section>
@@ -82,12 +82,12 @@ class Blog {
                                 </article>
                             </div>
                             <div class="col-12 col-lg-4">
-                                <check-also :blogs="profile.blogs" :utilities="utilities"></check-also>
+                                <check-also :blogs="blogs" :utilities="utilities"></check-also>
                             </div>
                         </div>
                     </section>
                 </main>
-                <footer-section :services="profile.services" :contact="contact" :links="profile.links" :utilities="utilities"></footer-section>
+                <footer-section :services="services" :contact="contact" :links="links" :utilities="utilities"></footer-section>
                 <section v-if="blogSpinner" class="w-100 h-100 position-fixed start-0 top-0 z-3 bg-glass d-flex justify-content-center align-items-center">
                 <span class="spinner-grow text-heading"></span>
                 </section>
@@ -141,7 +141,7 @@ class Blog {
                 <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/dayjs.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.6/plugin/relativeTime.min.js"></script>
                 <!-- VUE JS -->
-                <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+                <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
             </head>
             <body id="app" class="bg-blight">
@@ -153,7 +153,7 @@ class Blog {
                             <div class="col-12 col-lg-8">
                                 <article class="shadow-sm bg-light p-3 rounded">
                                     <blog-media :media='##blog_media'></blog-media>
-                                    <section v-show="!translated" id="original" class="pop">
+                                    <section v-show="!translated" id="original">
                                     <h1>##blog_page_title</h1>
                                     <p>##blog_article</p> 
                                     </section>
@@ -173,13 +173,13 @@ class Blog {
                                 </article>
                             </div>
                             <div class="col-12 col-lg-4">
-                                <check-also :blogs="profile.blogs" :utilities="utilities"></check-also>
+                                <check-also :blogs="blogs" :utilities="utilities"></check-also>
                             </div>
                         </div>
                     </section>
                 </main>
                 
-                <footer-section :services="profile.services" :links="profile.links" :utilities="utilities" :contact="profile.contact"></footer-section>
+                <footer-section :services="services" :links="links" :utilities="utilities" :contact="contact"></footer-section>
                 
                 <section v-if="blogSpinner" class="w-100 h-100 z-3 position-fixed top-0 start-0 bg-glass d-flex justify-content-center align-items-center">
                     <span class="spinner spinner-grow"></span>
@@ -241,6 +241,11 @@ class Blog {
     setThubnail(thubnail) { this.thubnail = thubnail; return this }
 
     setIcon(icon){this.icon = icon; return this}
+    setArabicLang(lang){
+        this.isArabic = lang
+        return this
+
+    }
 
 }
 

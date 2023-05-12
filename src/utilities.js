@@ -199,18 +199,37 @@ function noQuotes(str) {
 }
 
 function titlePath(title) {
-    return removeSpecialCharsExceptKeys(title.trim(), [' ', '-']).replaceAll(' ', '-').replace(/-+/g, '-').toLowerCase()
+    return removeSpecialCharsExceptKeys(title.trim(), [' ', '-']).replaceAll(' ', '-').replace(/-+/g, '-').replaceAll('٪','').replaceAll('؛','').replaceAll('،','').replaceAll('؟','').toLowerCase()
 }
 
+// function removeSpecialCharsExceptKeys(str, keys) {
+//     // Escape special characters in keys array to use in a regular expression
+//     const escapedKeys = keys.map(key => key.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+
+//     // Regular expression to match all non-alphanumeric characters except keys
+//     const regex = new RegExp(`[^a-zA-Z0-9${escapedKeys.join('')}]`, 'g');
+
+//     return str.replace(regex, '');
+// }
+// function removeSpecialCharsExceptKeys(str, keys) {
+//     // Escape special characters in keys array to use in a regular expression
+//     const escapedKeys = keys.map(key => key.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+
+//     // Regular expression to match all non-alphanumeric characters except keys and Arabic characters
+//     const regex = new RegExp(`[^a-zA-Z0-9${escapedKeys.join('')}\\u0600-\\u06FF\\u0750-\\u077F\\u08A0-\\u08FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF]`, 'g');
+
+//     return str.replace(regex, '');
+// }
 function removeSpecialCharsExceptKeys(str, keys) {
     // Escape special characters in keys array to use in a regular expression
     const escapedKeys = keys.map(key => key.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
 
-    // Regular expression to match all non-alphanumeric characters except keys
-    const regex = new RegExp(`[^a-zA-Z0-9${escapedKeys.join('')}]`, 'g');
+    // Regular expression to match all non-alphanumeric characters except keys, Arabic characters, and Arabic punctuation marks
+    const regex = new RegExp(`[^a-zA-Z0-9${escapedKeys.join('')}\\u0600-\\u06FF\\u0750-\\u077F\\u08A0-\\u08FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF\\u060C\\u061B\\u061F\\u0640]`, 'g');
 
     return str.replace(regex, '');
 }
+
 
 
 function deepEqual(obj1, obj2) {

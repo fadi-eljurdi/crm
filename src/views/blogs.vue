@@ -48,6 +48,7 @@
 
         <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
         <hr v-else class="my-3">
+        {{blogTitle}}
         <section class="d-flex flex-column gap-2">
             
             <div class="row">
@@ -319,12 +320,14 @@ export default {
             }
         },
         async generateBlog(){
+            
             const page = new Blog(this.store.blog.title,JSON.stringify(this.store.blog.mediaBox),this.store.domain)
             page
             .setArticle(utilities.compile('editor'))
             .setIcon(this.store.blog.thumbnail)
             .setThubnail(this.store.blog.thumbnail)
             .setSEO(this.store.blog.seoDescription,this.store.blog.seoKeywords)
+            .setArabicLang(utilities.isArabic(document.getElementById('editor').innerText))
             .generatePage()
 
             this.page = page.htmlPage
