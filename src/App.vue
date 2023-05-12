@@ -126,7 +126,8 @@ export default {
     utilities.checkNetwork()
     try{
       this.store.templateAPP = await utilities.fetchTemplate('https://fadi-eljurdi.github.io/app/blogs/template.html')
-      this.store.templateLLC = await utilities.fetchTemplate('https://fadi-eljurdi.github.io/app/blogs/template.html')
+      this.store.templateLLC = await utilities.fetchTemplate('https://fadi-eljurdi.github.io/LLC/blogs/template.html')
+      
     }catch(err){
       console.log(err);
       this.store.alertMessage(err)
