@@ -17,9 +17,10 @@ class Blog {
         if (this.isArabic) {
             htmlPageCopy = htmlPageCopy.replaceAll('<html lang="en">', '<html lang="ar">')
         }
-        htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_title', this.title)
-        htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_description', this.seoDescription)
-        htmlPageCopy = htmlPageCopy.replace('##blog_page_keywords', this.seoKeywords)
+        htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_title', this.title.replace(/['"`]/g, ''))
+        htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_header', this.title)
+        htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_description', this.seoDescription.replace(/['"`]/g, ''))
+        htmlPageCopy = htmlPageCopy.replace('##blog_page_keywords', this.seoKeywords.replace(/['"`]/g, ''))
         htmlPageCopy = htmlPageCopy.replace('##blog_date', this.date)
         if(this.domain == 'www.jurdilaw.com'){
             htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_url', `https://fadi-eljurdi.github.io/LLC/blogs/${utilities.titlePath(this.title)}.html`)
@@ -34,7 +35,7 @@ class Blog {
         htmlPageCopy = htmlPageCopy.replaceAll('##blog_media', this.media)
 
         // replace blog article
-        htmlPageCopy = htmlPageCopy.replaceAll('##blog_article', `${this.article}`)
+        htmlPageCopy = htmlPageCopy.replaceAll('##blog_article', this.article)
 
         // Copy the text inside the text field
         // navigator.clipboard.writeText(htmlPageCopy);

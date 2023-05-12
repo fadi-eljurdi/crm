@@ -415,7 +415,7 @@ export default {
             // return data.content.sha;
         },
         async deploy(){
-            this.store.alertMessage(`Publish blog to ${this.store.domain} ?`).setAction(async ()=>{
+            this.store.alertMessage(`Publish blog to ${this.store.domain} ? ${this.store.blog.baas ? 'As a service ?' : ''}`).setAction(async ()=>{
                 try{
                     this.spinner = true
                     this.generateThumbnail()
@@ -575,7 +575,8 @@ export default {
             }catch(err){
                 
                 this.spinner = false
-                this.store.alertMessage(err)
+                console.log(err);
+                this.store.alertMessage('Check your openai account usage limit')
             }
         },
         alignRight(id){
