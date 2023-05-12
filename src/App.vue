@@ -70,9 +70,11 @@
 <main v-if="isLogedIn" style="margin-top:100px;">
     <router-view></router-view>
 </main>
-
+<message v-show="store.showMessage" :title="store.theMessage" :callback="store.callback" :spinner="loginSpinner"></message>
 </template>
 <script>
+
+import message from './components/message.vue'
 import utilities from './utilities.js'
 import {useProfile} from './stores/profile'
 export default {
@@ -80,6 +82,7 @@ export default {
     const store = useProfile()
     return {store}
   },
+  components:{message},
   data(){
     return{
       utilities,
@@ -119,8 +122,15 @@ export default {
       }
     }
   },
-  mounted(){
+  async mounted(){
     utilities.checkNetwork()
+    try{
+      this.store.templateAPP = await utilities.fetchTemplate('https://fadi-eljurdi.github.io/app/blogs/template.html')
+      this.store.templateLLC = await utilities.fetchTemplate('https://fadi-eljurdi.github.io/app/blogs/template.html')
+    }catch(err){
+      console.log(err);
+      this.store.alertMessage(err)
+    }
 
 
 

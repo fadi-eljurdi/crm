@@ -6,7 +6,7 @@
         </div>
         <div class="row g-3">
             <div class="col-12 col-lg-5"><input v-model="link.text" type="text" class="form-control form-control-sm" placeholder="Link text"></div>
-            <div class="col-12 col-lg-5"><input v-model="link.url" type="text" class="form-control form-control-sm" placeholder="Link url"></div>
+            <div class="col-12 col-lg-5"><input v-model="link.url" type="text" class="form-control form-control-sm" placeholder="http://"></div>
             <div class="col-12 col-lg-2 d-flex align-items-center">
                 <button class="flex-fill btn btn-primary btn-sm" @click="addLink" :disabled="spinner || onEdit">
                     
@@ -72,7 +72,7 @@ export default {
                     this.spinner = true
                     const data = {
                         text:this.link.text,
-                        url:this.link.url
+                        url:`http://${this.link.url}`
                     }
                     var api = this.store.api()
                     api += this.store.loginQuery()

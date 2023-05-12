@@ -200,6 +200,7 @@ import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-vue'
 import {useProfile} from '../stores/profile'
 import Media from '../Media'
 import Blog from '../Blog'
+import Template from '../Template'
 import utilities from '../utilities.js'
 import settings from '../components/settings.vue'
 import message from '../components/message.vue'
@@ -264,33 +265,39 @@ export default {
                     }
                 }
             }else{
-                // select image > base64 > host > get url
-                var files = await utilities.openFiles() // we selected the files
-                // console.log(files)
-                this.spinner = true
-                var files64 = [];// turn to b64
-                for(let i = 0 ; i < files.length ; i++){
-                    files64.push({
-                        alt:`JURDI-Image-${utilities.getCurrentDate()}`,
-                        src64: await utilities.file64(files[i])
-                        // src64: await utilities.optimizeImageQuality(await utilities.file64(files[i]),this.store.quality)
-                    })
-                }
-                console.log(files64);
-                // hosting images
-                var api = this.store.api()
-                api += this.store.loginQuery()
-                api += `&uploadImagesToDrive=1&folderId=${utilities.getFolderId(this.store.domain,this.store.blog.baas)}`
-                
-                var urls = await utilities.hostImages(api,files64)
-                // console.log(urls)
+                try{
+                    // select image > base64 > host > get url
+                    var files = await utilities.openFiles() // we selected the files
+                    // console.log(files)
+                    this.spinner = true
+                    var files64 = [];// turn to b64
+                    for(let i = 0 ; i < files.length ; i++){
+                        files64.push({
+                            alt:`JURDI-Image-${utilities.getCurrentDate()}`,
+                            src64: await utilities.file64(files[i])
+                            // src64: await utilities.optimizeImageQuality(await utilities.file64(files[i]),this.store.quality)
+                        })
+                    }
+                    console.log(files64);
+                    // hosting images
+                    var api = this.store.api()
+                    api += this.store.loginQuery()
+                    api += `&uploadImagesToDrive=1&folderId=${utilities.getFolderId(this.store.domain,this.store.blog.baas)}`
+                    
+                    var urls = await utilities.hostImages(api,files64)
+                    // console.log(urls)
 
-                // pushing to media box
+                    // pushing to media box
 
-                for(let i = 0 ; i < urls.length ; i++){
-                    this.store.blog.mediaBox.push(new Media((urls[i].alt),'image',(urls[i].src)))
+                    for(let i = 0 ; i < urls.length ; i++){
+                        this.store.blog.mediaBox.push(new Media((urls[i].alt),'image',(urls[i].src)))
+                    }
+                    this.spinner = false
+                }catch(err){
+                   console.log(err);
+                   this.store.alertMessage('Weak network , please refresh and try again')
+                   this.spinner = false
                 }
-                this.spinner = false
             }
         },
         previewBlog(){
@@ -321,7 +328,23 @@ export default {
         },
         async generateBlog(){
             
-            const page = new Blog(this.store.blog.title,JSON.stringify(this.store.blog.mediaBox),this.store.domain)
+            // const page = new Blog(this.store.blog.title,JSON.stringify(this.store.blog.mediaBox),this.store.domain)
+            // page
+            // .setArticle(utilities.compile('editor'))
+            // .setIcon(this.store.blog.thumbnail)
+            // .setThubnail(this.store.blog.thumbnail)
+            // .setSEO(this.store.blog.seoDescription,this.store.blog.seoKeywords)
+            // .setArabicLang(utilities.isArabic(document.getElementById('editor').innerText))
+            // .generatePage()
+
+            // this.page = page.htmlPage
+            const chooseTemplate = () => {
+                if(this.store.domain == 'www.jurdilaw.com') return this.store.templateLLC
+
+                return this.store.templateAPP
+            }
+
+            var page = new Template(chooseTemplate(),this.store.blog.title,JSON.stringify(this.store.blog.mediaBox),this.store.domain)
             page
             .setArticle(utilities.compile('editor'))
             .setIcon(this.store.blog.thumbnail)
@@ -330,6 +353,7 @@ export default {
             .setArabicLang(utilities.isArabic(document.getElementById('editor').innerText))
             .generatePage()
 
+            
             this.page = page.htmlPage
 
         },

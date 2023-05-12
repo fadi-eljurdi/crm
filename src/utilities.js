@@ -400,7 +400,18 @@ function getFolderId(domain,baas){
     }
 }
 
+function fetchTemplate(url){
+    return new Promise(async (resolve,reject) => {
+        var res = await fetch(url)
+        if(res.ok) {
+            resolve(res.text())
+        }
+        reject('Template not found')
+    })
+
+}
 export default {
+    fetchTemplate,
     optimizeImageQuality,
     getFolderId,
     getFileSha,
