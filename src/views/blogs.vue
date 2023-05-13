@@ -1,5 +1,5 @@
 <template>
-    <section v-show="!preview" class="container">
+    <section v-show="!preview" class="container scale-up-center ">
         <div class="row">
             <h3 class="pop text-secondary fs-3">Create new blog</h3>
             <p class="text-secondary fs-small">Craft compelling blog posts in minutes with our powerful and streamlined blog creation software</p>
@@ -139,7 +139,7 @@
         </section>
         <settings v-if="showSettings"><button class="w-100 btn btn-sm btn-outline-secondary" @click="showSettings = !showSettings">back</button></settings>
     </section>
-    <section v-show="preview" class="container my-5">
+    <section v-show="preview" class="container my-5  scale-up-center ">
         
         <div class="row justify-content-center my-5">
             <div class="col-12 col-lg-8">

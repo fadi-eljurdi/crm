@@ -1,5 +1,5 @@
 <template>
-    <section class="container my-5">
+    <section class="container my-5 scale-up-center ">
         <div class="row">
             <h3 class="pop text-secondary fs-3">Update your terms</h3>
             <p class="text-secondary fs-small">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam vel quis facilis quos quas obcaecati!</p>

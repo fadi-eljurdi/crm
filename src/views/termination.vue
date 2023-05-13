@@ -1,5 +1,5 @@
 <template>
-    <section class="container">
+    <section class="container scale-up-center ">
         <div class="row">
             <h3 class="pop text-secondary fs-3">DBL CLICK for termination</h3>
             <p class="text-secondary fs-small">Expand your CRM functionality by adding custom links to your favorite tools and resources for enhanced productivity.</p>
@@ -7,7 +7,7 @@
         </div>
     </section>
     
-    <section class="container d-flex flex-column gap-3 my-5">
+    <section class="container d-flex flex-column gap-3 my-5 scale-up-center ">
         
         <div class="row g-3">
             <div class="col-12"> <h5 class="pop text-secondary">Remove Links</h5> </div>

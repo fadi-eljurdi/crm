@@ -1,5 +1,5 @@
 <template>
-    <section class="container my-5">
+    <section class="container my-5 scale-up-center ">
         <div class="row">
             <h3 class="pop text-secondary fs-3">Add your custom links</h3>
             <p class="text-secondary fs-small">Expand your CRM functionality by adding custom links to your favorite tools and resources for enhanced productivity.</p>

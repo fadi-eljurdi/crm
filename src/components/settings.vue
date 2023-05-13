@@ -1,5 +1,5 @@
 <template>
-  <section class="container my-5  d-flex flex-column gap-3">
+  <section class="container my-5  d-flex flex-column gap-3 scale-up-center ">
       
       <div class="row">
         <div class="col-12">

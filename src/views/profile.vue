@@ -1,5 +1,5 @@
 <template>
-    <section class="container d-flex flex-column gap-2 my-5">
+    <section class="container d-flex flex-column gap-2 my-5 scale-up-center ">
         <div class="row">
             <h3 class="pop text-secondary fs-3">Manage your profile</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
