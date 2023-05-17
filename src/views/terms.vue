@@ -25,7 +25,7 @@ import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-vue'
 import message from '../components/message.vue'
 import {useProfile} from '../stores/profile'
 import utilities from '../utilities.js'
-import Terms from '../Terms'
+import Terms from '../CustomPage'
 export default {
 
     setup(){

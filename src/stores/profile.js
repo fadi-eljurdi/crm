@@ -14,6 +14,8 @@ export const useProfile = defineStore('profile',{
         youtube:'',
         terms:'',
         privacy:'',
+        customPage:'',
+
         templateLLC:'',
         templateAPP:'',
         blog:{
