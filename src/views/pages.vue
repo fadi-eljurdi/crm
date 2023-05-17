@@ -5,12 +5,7 @@
             <h3 class="pop text-secondary fs-3">Manage your pages</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
-        <div class="col-12" v-html="path"></div>
-        <div class="col-12">
-          <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
-              <p contenteditable id="page-editor" class="form-control pop text-secondary py-3" style="overflow: auto; resize: vertical; min-height:400px;height:fit-content;" >new content ...</p>
-          </GrammarlyEditorPlugin>
-        </div>
+        
         <div class="col-12">
           <div class="input-group">
             <select class="form-select" v-model="path">
@@ -23,15 +18,21 @@
             <button class="btn btn-sm btn-primary" @click="savePage">Save page</button>
           </div>
         </div>
+        
+        <div class="col-12">
+          <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
+              <p contenteditable id="page-editor" class="form-control pop text-secondary py-3" style="overflow: auto; resize: vertical; min-height:400px;height:fit-content;" >new content ...</p>
+          </GrammarlyEditorPlugin>
+        </div>
     </div>
     
 
   </section>
-  <message v-show="store.showMessage" :title="store.theMessage" :callback="store.callback" :spinner="spinner"></message>
 
   <section v-if="spinner" class="w-100 h-100 position-fixed top-0 start-0 z-3 bg-glass d-flex justify-content-center align-items-center">
       <span class="spinner-grow"></span>
   </section>
+  <message v-show="store.showMessage" :title="store.theMessage" :callback="store.callback" :spinner="spinner"></message>
 </template>
 <script>
 import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-vue'
@@ -79,9 +80,10 @@ export default {
         try{
           
           this.spinner = true
+          this.store.closeAction()
           this.content = utilities.compile('page-editor')
           var page = new CustomPage(this.content,this.template).render()
-          console.log(page);
+          // console.log(page);
           await utilities.githubPush({
             authToken:this.store.github,
             owner:'fadi-eljurdi',

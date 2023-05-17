@@ -35,8 +35,8 @@
       <router-link to="/profile" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Profile</router-link>
       <router-link to="/pages" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Pages</router-link>
 
-      <router-link to="/terms" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Terms</router-link>
-      <router-link to="/privacy" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Privacy Policy</router-link>
+      <!-- <router-link to="/terms" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Terms</router-link>
+      <router-link to="/privacy" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Privacy Policy</router-link> -->
       <router-link to="/links" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Links</router-link>
       <router-link to="/blogs" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Blog</router-link>
       <router-link to="/settings" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Settings</router-link>
@@ -63,8 +63,8 @@
         <li><hr class="dropdown-divider"></li>
         <li><router-link class="dropdown-item" to="/profile">+Profile</router-link></li>
         <li><router-link class="dropdown-item" to="/pages">+Pages</router-link></li>
-        <li><router-link class="dropdown-item" to="/terms">+Terms</router-link></li>
-        <li><router-link class="dropdown-item" to="/privacy">+Privacy Policy</router-link></li>
+        <!-- <li><router-link class="dropdown-item" to="/terms">+Terms</router-link></li>
+        <li><router-link class="dropdown-item" to="/privacy">+Privacy Policy</router-link></li> -->
         <li><router-link class="dropdown-item" to="/links">+Links</router-link></li>
         <li><router-link class="dropdown-item" to="/blogs">+Blogs</router-link></li>
         <li><router-link class="dropdown-item" to="/settings">+Settings</router-link></li>
