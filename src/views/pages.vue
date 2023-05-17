@@ -21,7 +21,7 @@
         
         <div class="col-12">
           <GrammarlyEditorPlugin clientId="client_6ew5WLrroWWr7Jv1eqyr91" class="w-100">
-              <p contenteditable id="page-editor" class="form-control pop text-secondary py-3" style="overflow: auto; resize: vertical; min-height:400px;height:fit-content;" >new content ...</p>
+              <p contenteditable id="page-editor" class="form-control pop text-secondary py-3" style="overflow: auto; resize: vertical; min-height:400px;height:fit-content;" >paste the termly code snippet here ...</p>
           </GrammarlyEditorPlugin>
         </div>
     </div>
@@ -81,7 +81,8 @@ export default {
           
           this.spinner = true
           this.store.closeAction()
-          this.content = utilities.compile('page-editor')
+          // this.content = utilities.compile('page-editor')
+          this.content = document.getElementById('page-editor').innerText
           var page = new CustomPage(this.content,this.template).render()
           // console.log(page);
           await utilities.githubPush({
