@@ -13,7 +13,7 @@
           <div class="w-100 my-3 d-flex flex-column gap-2">
             <input type="text" @keyup.enter="utilities.focus('password')" id="username" placeholder="Username" class="form-control loginInput" v-model="username">
             <input type="password" @keyup.enter="Login" placeholder="Password" id="password" class="form-control loginInput" v-model="password">
-            <button @click="Login" class="w-100 btn btn-primary">
+            <button :disabled="loginSpinner" @click="Login" class="w-100 btn btn-primary">
               <span v-if="loginSpinner" class="spinner-grow spinner-grow-sm"></span>
               <span v-else>Login</span>
             </button>

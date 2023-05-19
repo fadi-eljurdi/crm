@@ -9,7 +9,7 @@
             <div class="col-12 col-md-2 pb-2">New Logo</div>
             <div class="col-12 col-md-10 d-flex flex-column gap-2">
                 <img v-show="contact.logo" :src="contact.logo" alt="logo" class="img-fluid object-fit-cover rounded" width="100">
-                <input type="file" @change="uploadLogo" accept="Image/png,Image/jpeg,Image/jpj" class="form-control">
+                <input type="file" @change="uploadLogo" accept="Image/png,Image/jpeg,Image/jpg" class="form-control">
             </div>
         </div>
         <div class="row">

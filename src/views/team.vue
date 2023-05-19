@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         <div class="col-12 col-md-2 pb-2">Profile Picture</div>
-        <div class="col-12 col-md-10"><input @change="uploadImage" type="file" class="form-control"></div>
+        <div class="col-12 col-md-10"><input @change="uploadImage" accept="Image/png,Image/jpeg,Image/jpg"  type="file" class="form-control"></div>
     </div>
     <div class="row">
         <div class="col-12 col-md-2 pb-2">Name</div>

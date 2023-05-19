@@ -175,7 +175,7 @@ function openFiles() {
         try {
             const input = document.createElement('input');
             input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/png, image/jpeg');
+            input.setAttribute('accept', 'image/png, image/jpeg, image/jpg');
             input.setAttribute('multiple', true);
             // document.appendChild(input)
             console.log(input);
