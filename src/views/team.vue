@@ -22,7 +22,12 @@
         <div class="col-12 col-md-2 pb-2">Bio</div>
         <div class="col-12 col-md-10"><textarea v-model="team.bio" class="form-control"></textarea></div>
     </div>
-    <div class="row justify-content-center my-3"><button :disabled="onEdit || spinner" @click="setTeam" class="col-12 col-lg-2 btn btn-sm btn-primary">add</button></div>
+    <div class="row justify-content-center my-3">
+      <div class="col-12 col-lg-2">
+        <button :disabled="onEdit || spinner" @click="setTeam" class="w-100 btn btn-sm btn-primary">add</button>
+      </div>
+      
+    </div>
   
   </section>
   <section v-else class="container">
