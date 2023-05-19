@@ -82,7 +82,7 @@ export const useProfile = defineStore('profile',{
         },
         api(){
             if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbzNIqlCdmiGJA_W1b-uDGVe28MbC5J08IZcPOJxuy8rNYGhS0SnwsXitn0YHaF8Z5_w/exec"
-            return "https://script.google.com/macros/s/AKfycby-Qs1kX_QsE0pya57wAMJZd-DYnfqrSYJsLEweLLq9BJ3MsAC9F7DEcCTRo-YT9dSK/exec"
+            return "https://script.google.com/macros/s/AKfycbxcvPnMTSiGIwEiIVT1HexglSBMITapI812Rj6f3UTm6YTtGgYMBsmTHJV-SPxlrHmi/exec"
         },
 
 

@@ -638,7 +638,11 @@ export default {
         if(this.store.blog.article != ''){
             document.getElementById('editor').innerText = this.store.blog.article
         }
-
+        var editor = document.getElementById('editor')
+        editor.addEventListener('paste',e=>{
+        e.preventDefault()
+        editor.innerText += e.clipboardData.getData('text/plain')
+        })
         // this.store.alertMessage('Welcome')
 
     }

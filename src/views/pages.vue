@@ -1,9 +1,9 @@
 <template>
-  <section class="container">
+  <section class="container scale-up-center">
     <div class="row gap-2">
         <div class="col-12">
             <h3 class="pop text-secondary fs-3">Manage your pages</h3>
-            <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
+            <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your policies and terms information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
         </div>
         
         <div class="col-12">
@@ -113,6 +113,11 @@ export default {
   },
   async mounted(){
     this.template = await utilities.fetchTemplate(this.store.domain == 'www.jurdilaw.com' ? 'https://fadi-eljurdi.github.io/LLC/custom-page.html' : 'https://fadi-eljurdi.github.io/app/custom-page.html')
+    var editor = document.getElementById('page-editor')
+    editor.addEventListener('paste',e=>{
+      e.preventDefault()
+      editor.innerText += e.clipboardData.getData('text/plain')
+    })
   }
 }
 </script>

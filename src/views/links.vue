@@ -70,6 +70,8 @@ export default {
         this.store.alertMessage(`Add to ${this.store.domain}`).setAction(async ()=>{
             try{
                     this.spinner = true
+                    
+                    this.store.closeAction()
                     const data = {
                         text:this.link.text,
                         url:`http://${this.link.url}`

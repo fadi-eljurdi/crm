@@ -38,11 +38,11 @@
             <div class="col-12 col-md-10"><input v-model="contact.number"  type="number" class="form-control"></div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-2 pb-2">Whatsapp</div>
+            <div class="col-12 col-md-2 pb-2">Whatsapp URL</div>
             <div class="col-12 col-md-10"><input v-model="contact.whatsapp"  type="url" class="form-control"></div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-2 pb-2">LinkedIn</div>
+            <div class="col-12 col-md-2 pb-2">LinkedIn URL</div>
             <div class="col-12 col-md-10"><input v-model="contact.linkedIn"  type="url" class="form-control"></div>
         </div>
         <div class="row">
@@ -142,6 +142,7 @@ export default {
             try{
                 
                 this.spinner = true
+                this.store.closeAction()
                 var api = this.store.api()
                 api += `${this.store.loginQuery()}&setContact=1`
                 var data = JSON.stringify(this.contact)

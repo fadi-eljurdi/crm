@@ -50,6 +50,19 @@
                 </div>
             </div>
         </div>
+        <div class="row g-3" v-show="profile.team">
+            <div class="col-12"> <h5 class="pop text-secondary">Remove Teammate</h5> </div>
+            <div v-for="t in profile.team" :key="t" class="col-12 col-md-6 col-lg-3 point">
+                <div title="double click to delete" @dblclick="removeItem(t.name,'Team')" class="d-flex flex-column gap-2 bg-light shadow-sm rounded p-3">
+                    <div class="ratio ratio-4x3">
+                        <img :src="t.image" :alt="t.name" class="img-fluid object-fit-cover">
+                    </div>
+                    <h5 style="min-height:50px;" class="text-primary text-fade-2">{{t.name}} / {{t.job}}</h5>
+                    <p style="min-height:30px;" class="fs-small text-secondary m-0 text-fade-4">{{t.bio}}</p>
+                    
+                </div>
+            </div>
+        </div>
     </section>
   
     <message v-show="store.showMessage" :title="store.theMessage" :callback="store.callback" :spinner="spinner">
@@ -105,6 +118,7 @@ export default {
             this.store.alertMessage(`Delete: ${titleIndex} ?`).setAction(async ()=>{
                 this.spinner = true
                 
+                this.store.closeAction()
                 try{
                     if(sheet == "Links"){
                         await this.removeItemFromSheets(titleIndex,sheet)
@@ -127,14 +141,22 @@ export default {
                             this.spinner = false
                         }else{
                             
-                            var repo = "app"
-                            if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
-                            await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
+                            if(sheet == 'Services'){
+                                var repo = "app"
+                                if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
+                                await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
 
-                            await this.removeItemFromSheets(titleIndex,sheet)
-                            this.profile.services = this.profile.services.filter(s => s.title != titleIndex)
-                            this.store.alertMessage('Meshe l7al').endAction()
-                            this.spinner = false
+                                await this.removeItemFromSheets(titleIndex,sheet)
+                                this.profile.services = this.profile.services.filter(s => s.title != titleIndex)
+                                this.store.alertMessage('Meshe l7al').endAction()
+                                this.spinner = false
+                            }else {
+                                
+                                await this.removeItemFromSheets(titleIndex,sheet)
+                                this.profile.team = this.profile.team.filter(s => s.name != titleIndex)
+                                this.store.alertMessage('Meshe l7al').endAction()
+                                this.spinner = false
+                            }
                         }
                     }
                 }catch(err){
