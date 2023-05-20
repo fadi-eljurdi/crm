@@ -254,8 +254,14 @@ function deepEqual(obj1, obj2) {
 }
 
 function convertGoogleDriveLink(link) {
-    const fileId = link.split("/")[5].split("?")[0];
-    return `https://drive.google.com/uc?id=${fileId}`;
+    
+    try{
+        const fileId = link.split("/")[5].split("?")[0];
+        return `https://drive.google.com/uc?id=${fileId}`;
+    }catch(err){
+       console.log(err);
+       return link
+    }
 }
 
 function checkNetwork() {

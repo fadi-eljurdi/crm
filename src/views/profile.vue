@@ -1,5 +1,7 @@
 <template>
     <section class="container d-flex flex-column gap-2 my-5 scale-up-center ">
+        
+        
         <div class="row">
             <h3 class="pop text-secondary fs-3">Manage your profile</h3>
             <p class="text-secondary fs-small">Our platform offers an easy and seamless way to manage your contact information, ensuring that you're always up-to-date and never miss out on important opportunities.</p>
@@ -121,13 +123,13 @@ export default {
         video(){
             if(this.contact.video != ''){
                 try{
-                   return utilities.convertGoogleDriveLink(this.contact.video)
+                   return utilities.convertGoogleDriveLink(this.contact.video == '' ? '' : this.contact.video)
                 }catch(err){
                    console.log(err);
                    this.store.alertMessage('Invalid Drive URL')
                 }
             }
-            
+            // return utilities.convertGoogleDriveLink(this.contact.video)
         }
     },
     methods:{
@@ -145,6 +147,10 @@ export default {
                 this.store.closeAction()
                 var api = this.store.api()
                 api += `${this.store.loginQuery()}&setContact=1`
+                // if(this.contact.video){
+                //     this.contact.video = this.utilities.convertGoogleDriveLink(this.contact.video)
+                // }
+                // console.log(this.contact.video);
                 var data = JSON.stringify(this.contact)
                 var res = await fetch(api,{
                     method:'POST',
@@ -184,6 +190,9 @@ export default {
             this.spinner = false
             this.contact.logo = urls[0].src
         },
+    },
+    mounted(){
+        console.log(utilities.convertGoogleDriveLink('https://drive.google.com/file/d/1-72u4014iEOirq5ewLn7lcc_E2H2JyKb/view?usp=share_link'));
     }
 }
 </script>
