@@ -40,6 +40,13 @@
       </div>
       <div class="row">
         <div class="col-12">
+            
+            <h6 class="fs-6 text-primary">Image Optimizer quality {{store.quality}}</h6>
+            <input v-model="store.quality" type="range" class="form-range rounded-pill" min="0.1" max="0.9" step="0.1" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" v-model="store.settings.useYoutubeTitle" >
                 <label class="form-check-label" for="flexCheckDefault">
@@ -146,7 +153,6 @@ export default {
             this.store.settings.rules = this.store.settings.rules.filter(r => r != rule)
         },
         setWordsRange(){
-            console.log(this.words);
             this.store.settings.words = this.words
         },
         saveSettings(){

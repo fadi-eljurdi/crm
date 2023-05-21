@@ -48,7 +48,7 @@
 
         <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
         <hr v-else class="my-3">
-        {{blogTitle}}
+        
         <section class="d-flex flex-column gap-2">
             
             <div class="row">
@@ -274,8 +274,8 @@ export default {
                     for(let i = 0 ; i < files.length ; i++){
                         files64.push({
                             alt:`JURDI-Image-${utilities.getCurrentDate()}`,
-                            src64: await utilities.file64(files[i])
-                            // src64: await utilities.optimizeImageQuality(await utilities.file64(files[i]),this.store.quality)
+                            // src64: await utilities.file64(files[i])
+                            src64: await utilities.optimizeImageQuality(await utilities.file64(files[i]),this.store.quality)
                         })
                     }
                     console.log(files64);
