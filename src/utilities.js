@@ -127,20 +127,9 @@ async function hostImages(api, images) {
 }
 
 function getYouTubeId(url) {
-    // const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^\s&]+)/;
-    // const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^\s&]+)/;
-    // const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/|youtube\.com\/live\/)([^\s&]+)/;
     const regex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/\?v=)|youtu\.be\/)([^\s&]+)/;
-
-
-    const match = url.match(regex);
-    // if(match) {
-    //     const regex = /(?:live\/|channel\/\w+\/live\/|watch\?v=)(\w+)/;
-    //     const match = url.match(regex);
-    //     return match ? match[1] : null;
-    // }
+    const match = url.match(regex);    
     return match ? match[1] : null;
-
 }
 
 async function getYouTubeVideoDetails(videoUrl) {

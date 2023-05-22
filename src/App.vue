@@ -19,7 +19,7 @@
             </button>
           </div>
           <small class="fs-xsmall pop text-secondary text-center">Developed by 
-            <a href="https://libancode.com">Libancode</a> - version 1.2.3
+            <a href="https://libancode.com">Libancode</a> - version 1.2.4
           </small>
         </section>
       </div>

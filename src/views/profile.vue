@@ -17,20 +17,41 @@
         <div class="row">
             <div class="col-12 col-md-2 pb-2">Google drive video URL</div>
             <div class="col-12 col-md-10 d-flex flex-column gap-2">
-                <video v-show="video" :src="video" width="100" class="img-fluid rounded"></video>
                 <input type="text" class="form-control" v-model="contact.video">
             </div>
         </div>
+        
+        <hr class="my-3">
         <div class="row">
-            <div class="col-12 col-md-2 pb-2">Heading</div>
+            <div class="col-12 col-md-2 pb-2">Main Heading</div>
             <div class="col-12 col-md-10"><textarea v-model="contact.heading" class="form-control"></textarea></div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-2 pb-2">Bio</div>
+            <div class="col-12 col-md-2 pb-2">Main Bio</div>
             <div class="col-12 col-md-10"><textarea v-model="contact.bio" class="form-control"></textarea></div>
         </div>
         <progress v-if="spinner" style="width:100%;height:.5rem;" class="my-3"></progress>
         <hr v-else class="my-3">
+        <div class="row">
+            <div class="col-12 col-md-2 pb-2">Services Heading</div>
+            <div class="col-12 col-md-10"><textarea v-model="contact.sHeading" class="form-control"></textarea></div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-2 pb-2">Services Tagline</div>
+            <div class="col-12 col-md-10"><textarea v-model="contact.sTagline" class="form-control"></textarea></div>
+        </div>
+        
+        <hr class="my-3">
+        <div class="row">
+            <div class="col-12 col-md-2 pb-2">Blogs Heading</div>
+            <div class="col-12 col-md-10"><textarea v-model="contact.bHeading" class="form-control"></textarea></div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-2 pb-2">Blogs Tagline</div>
+            <div class="col-12 col-md-10"><textarea v-model="contact.bTagline" class="form-control"></textarea></div>
+        </div>
+        <hr class="my-3">
+
         <div class="row">
             <div class="col-12 col-md-2 pb-2">Email</div>
             <div class="col-12 col-md-10"><input v-model="contact.email" type="email" class="form-control"></div>
@@ -90,7 +111,11 @@ export default {
                 logo:'',
                 heading:'',
                 bio:'',
-                video:''
+                video:'',
+                bHeading:'',
+                bTagline:'',
+                sHeading:'',
+                sTagline:''
             }
         }
     },
@@ -109,7 +134,11 @@ export default {
                     logo:false,
                     heading:'',
                     bio:'',
-                    video:''
+                    video:'',
+                    bHeading:'',
+                    bTagline:'',
+                    sHeading:'',
+                    sTagline:''
                 }
                 if(utilities.deepEqual(contact,newValue)) this.onEdit = true
                 else this.onEdit = false
