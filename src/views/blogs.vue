@@ -199,7 +199,6 @@
 import { GrammarlyEditorPlugin } from '@grammarly/editor-sdk-vue'
 import {useProfile} from '../stores/profile'
 import Media from '../Media'
-import Blog from '../Blog'
 import Template from '../Template'
 import utilities from '../utilities.js'
 import settings from '../components/settings.vue'
@@ -423,7 +422,7 @@ export default {
                     await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle))
 
                     if(this.store.domain == 'www.jurdilaw.com') this.store.blog.url = `https://fadi-eljurdi.github.io/LLC/blogs/${this.blogTitle}.html`
-                    else this.store.blog.url = `https://fadi-eljurdi.github.io/app/blogs/${this.blogTitle}.html`
+                    else this.store.blog.url = `https://jurdiconsult.media/blogs/${this.blogTitle}.html`
                     // save to sheets
                     await this.saveBlog()
                     this.spinner = false

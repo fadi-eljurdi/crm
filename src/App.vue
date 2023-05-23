@@ -129,7 +129,7 @@ export default {
   async mounted(){
     utilities.checkNetwork()
     try{
-      this.store.templateAPP = await utilities.fetchTemplate('https://fadi-eljurdi.github.io/app/blogs/template.html')
+      this.store.templateAPP = await utilities.fetchTemplate('https://jurdiconsult.media/blogs/template.html')
       this.store.templateLLC = await utilities.fetchTemplate('https://fadi-eljurdi.github.io/LLC/blogs/template.html')
       // console.log(this.store.templateLLC);
     }catch(err){

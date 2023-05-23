@@ -25,7 +25,7 @@ class Blog {
         if(this.domain == 'www.jurdilaw.com'){
             htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_url', `https://fadi-eljurdi.github.io/LLC/blogs/${utilities.titlePath(this.title)}.html`)
         }else{
-            htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_url', `https://fadi-eljurdi.github.io/app/blogs/${utilities.titlePath(this.title)}.html`)
+            htmlPageCopy = htmlPageCopy.replaceAll('##blog_page_url', `https://jurdiconsult.media/blogs/${utilities.titlePath(this.title)}.html`)
         }
 
         htmlPageCopy = htmlPageCopy.replaceAll('##blog_thubnail', this.thubnail)
