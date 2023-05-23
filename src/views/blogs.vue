@@ -417,19 +417,22 @@ export default {
             this.store.alertMessage(`Publish blog to ${this.store.domain} ? ${this.store.blog.baas ? 'As a service ?' : ''}`).setAction(async ()=>{
                 try{
                     this.spinner = true
+                    this.store.closeAction()
                     this.generateThumbnail()
                     await this.generateBlog()
                     await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle))
 
-                    if(this.store.domain == 'www.jurdilaw.com') this.store.blog.url = `https://fadi-eljurdi.github.io/LLC/blogs/${this.blogTitle}.html`
+                    if(this.store.domain == 'www.jurdilaw.com') this.store.blog.url = `https://jurdilaw.com/blogs/${this.blogTitle}.html`
                     else this.store.blog.url = `https://jurdiconsult.media/blogs/${this.blogTitle}.html`
                     // save to sheets
                     await this.saveBlog()
                     this.spinner = false
+                    
                     this.store.alertMessage(`${this.store.blog.url}`).endAction()
                 }catch(err){
                     console.log(err);
                     this.spinner = false
+                    this.store.closeAction()
                     this.store.alertMessage(`ERROR : ${err}`).endAction()
                 }
                 

@@ -64,7 +64,7 @@ export default {
         async handler(newValue, oldValue) {
             // alert(this.store.domain)
             // this.spinner = true
-            this.template = await utilities.fetchTemplate(this.store.domain == 'www.jurdilaw.com' ? 'https://fadi-eljurdi.github.io/LLC/custom-page.html' : 'https://jurdiconsult.media/custom-page.html')
+            this.template = await utilities.fetchTemplate(this.store.domain == 'www.jurdilaw.com' ? 'https://jurdilaw.com/custom-page.html' : 'https://jurdiconsult.media/custom-page.html')
             // this.spinner = false
         },
         deep: true
@@ -112,7 +112,7 @@ export default {
     }
   },
   async mounted(){
-    this.template = await utilities.fetchTemplate(this.store.domain == 'www.jurdilaw.com' ? 'https://fadi-eljurdi.github.io/LLC/custom-page.html' : 'https://jurdiconsult.media/custom-page.html')
+    this.template = await utilities.fetchTemplate(this.store.domain == 'www.jurdilaw.com' ? 'https://jurdilaw.com/custom-page.html' : 'https://jurdiconsult.media/custom-page.html')
     var editor = document.getElementById('page-editor')
     editor.addEventListener('paste',e=>{
       e.preventDefault()
