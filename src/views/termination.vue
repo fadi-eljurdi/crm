@@ -50,6 +50,22 @@
                 </div>
             </div>
         </div>
+        <div class="row g-3" v-show="store.domain == 'www.incugamecon.media'">
+            <div class="col-12"> <h5 class="pop text-secondary">Remove Projects</h5> </div>
+            <div v-for="service in profile.projects" :key="service" class="col-12 col-md-6 col-lg-3 point">
+                <div title="double click to delete" @dblclick="removeItem(service.title,'Projects')" class="d-flex flex-column gap-2 bg-light shadow-sm rounded p-3">
+                    <div class="ratio ratio-4x3">
+                        <img :src="service.thumbnail" :alt="service.title" class="img-fluid object-fit-cover">
+                    </div>
+                    <h5 style="min-height:50px;" class="text-primary text-fade-2">{{service.title}}</h5>
+                    <p style="min-height:30px;" class="fs-small text-secondary m-0 text-fade-4">{{service.description}}</p>
+                    <hr>
+                    <!-- <u class="fs-xsmall" @click="copyURL(service.url)">COPY URL</u> -->
+                    <small class="text-secondary fs-xsmall">{{utilities.timo(service.date)}} <i class="bi bi-dot"></i> <u @click="copyURL(service.url)">COPY URL</u></small>
+
+                </div>
+            </div>
+        </div>
         <div class="row g-3" v-show="profile.team">
             <div class="col-12"> <h5 class="pop text-secondary">Remove Teammate</h5> </div>
             <div v-for="t in profile.team" :key="t" class="col-12 col-md-6 col-lg-3 point">
@@ -153,11 +169,25 @@ export default {
                                 this.store.alertMessage('Meshe l7al').endAction()
                                 this.spinner = false
                             }else {
+
+                                if(sheet == 'Projects'){
+                                    var repo = "app"
+                                    if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
+                                    if(this.store.domain == 'www.incugamecon.media') repo = "igcdev"
+                                    await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
+
+                                    await this.removeItemFromSheets(titleIndex,sheet)
+                                    this.profile.projects = this.profile.projects.filter(s => s.title != titleIndex)
+                                    this.store.alertMessage('Meshe l7al').endAction()
+                                    this.spinner = false
+                                }else{
+
+                                    await this.removeItemFromSheets(titleIndex,sheet)
+                                    this.profile.team = this.profile.team.filter(s => s.name != titleIndex)
+                                    this.store.alertMessage('Meshe l7al').endAction()
+                                    this.spinner = false
+                                }
                                 
-                                await this.removeItemFromSheets(titleIndex,sheet)
-                                this.profile.team = this.profile.team.filter(s => s.name != titleIndex)
-                                this.store.alertMessage('Meshe l7al').endAction()
-                                this.spinner = false
                             }
                         }
                     }

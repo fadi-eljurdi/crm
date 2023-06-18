@@ -19,7 +19,7 @@
             </button>
           </div>
           <small class="fs-xsmall pop text-secondary text-center">Developed by 
-            <a href="https://libancode.com">Libancode</a> - version 1.2.8
+            <a href="https://libancode.com">Libancode</a> - version 2.1.0
           </small>
         </section>
       </div>
@@ -33,7 +33,7 @@
     </section>
     <nav class="pop d-none d-lg-flex align-items-center gap-3">
       <router-link to="/profile" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Profile</router-link>
-      <router-link to="/pages" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Pages</router-link>
+      <!-- <router-link to="/pages" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Pages</router-link> -->
 
       <router-link to="/team" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Team</router-link>
       <!-- <router-link to="/privacy" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Privacy Policy</router-link> -->
@@ -64,7 +64,7 @@
         </li>
         <li><hr class="dropdown-divider"></li>
         <li><router-link class="dropdown-item" to="/profile">+Profile</router-link></li>
-        <li><router-link class="dropdown-item" to="/pages">+Pages</router-link></li>
+        <!-- <li><router-link class="dropdown-item" to="/pages">+Pages</router-link></li> -->
         <li><router-link class="dropdown-item" to="/team">+Team</router-link></li>
         <!-- <li><router-link class="dropdown-item" to="/privacy">+Privacy Policy</router-link></li> -->
         <li><router-link class="dropdown-item" to="/links">+Links</router-link></li>

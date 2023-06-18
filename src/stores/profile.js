@@ -84,7 +84,7 @@ export const useProfile = defineStore('profile',{
         },
         api(){
             if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbzDbrGNqQ_ww6kOZ2ZAtGxfFeEdgeHXXbEo8WNDuzv6O1db_8i6fU8QLUljbavxl1Co/exec"
-            if(this.domain == 'www.incugamecon.media') return "https://script.google.com/macros/s/AKfycbwAjf6wyWlzz_Qmm5Tr7cHIL6Ubl9dEgX_gvz_VCN5Wy0H0lAvFYALclnlKeIIoMWSo/exec"
+            if(this.domain == 'www.incugamecon.media') return "https://script.google.com/macros/s/AKfycbypvRNzog2TJbduvINoRawpWGgvZNAMV-xR8WRYQRVthY8mQdvTKuHVF5djkhcr8kV3/exec"
             return "https://script.google.com/macros/s/AKfycbxA-zbaxGfvru0pEHqtkHUIFogEbIW-AMwbwtoxqYqxn6Z_5_vifRUr3n_XKHaSXBvD/exec"
         },
 
