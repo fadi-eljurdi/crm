@@ -54,10 +54,16 @@
             <div class="row">
                 <div class="col-12 col-md-2 pb-2">1. Blog type</div>
                 <div class="col-12 col-md-10 d-flex flex-column gap-2">
-                    <div class="form-check form-switch">
+                    <div class="form-check form-switch" v-if="!store.blog.baap">
                         <input class="form-check-input" type="checkbox" v-model="store.blog.baas" >
                         <label class="form-check-label" for="flexCheckDefault">
                             Consider as a service
+                        </label>
+                    </div>
+                    <div class="form-check form-switch" v-if="!store.blog.baas && store.domain == 'www.incugamecon.media'">
+                        <input class="form-check-input" type="checkbox" v-model="store.blog.baap" >
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Consider as a project
                         </label>
                     </div>
                 </div>
@@ -377,6 +383,7 @@ export default {
                     },
                     body:JSON.stringify({
                         baas:this.store.blog.baas,
+                        baap:this.store.blog.baap,
                         title:this.store.blog.title,
                         description:this.store.blog.seoDescription,
                         thumbnail:this.store.blog.thumbnail,
