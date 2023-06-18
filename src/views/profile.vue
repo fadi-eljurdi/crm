@@ -221,7 +221,7 @@ export default {
         },
     },
     mounted(){
-        console.log(utilities.convertGoogleDriveLink('https://drive.google.com/file/d/1-72u4014iEOirq5ewLn7lcc_E2H2JyKb/view?usp=share_link'));
+        // console.log(utilities.convertGoogleDriveLink('https://drive.google.com/file/d/1-72u4014iEOirq5ewLn7lcc_E2H2JyKb/view?usp=share_link'));
     }
 }
 </script>

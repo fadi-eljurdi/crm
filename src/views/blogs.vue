@@ -339,9 +339,17 @@ export default {
             // this.page = page.htmlPage
             const chooseTemplate = () => {
                 if(this.store.domain == 'www.jurdilaw.com') return this.store.templateLLC
+                else {
+                    if(this.store.domain == 'www.incugamecon.media') return this.store.templateIGC
+                    else{
 
-                return this.store.templateAPP
+                        return this.store.templateAPP
+                    }
+
+                }
+
             }
+            console.log(chooseTemplate());
 
             var page = new Template(chooseTemplate(),this.store.blog.title,JSON.stringify(this.store.blog.mediaBox),this.store.domain)
             page
@@ -399,8 +407,13 @@ export default {
             
 
             var url ;
-            if(this.store.domain == 'www.jurdilaw.com') url = `https://api.github.com/repos/fadi-eljurdi/LLC/contents/blogs/${filename}.html`;
-            else url = `https://api.github.com/repos/fadi-eljurdi/app/contents/blogs/${filename}.html`;
+            if(this.store.domain == 'www.incugamecon.media') url = `https://api.github.com/repos/fadi-eljurdi/igcdev/contents/blogs/${filename}.html`;
+            else {
+                if(this.store.domain == 'www.jurdilaw.com') url = `https://api.github.com/repos/fadi-eljurdi/LLC/contents/blogs/${filename}.html`;
+                else {
+                    url = `https://api.github.com/repos/fadi-eljurdi/app/contents/blogs/${filename}.html`;
+                }
+            }
 
             var config = {
                 method: 'PUT',
@@ -422,8 +435,12 @@ export default {
                     await this.generateBlog()
                     await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle))
 
-                    if(this.store.domain == 'www.jurdilaw.com') this.store.blog.url = `https://jurdilaw.com/blogs/${this.blogTitle}.html`
-                    else this.store.blog.url = `https://jurdiconsult.media/blogs/${this.blogTitle}.html`
+                    if(this.store.domain == 'www.incugamecon.media') this.store.blog.url = `https://fadi-eljurdi.github.io/igcdev/blogs/${this.blogTitle}.html`
+                    else {
+
+                        if(this.store.domain == 'www.jurdilaw.com') this.store.blog.url = `https://jurdilaw.com/blogs/${this.blogTitle}.html`
+                        this.store.blog.url = `https://jurdiconsult.media/blogs/${this.blogTitle}.html`
+                    }
                     // save to sheets
                     await this.saveBlog()
                     this.spinner = false

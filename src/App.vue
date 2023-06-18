@@ -46,6 +46,7 @@
             <select class="form-select form-select-sm" v-model="store.domain">
               <option value="www.jurdiconsult.media" selected>www.jurdiconsult.media</option>
               <option value="www.jurdilaw.com">www.jurdilaw.com</option>
+              <option value="www.incugamecon.media">www.incugamecon.media</option>
             </select>
       </div>
     </nav>
@@ -57,6 +58,7 @@
             <select class="form-control" v-model="store.domain">
               <option value="www.jurdiconsult.media" selected>www.jurdiconsult.media</option>
               <option value="www.jurdilaw.com">www.jurdilaw.com</option>
+              <option value="www.incugamecon.media">www.incugamecon.media</option>
             </select>
           </span>
         </li>
@@ -131,7 +133,8 @@ export default {
     try{
       this.store.templateAPP = await utilities.fetchTemplate('https://jurdiconsult.media/blogs/template.html')
       this.store.templateLLC = await utilities.fetchTemplate('https://jurdilaw.com/blogs/template.html')
-      // console.log(this.store.templateLLC);
+      this.store.templateIGC = await utilities.fetchTemplate('https://fadi-eljurdi.github.io/igcdev/blogs/template.html')
+      // console.log(this.store.templateIGC);
     }catch(err){
       console.log(err);
       this.store.alertMessage(err)

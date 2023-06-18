@@ -97,6 +97,7 @@ function compile(id) {
     content = content.replace(/\.\.(.+?)\.\./g, "<b>$1</b>");
     content = content.replace(/!!([\w-]+)/g, `<i class="bi bi-$1"></i>`);
 
+    navigator.clipboard.writeText(content)
     return content
 }
 

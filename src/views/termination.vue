@@ -131,6 +131,7 @@ export default {
                             // remove from github
                             var repo = "app"
                             if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
+                            if(this.store.domain == 'www.incugamecon.media') repo = "igcdev"
                             await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
 
 
@@ -144,6 +145,7 @@ export default {
                             if(sheet == 'Services'){
                                 var repo = "app"
                                 if(this.store.domain == 'www.jurdilaw.com') repo = "LLC"
+                                if(this.store.domain == 'www.incugamecon.media') repo = "igcdev"
                                 await this.removePageFromGithub(repo,'blogs',utilities.titlePath(titleIndex),await this.getFileSha(repo,utilities.titlePath(titleIndex)))
 
                                 await this.removeItemFromSheets(titleIndex,sheet)
