@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12 col-md-2 pb-2">Google drive video URL</div>
+            <div class="col-12 col-md-2 pb-2">Youtube video URL</div>
             <div class="col-12 col-md-10 d-flex flex-column gap-2">
                 <input type="text" class="form-control" v-model="contact.video">
             </div>
