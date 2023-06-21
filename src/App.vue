@@ -19,7 +19,7 @@
             </button>
           </div>
           <small class="fs-xsmall pop text-secondary text-center">Developed by 
-            <a href="https://libancode.com">Libancode</a> - version 2.1.1
+            <a href="https://libancode.com">Libancode</a> - version 2.1.2
           </small>
         </section>
       </div>
@@ -134,7 +134,7 @@ export default {
       this.store.templateAPP = await utilities.fetchTemplate('https://jurdiconsult.media/blogs/template.html')
       this.store.templateLLC = await utilities.fetchTemplate('https://jurdilaw.com/blogs/template.html')
       this.store.templateIGC = await utilities.fetchTemplate('https://fadi-eljurdi.github.io/igcdev/blogs/template.html')
-      // console.log(this.store.templateIGC);
+      console.log(this.store.templateIGC);
     }catch(err){
       console.log(err);
       this.store.alertMessage(err)

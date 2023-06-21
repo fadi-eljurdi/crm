@@ -414,7 +414,7 @@ export default {
             
 
             var url ;
-            if(this.store.domain == 'www.incugamecon.media') url = `https://api.github.com/repos/fadi-eljurdi/igcdev/contents/blogs/${filename}.html`;
+            if(this.store.domain == 'www.incugamecon.media') url = `https://api.github.com/repos/fadi-eljurdi/igc/contents/blogs/${filename}.html`;
             else {
                 if(this.store.domain == 'www.jurdilaw.com') url = `https://api.github.com/repos/fadi-eljurdi/LLC/contents/blogs/${filename}.html`;
                 else {
@@ -442,7 +442,7 @@ export default {
                     await this.generateBlog()
                     await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle))
 
-                    if(this.store.domain == 'www.incugamecon.media') this.store.blog.url = `https://fadi-eljurdi.github.io/igcdev/blogs/${this.blogTitle}.html`
+                    if(this.store.domain == 'www.incugamecon.media') this.store.blog.url = `https://incugamecon.media/blogs/${this.blogTitle}.html`
                     else {
 
                         if(this.store.domain == 'www.jurdilaw.com') this.store.blog.url = `https://jurdilaw.com/blogs/${this.blogTitle}.html`
