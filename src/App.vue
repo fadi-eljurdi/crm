@@ -19,7 +19,7 @@
             </button>
           </div>
           <small class="fs-xsmall pop text-secondary text-center">Developed by 
-            <a href="https://libancode.com">Libancode</a> - last update 2023-8-30
+            <a href="https://libancode.com">Libancode</a> - last update 2023-9-3
           </small>
         </section>
       </div>
@@ -29,7 +29,7 @@
 
 <header v-if="isLogedIn" class="w-100 p-3 z-2 position-fixed top-0 start-0 d-flex justify-content-between align-items-center bg-light shadow-sm">
     <section class="d-flex align-items-center gap-2">
-        <router-link to="/" class="link-underline link-underline-opacity-0"><h5 class="pop m-0">Dashboard</h5></router-link>
+        <router-link to="/" class="link-underline link-underline-opacity-0"><h5 class="text-success m-0 text-uppercase">@{{username}}</h5></router-link>
     </section>
     <nav class="pop d-none d-lg-flex align-items-center gap-3">
       <router-link to="/profile" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">+Profile</router-link>

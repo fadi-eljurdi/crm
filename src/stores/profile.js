@@ -83,9 +83,9 @@ export const useProfile = defineStore('profile',{
             return this
         },
         api(){
-            if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbzDbrGNqQ_ww6kOZ2ZAtGxfFeEdgeHXXbEo8WNDuzv6O1db_8i6fU8QLUljbavxl1Co/exec"
-            if(this.domain == 'www.incugamecon.media') return "https://script.google.com/macros/s/AKfycbypvRNzog2TJbduvINoRawpWGgvZNAMV-xR8WRYQRVthY8mQdvTKuHVF5djkhcr8kV3/exec"
-            return "https://script.google.com/macros/s/AKfycbxA-zbaxGfvru0pEHqtkHUIFogEbIW-AMwbwtoxqYqxn6Z_5_vifRUr3n_XKHaSXBvD/exec"
+            if(this.domain == 'www.jurdiconsult.media') return "https://script.google.com/macros/s/AKfycbwkigrNbFALD0u2-gx_yk1JmyIhIPWMSZqrKjXnVKep_L5KHKoSQGh4AdITKvlh4ZQ/exec"
+            if(this.domain == 'www.incugamecon.media') return "https://script.google.com/macros/s/AKfycbxMB8RC2igaemgHr5Nkg_-vDx-csV7l3fD7AQ-BhA18Rvpug3M6l8D8Z-x-NzXasECk/exec"
+            return "https://script.google.com/macros/s/AKfycbwh0vDqoKM_uLaHwxPoaN1Qm5PHr5VJ2EmwP4Cc8AQurKDLGGZJoeGnCy2GVRT_yiA/exec"
         },
 
 
