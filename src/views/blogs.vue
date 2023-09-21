@@ -3,7 +3,7 @@
         <div class="row">
             <h3 class="pop text-secondary fs-3">Create new blog</h3>
             <p class="text-secondary fs-small">Craft compelling blog posts in minutes with our powerful and streamlined blog creation software</p>
-            
+          
         </div>
         <div class="row my-3">
             <nav class="w-100 py-2 d-flex justify-content-between align-items-center font-monospace">
@@ -442,11 +442,15 @@ export default {
                     await this.generateBlog()
                     await this.githubPush(this.store.github,utilities.text64(this.page),(this.blogTitle))
 
+                    // console.log(this.store.domain);
+
                     if(this.store.domain == 'www.incugamecon.media') this.store.blog.url = `https://incugamecon.media/blogs/${this.blogTitle}.html`
                     else {
 
                         if(this.store.domain == 'www.jurdilaw.com') this.store.blog.url = `https://jurdilaw.com/blogs/${this.blogTitle}.html`
-                        this.store.blog.url = `https://jurdiconsult.media/blogs/${this.blogTitle}.html`
+                        else{
+                            this.store.blog.url = `https://jurdiconsult.media/blogs/${this.blogTitle}.html`
+                        }
                     }
                     // save to sheets
                     await this.saveBlog()
